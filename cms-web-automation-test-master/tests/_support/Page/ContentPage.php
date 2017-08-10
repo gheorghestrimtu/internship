@@ -15,7 +15,7 @@ class ContentPage {
     public static $rows_without_image = ['xpath' => '//tr/td[@class="img" and not(img)]/ancestor::tr'];
     public static $unpublished_rows = ['xpath' => '//tr[descendant::td[position()=4 and text()="{{category}}"] and descendant::td[position()=9 and text()="100%"] and descendant::td[position()=8 and text()="0%"]]'];
     public static $row_with_guid = ['xpath' => '//tr[descendant::td[position()=5] and descendant::*[text() = "{{guid}}"]]'];
-
+    public static $per_page_dropdown = ['xpath' => '//table//select'];
     // Catalog Actions
     public static $publish_content_button = '//div[@class="catalog-actions"]//button[text()="Publish Content"]';
 
