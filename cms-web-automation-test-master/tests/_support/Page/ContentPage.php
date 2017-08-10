@@ -6,8 +6,18 @@ class ContentPage {
     public static $URL = '/chan/partnertest/catalog';
 
     // Content Table
+
+    //Table rows - Content Page
+    public static $checkbox_column = '1';
+    public static $title_column = '3';
+    public static $type_column = '4';
     public static $guid_column = 5;
+    public static $seasons_column = '6';
+    public static $episodes_column = '7';
     public static $published_column = 8;
+    public static $transcode_percent_col = '9';
+
+
 
     public static $checkbox = ['xpath' => '/td/input[@type="checkbox"]'];
     public static $edit_pencil = ['xpath' => '//i[contains(@class, "edit") and contains(@class, "fa-pencil")]'];
@@ -15,6 +25,7 @@ class ContentPage {
     public static $rows_without_image = ['xpath' => '//tr/td[@class="img" and not(img)]/ancestor::tr'];
     public static $unpublished_rows = ['xpath' => '//tr[descendant::td[position()=4 and text()="{{category}}"] and descendant::td[position()=9 and text()="100%"] and descendant::td[position()=8 and text()="0%"]]'];
     public static $row_with_guid = ['xpath' => '//tr[descendant::td[position()=5] and descendant::*[text() = "{{guid}}"]]'];
+    public static $per_page_dropdown = ['xpath' => '//table//select'];
 
     // Catalog Actions
     public static $publish_content_button = '//div[@class="catalog-actions"]//button[text()="Publish Content"]';
