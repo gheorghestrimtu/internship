@@ -19,7 +19,6 @@ class ContentSteps extends \AcceptanceTester {
         $row = $I->findRandomElement(ContentPage::unpublished_rows('Movie'));
         $I->findElementInElement($row, ContentPage::$checkbox['xpath'])->click();
         $guid = $I->findElementInElement($row, '/td[' . ContentPage::$guid_column . ']')->getText();
-
         return $guid;
     }
 
@@ -114,17 +113,22 @@ class ContentSteps extends \AcceptanceTester {
 
     public function clickEditPencil($row){
         $this->moveMouseOver(['xpath'=> '//table//tr['. $row .']']);
-        $this->click(['xpath'=>'//tr['.$row.']//i[contains(@class, "edit") and contains(@class, "fa-pencil")] ']);
+        $this->click(ContentPage::$edit_pencil);
         //tr[1]//i[contains(@class, "edit") and contains(@class, "fa-pencil")]
     }
 
-    public function assertTitleIsValid($titleGuid){
+    public function shouldSeeTitleIsValid($titleGuid){
         $I=$this;
         $row=ContentPage::row_by_guid($titleGuid);
         $title=$I->grabTextFrom(['xpath'=>'//table//tr['.$row.']//td['.ContentPage::$title_column.']']);
         $I->clickEditPencil($row);
-        $input=$I->grabValueFrom(['xpath'=>'//form/div/div[1]/input']);
-        $I->assertEquals($title,$input);
+        $I->seeInField(ContentEditPage::$title,$title);
+        //$input=$I->grabValueFrom(ContentEditPage::$title);
+        //$I->assertEquals($title,$input);
+    }
+
+    public function chooseGuidOfItemByTypeAndPosition($type,$position){
+        return $this->grabTextFrom(['xpath'=>'//table/tbody/tr[contains(. ,\''.$type.'\')]['.$position.']/td[5]']);
     }
 
 

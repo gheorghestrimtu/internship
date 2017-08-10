@@ -106,8 +106,8 @@ class ContentCest
     public function contentTitles(ContentSteps $I){
         $I->wantTo('Verify content titles show up correctly. - C9174');
         $I->amOnContentPage();
-        $guid=$I->selectRandomMovie();
-        $I->assertTitleIsValid($guid);
+        $guid=$I->chooseGuidOfItemByTypeAndPosition('Movie',1);
+        $I->shouldSeeTitleIsValid($guid);
     }
 
     /**
