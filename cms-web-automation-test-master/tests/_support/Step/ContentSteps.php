@@ -111,4 +111,21 @@ class ContentSteps extends \AcceptanceTester {
         $this->assertEquals($numberOfElements, count($this->findElements('//table/tbody/tr')), 'Should have ' . $numberOfElements . ' items per page');
 
     }
+
+    public function clickEditPencil($row){
+        $this->moveMouseOver(['xpath'=> '//table//tr['. $row .']']);
+        $this->click(['xpath'=>'//tr['.$row.']//i[contains(@class, "edit") and contains(@class, "fa-pencil")] ']);
+        //tr[1]//i[contains(@class, "edit") and contains(@class, "fa-pencil")]
+    }
+
+    public function assertTitleIsValid($titleGuid){
+        $I=$this;
+        $row=ContentPage::row_by_guid($titleGuid);
+        $title=$I->grabTextFrom(['xpath'=>'//table//tr['.$row.']//td['.ContentPage::$title_column.']']);
+        $I->clickEditPencil($row);
+        $input=$I->grabValueFrom(['xpath'=>'//form/div/div[1]/input']);
+        $I->assertEquals($title,$input);
+    }
+
+
 }

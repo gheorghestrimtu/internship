@@ -81,7 +81,7 @@ class ContentCest
     *
     * @group test_priority_1
     */
-
+    /*
     public function contentTitles(AcceptanceTester $I)
     {
         $I->wantTo('Verify content titles show up correctly. - C9174');
@@ -94,6 +94,20 @@ class ContentCest
         $I->see('AA', "//tr[3]/td[" . ContentPage::$titleCol . "]");
         $I->see('Ab', "//tr[4]/td[" . ContentPage::$titleCol . "]");
         $I->see('AC', "//tr[5]/td[" . ContentPage::$titleCol . "]");
+    }
+    */
+
+    /**
+     * TESTRAIL TESTCASE ID: C9174
+     *
+     * @group test_priority_1
+     */
+
+    public function contentTitles(ContentSteps $I){
+        $I->wantTo('Verify content titles show up correctly. - C9174');
+        $I->amOnContentPage();
+        $guid=$I->selectRandomMovie();
+        $I->assertTitleIsValid($guid);
     }
 
     /**
