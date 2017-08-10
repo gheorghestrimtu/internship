@@ -93,4 +93,22 @@ class ContentSteps extends \AcceptanceTester {
         return $index;
     }
 
+    public function selectNumberOfItemsPerPage($numberOfElementsDisplay){
+        $I = $this;
+        $I->selectOption(ContentPage::$per_page_dropdown,$numberOfElementsDisplay);
+        $I->waitAjaxLoad();
+    }
+
+    public function shouldSeePageDropdownElements($numberOfElements){
+        if($numberOfElements=='All'){
+            $howMany=$this->grabTextFrom(['xpath'=>'//table/tfoot//div/div']);
+            $max=substr($howMany,strpos($howMany,'of')+3);
+            $this->assertEquals($max, count($this->findElements('//table/tbody/tr')), 'Should have ' . $max . ' items per page');
+            return;
+        }
+        //$this->seeElement(['xpath'=>'//table//tr['. $numberOfElements .']']);
+        //$this->dontSeeElement(['xpath'=>'//table//tr['. ($numberOfElements+1) .']']);
+        $this->assertEquals($numberOfElements, count($this->findElements('//table/tbody/tr')), 'Should have ' . $numberOfElements . ' items per page');
+
+    }
 }
