@@ -1,0 +1,8 @@
+tests/acceptance/Portal/EpisodeEditCest.php
+tests/acceptance/Portal/EpisodeListCest.php
+tests/acceptance/Portal/EpisodeWindowingCest.php
+tests/acceptance/Portal/MovieEditCest.php
+tests/acceptance/Portal/MovieWindowingCest.php
+tests/acceptance/Portal/SeasonEditCest.php
+tests/acceptance/Portal/SeasonListCest.php
+tests/acceptance/Portal/SeriesEditCest.php

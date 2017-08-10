@@ -1,0 +1,8 @@
+tests/acceptance/Portal/ChannelCest.php
+tests/acceptance/Portal/CollectionsCest.php
+tests/acceptance/Portal/ContentCest.php
+tests/acceptance/Portal/ContentEditCest.php
+tests/acceptance/Portal/EmailNotificationsCest.php
+tests/acceptance/Portal/FeedCest.php
+tests/acceptance/Portal/IngestionChannelCest.php
+tests/acceptance/Portal/IngestionDashboardCest.php

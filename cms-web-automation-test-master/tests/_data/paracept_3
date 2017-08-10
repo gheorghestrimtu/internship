@@ -1,0 +1,7 @@
+tests/acceptance/Portal/LoginCest.php
+tests/acceptance/Portal/MaturityRatingCest.php
+tests/acceptance/Portal/SideNavCest.php
+tests/acceptance/Portal/ThumbnailPageCest.php
+tests/acceptance/Portal/TopMenuCest.php
+tests/acceptance/Portal/VideoEditCest.php
+tests/acceptance/Portal/BreadcrumbNavigationCest.php
