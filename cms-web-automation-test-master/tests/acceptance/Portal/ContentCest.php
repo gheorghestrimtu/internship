@@ -168,6 +168,7 @@ class ContentCest
     *
     * @group test_priority_2
     */
+    /*
     public function contentTypes(AcceptanceTester $I)
     {
         $I->wantTo('Verify content types show up correctly. - C9175');
@@ -180,6 +181,20 @@ class ContentCest
         $I->see('Series', "//tr[3]/td[" . ContentPage::$typeCol . "]");
         $I->see('Movie', "//tr[4]/td[" . ContentPage::$typeCol . "]");
         $I->see('Series', "//tr[5]/td[" . ContentPage::$typeCol . "]");
+    }
+    */
+
+    /**
+     * TESTRAIL TESTCASE ID: C9175
+     *
+     * @group test_priority_2
+     */
+    public function contentTypes(ContentSteps $I)
+    {
+        $I->wantTo('Verify content types show up correctly. - C9175');
+        $I->amOnContentPage();
+        $I->waitForElementVisible(ContentPage::$all_types['xpath']);
+        $I->shouldSeeOnlyMoviesAndSeries();
     }
 
     /**

@@ -139,5 +139,12 @@ class ContentSteps extends \AcceptanceTester {
         $I->assertEquals($sortedTitleList,$titleList,'Should be sorted alphabetically');
     }
 
-
+    public function shouldSeeOnlyMoviesAndSeries(){
+        $I=$this;
+        $I->selectNumberOfItemsPerPage("All");
+        $list=$I->grabMultiple(ContentPage::$all_types);
+        $listWithoutMoviesAndSeries=array_diff($list,['Movie','Series']);
+        $I->assertTrue(count($listWithoutMoviesAndSeries)==0,"Only Movies and Series in type column");
 }
+}
+
