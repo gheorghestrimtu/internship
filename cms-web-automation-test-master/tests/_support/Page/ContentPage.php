@@ -30,6 +30,7 @@ class ContentPage {
     public static $row_with_guid = ['xpath' => '//tr[descendant::td[position()=5] and descendant::*[text() = "{{guid}}"]]'];
     public static $per_page_dropdown = ['xpath' => '//table//select'];
     public static $rows_with_series = ['xpath' => '//tr[descendant::td[position()=4 and text()="Series"] ]'];
+    public static $rows_with_series_and_episodes = ['xpath' => '//tr[descendant::td[position()=4 and text()="Series"] ]'];
 
 
     // Catalog Actions

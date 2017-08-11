@@ -162,12 +162,35 @@ class ContentSteps extends \AcceptanceTester {
         return $seasons;
     }
 
+    public function clickRandomSeasonAndReturnEpisode(){
+        $I=$this;
+        $randomSeason=$I->findRandomElement('//tr[descendant::td[position()=4 and text()="Season" ] ]');
+        $episodes=$I->findElementInElement($randomSeason,'/td[6]')->getText();
+        $I->findElementInElement($randomSeason,'/td[6]')->click();
+        return $episodes;
+    }
+
+    public function clickRandomSeriesWithEpisodes(){
+        $I=$this;
+        $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series_and_episodes['xpath']);
+        $I->findElementInElement($randomSeries,'/td['.ContentPage::$type_column.']')->click();
+    }
+
+
     public function seeCorrectNumberOfSeasons(){
         $I=$this;
-        $seasons=$I->clickRandomSeriesAndReturnSeason();
         $I->selectNumberOfItemsPerPage("All");
+        $seasons=$I->clickRandomSeriesAndReturnSeason();
         $rowCount=$I->findElements('xpath','//table/tbody/tr');
         $I->assertEquals($seasons,count($rowCount),'Correct number of seasons');
+    }
+
+    public function seeCorrectNumberOfEpisodes(){
+        $I=$this;
+        $I->selectNumberOfItemsPerPage("All");
+        $episodes=$I->clickRandomSeasonAndReturnEpisode();
+        $rowCount=$I->findElements('xpath','//table/tbody/tr');
+        $I->assertEquals($episodes,count($rowCount),'Correct number of episodes');
     }
 }
 

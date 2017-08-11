@@ -280,6 +280,7 @@ class ContentCest
     *
     * @group test_priority_2
     */
+    /*
     public function contentEpisodes(AcceptanceTester $I)
     {
         $I->wantTo('Verify content Episodes show up correctly. - C9178');
@@ -293,6 +294,23 @@ class ContentCest
         $I->dontSee('0', "//tr[4]/td[" . ContentPage::$episodesCol . "]");
         $I->see('0', "//tr[5]/td[" . ContentPage::$episodesCol . "]");
     }
+    */
+
+    /**
+     * TESTRAIL TESTCASE ID: C9178
+     *
+     * @group test_priority_2
+     */
+    public function contentEpisodes(ContentSteps $I)
+    {
+        $I->wantTo('Verify content Episodes show up correctly. - C9178');
+        $I->amOnContentPage();
+        $I->selectNumberOfItemsPerPage("All");
+        $I->clickRandomSeriesWithEpisodes();
+        $I->seeCorrectNumberOfEpisodes();
+
+    }
+
 
     /**
     * TESTRAIL TESTCASE ID: C225123
