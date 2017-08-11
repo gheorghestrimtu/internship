@@ -139,6 +139,15 @@ class ContentSteps extends \AcceptanceTester {
         $I->assertEquals($sortedTitleList,$titleList,'Should be sorted alphabetically');
     }
 
+    public function shouldSeeTableReverseSortedByTitle(){
+        $I=$this;
+        $titleList=$I->grabMultiple(ContentPage::$all_titles);
+        $sortedTitleList=$titleList;
+        natcasesort($sortedTitleList);
+        $reverseSortedTitleList=array_reverse($sortedTitleList,true);
+        $I->assertEquals($reverseSortedTitleList,$titleList,'Should be sorted reverse alphabetically');
+    }
+
     public function shouldSeeOnlyMoviesAndSeries(){
         $I=$this;
         $I->selectNumberOfItemsPerPage("All");

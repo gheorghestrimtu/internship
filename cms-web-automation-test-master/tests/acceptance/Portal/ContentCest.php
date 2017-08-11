@@ -380,11 +380,13 @@ class ContentCest
         $I->see('Transcoded');
         $I->seeTranscodedPercentage();
     }
-        /**
-    * TESTRAIL TESTCASE ID: C9173
+
+    /**
+     * TESTRAIL TESTCASE ID: C9173
     *
     * @group test_priority_2
     */
+    /*
     public function sortContentByTitle(AcceptanceTester $I)
     {
         $I->wantTo('Verify content can be sorted by title. - C9173');
@@ -408,8 +410,25 @@ class ContentCest
         $I->waitForText('Y Movie', 30, "//tr[4]/td[" . ContentPage::$titleCol . "]");
         $I->waitForText('X Movie', 30, "//tr[5]/td[" . ContentPage::$titleCol . "]");
     }
+    */
 
     /**
+     * TESTRAIL TESTCASE ID: C9173
+     *
+     * @group test_priority_2
+     */
+    public function sortContentByTitle(ContentSteps $I)
+    {
+        $I->wantTo('Verify content can be sorted by title. - C9173');
+        $I->amOnContentPage();
+        $I->waitForElementVisible(ContentPage::$table_header);
+        $I->click(ContentPage::$table_header_title);
+        $I->shouldSeeTableSortedByTitle();
+        $I->click(ContentPage::$table_header_title);
+        $I->shouldSeeTableReverseSortedByTitle();
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C225127
     *
     * @group test_priority_2

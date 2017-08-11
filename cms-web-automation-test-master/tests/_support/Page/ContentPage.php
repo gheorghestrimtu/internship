@@ -33,7 +33,8 @@ class ContentPage {
     public static $per_page_dropdown = ['xpath' => '//table//select'];
     public static $rows_with_series = ['xpath' => '//tr[descendant::td[position()=4 and text()="Series"] ]'];
     public static $rows_with_series_and_episodes = ['xpath' => '//tr[descendant::td[position()=4 and text()="Series"] ]'];
-
+    public static $table_header = ['xpath' => '//table//tr/th'];
+    public static $table_header_title = ['xpath' => '//table//tr/th[3]'];
 
     // Catalog Actions
     public static $publish_content_button = '//div[@class="catalog-actions"]//button[text()="Publish Content"]';
