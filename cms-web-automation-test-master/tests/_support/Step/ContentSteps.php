@@ -19,7 +19,6 @@ class ContentSteps extends \AcceptanceTester {
         $row = $I->findRandomElement(ContentPage::unpublished_rows('Movie'));
         $I->findElementInElement($row, ContentPage::$checkbox['xpath'])->click();
         $guid = $I->findElementInElement($row, '/td[' . ContentPage::$guid_column . ']')->getText();
-
         return $guid;
     }
 
@@ -92,5 +91,53 @@ class ContentSteps extends \AcceptanceTester {
         }
         return $index;
     }
+
+    public function selectNumberOfItemsPerPage($numberOfElementsDisplay){
+        $I = $this;
+        $I->selectOption(ContentPage::$per_page_dropdown,$numberOfElementsDisplay);
+        $I->waitAjaxLoad();
+    }
+
+    public function shouldSeePageDropdownElements($numberOfElements){
+        if($numberOfElements=='All'){
+            $howMany=$this->grabTextFrom(['xpath'=>'//table/tfoot//div/div']);
+            $max=substr($howMany,strpos($howMany,'of')+3);
+            $this->assertEquals($max, count($this->findElements('//table/tbody/tr')), 'Should have ' . $max . ' items per page');
+            return;
+        }
+        //$this->seeElement(['xpath'=>'//table//tr['. $numberOfElements .']']);
+        //$this->dontSeeElement(['xpath'=>'//table//tr['. ($numberOfElements+1) .']']);
+        $this->assertEquals($numberOfElements, count($this->findElements('//table/tbody/tr')), 'Should have ' . $numberOfElements . ' items per page');
+
+    }
+
+    public function clickEditPencil($row){
+        $this->moveMouseOver(['xpath'=> '//table//tr['. $row .']']);
+        $this->click(ContentPage::$edit_pencil);
+        //tr[1]//i[contains(@class, "edit") and contains(@class, "fa-pencil")]
+    }
+
+    public function shouldSeeTitleIsValid($titleGuid){
+        $I=$this;
+        $row=ContentPage::row_by_guid($titleGuid);
+        $title=$I->grabTextFrom(['xpath'=>'//table//tr['.$row.']//td['.ContentPage::$title_column.']']);
+        $I->clickEditPencil($row);
+        $I->seeInField(ContentEditPage::$title,$title);
+        //$input=$I->grabValueFrom(ContentEditPage::$title);
+        //$I->assertEquals($title,$input);
+    }
+
+    public function chooseGuidOfItemByTypeAndPosition($type,$position){
+        return $this->grabTextFrom(['xpath'=>'//table/tbody/tr[contains(. ,\''.$type.'\')]['.$position.']/td[5]']);
+    }
+
+    public function shouldSeeTableSortedByTitle(){
+        $I=$this;
+        $titleList=$I->grabMultiple(ContentPage::$all_titles);
+        $sortedTitleList=$titleList;
+        natcasesort($sortedTitleList);
+        $I->assertEquals($sortedTitleList,$titleList,'Should be sorted alphabetically');
+    }
+
 
 }

@@ -1,40 +1,32 @@
 <?php
 
+use Page\ContentPage;
 use Step\ContentSteps;
 use Step\ContentEditSteps;
+use Step\LoginSteps;
+use Codeception\Example;
 
 class ContentCest
 {
     public static $environment = 'undefined';
     public static $loginCookie = 'undefined';
 
-    public function _before(AcceptanceTester $I)
-    {
-        $I->amOnPage('/');
-        //Set the environment for the cest
-        if (ContentCest::$environment == 'undefined')
-        {
-            ContentCest::$environment = AcceptanceUtils::getEnvironment($I);
-        }
-
-        ContentCest::$loginCookie = AcceptanceUtils::login($I, LoginInfo::$username, LoginInfo::$password, ContentCest::$loginCookie);
-        
-    }
-
-    public function _after(AcceptanceTester $I)
-    {
+    public function _before(LoginSteps $I) {
+        $I->login();
     }
 
     //CONTENT SCREEN
+
     /**
     * TESTRAIL TESTCASE ID: C15511
     *
     * @group test_priority_2
     */
+    /*
     public function displayPerPageDropdown(AcceptanceTester $I)
     {
         $I->wantTo('Verify Display Per Page dropdown works correctly. - C15511');
-        $I->amOnPage('/chan/crunchyroll/catalog');
+        $I->amOnPage(::$URL);
 
         $I->amGoingTo('Select 10 on dropdown.');
         $I->selectOption("//table//select", '10');
@@ -64,12 +56,32 @@ class ContentCest
         $I->waitForElementNotVisible("//table//tr[101]", 30);
         $I->waitForElementVisible("//table//tr[100]", 30);
     }
+    */
+    /**
+     * * TESTRAIL TESTCASE ID: C15511
+     *
+     * @group test_priority_2
+     *
+     * @example { "numberOfElements": "10" }
+     * @example { "numberOfElements": "20" }
+     * @example { "numberOfElements": "All" }
+     */
+    public function displayPerPageDropdown(ContentSteps $I,Example $example)
+    {
+
+        $I->wantTo('Verify Display Per Page dropdown works correctly. - C15511');
+        $I->amOnContentPage();
+        $I->selectNumberOfItemsPerPage($example['numberOfElements']);
+        $I->shouldSeePageDropdownElements($example['numberOfElements']);
+    }
+
 
     /**
     * TESTRAIL TESTCASE ID: C9174
     *
     * @group test_priority_1
     */
+    /*
     public function contentTitles(AcceptanceTester $I)
     {
         $I->wantTo('Verify content titles show up correctly. - C9174');
@@ -83,12 +95,27 @@ class ContentCest
         $I->see('Ab', "//tr[4]/td[" . ContentPage::$titleCol . "]");
         $I->see('AC', "//tr[5]/td[" . ContentPage::$titleCol . "]");
     }
+    */
+
+    /**
+     * TESTRAIL TESTCASE ID: C9174
+     *
+     * @group test_priority_1
+     */
+
+    public function contentTitles(ContentSteps $I){
+        $I->wantTo('Verify content titles show up correctly. - C9174');
+        $I->amOnContentPage();
+        $guid=$I->chooseGuidOfItemByTypeAndPosition('Movie',1);
+        $I->shouldSeeTitleIsValid($guid);
+    }
 
     /**
     * TESTRAIL TESTCASE ID: C166967
     *
     * @group test_priority_2
     */
+    /*
     public function contentTitlesAlphabeticalOnLoad(AcceptanceTester $I)
     {
         $I->wantTo('Verify content titles are alphabetical upon loading. - C166967');
@@ -102,8 +129,22 @@ class ContentCest
         $I->see('Ab', "//tr[4]/td[" . ContentPage::$titleCol . "]");
         $I->see('AC', "//tr[5]/td[" . ContentPage::$titleCol . "]");
     }
+    */
 
     /**
+     * TESTRAIL TESTCASE ID: C166967
+     *
+     * @group test_priority_2
+     */
+    public function contentTitlesAlphabeticalOnLoad(ContentSteps $I){
+        $I->wantTo('Verify content titles are alphabetical upon loading. - C166967');
+        $I->amOnContentPage();
+        $I->selectNumberOfItemsPerPage("All");
+        $I->shouldSeeTableSortedByTitle();
+    }
+
+
+        /**
     * TESTRAIL TESTCASE ID: C166970
     *
     * @group test_priority_2
