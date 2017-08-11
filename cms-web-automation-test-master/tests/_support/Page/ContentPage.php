@@ -18,6 +18,8 @@ class ContentPage {
     public static $transcode_percent_col = '9';
 
     public static $all_titles=['xpath'=>'//table//tr//td[3]'];
+    public static $all_types=['xpath'=>'//table//tr/td[4]'];
+    public static $all_guids=['xpath'=>'//table//tr/td[5]'];
 
 
     public static $checkbox = ['xpath' => '/td/input[@type="checkbox"]'];
@@ -27,7 +29,7 @@ class ContentPage {
     public static $unpublished_rows = ['xpath' => '//tr[descendant::td[position()=4 and text()="{{category}}"] and descendant::td[position()=9 and text()="100%"] and descendant::td[position()=8 and text()="0%"]]'];
     public static $row_with_guid = ['xpath' => '//tr[descendant::td[position()=5] and descendant::*[text() = "{{guid}}"]]'];
     public static $per_page_dropdown = ['xpath' => '//table//select'];
-    public static $all_types=['xpath'=>'//table//tr/td[4]'];
+
 
     // Catalog Actions
     public static $publish_content_button = '//div[@class="catalog-actions"]//button[text()="Publish Content"]';

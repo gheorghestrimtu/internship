@@ -145,6 +145,13 @@ class ContentSteps extends \AcceptanceTester {
         $list=$I->grabMultiple(ContentPage::$all_types);
         $listWithoutMoviesAndSeries=array_diff($list,['Movie','Series']);
         $I->assertTrue(count($listWithoutMoviesAndSeries)==0,"Only Movies and Series in type column");
-}
+    }
+
+    public function shouldSeeGuidsAreListed(){
+        $I=$this;
+        $I->selectNumberOfItemsPerPage("All");
+        $list=$I->grabMultiple(ContentPage::$all_guids);
+        $I->assertFalse(in_array('',$list),"I see GUID for all elements");
+    }
 }
 

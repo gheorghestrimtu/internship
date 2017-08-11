@@ -202,6 +202,7 @@ class ContentCest
     *
     * @group test_priority_2
     */
+    /*
     public function contentIds(AcceptanceTester $I)
     {
         $I->wantTo('Verify content IDs show up correctly. - C9176');
@@ -226,8 +227,23 @@ class ContentCest
             $I->see('GYJQ2EEV6', "//tr[5]/td[" . ContentPage::$guidCol . "]");
         }
     }
+    */
 
     /**
+     * TESTRAIL TESTCASE ID: C9176
+     *
+     * @group test_priority_2
+     */
+    public function contentIds(ContentSteps $I)
+    {
+        $I->wantTo('Verify content IDs show up correctly. - C9176');
+        $I->amOnContentPage();
+        $I->waitForElementVisible(ContentPage::$all_guids['xpath']);
+        $I->shouldSeeGuidsAreListed();
+    }
+
+
+        /**
     * TESTRAIL TESTCASE ID: C9177
     *
     * @group test_priority_2
