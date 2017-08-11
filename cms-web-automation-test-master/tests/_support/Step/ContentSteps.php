@@ -199,5 +199,12 @@ class ContentSteps extends \AcceptanceTester {
         $regexedPercentageList=preg_grep('/^\d+(?:\.\d+)?%$/',$percentageList);
         $I->assertEquals($regexedPercentageList,$percentageList,'Published entries are percentages');
     }
+
+    public function seeTranscodedPercentage(){
+        $I=$this;
+        $percentageList=$I->grabMultiple(ContentPage::$all_transcoded_percentage['xpath']);
+        $regexedPercentageList=preg_grep('/^\d+(?:\.\d+)?%$|N\/A/',$percentageList);
+        $I->assertEquals($regexedPercentageList,$percentageList,'Transcoded entries are percentages or N/A');
+    }
 }
 

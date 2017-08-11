@@ -347,11 +347,12 @@ class ContentCest
     }
 
 
-        /**
+    /**
     * TESTRAIL TESTCASE ID: C214839
     *
     * @group test_priority_2
     */
+    /*
     public function transcodeStatus(AcceptanceTester $I)
     {
         $I->wantTo('Verify content Transcode Status show up correctly. - C214839');
@@ -365,8 +366,21 @@ class ContentCest
         $I->see('100%', "//tr[4]/td[" . ContentPage::$transcodePercentCol . "]");
         $I->see('N/A', "//tr[5]/td[" . ContentPage::$transcodePercentCol . "]");
     }
+    */
 
     /**
+     * TESTRAIL TESTCASE ID: C214839
+     *
+     * @group test_priority_2
+     */
+    public function transcodeStatus(ContentSteps $I)
+    {
+        $I->wantTo('Verify content Transcode Status show up correctly. - C214839');
+        $I->amOnContentPage();
+        $I->see('Transcoded');
+        $I->seeTranscodedPercentage();
+    }
+        /**
     * TESTRAIL TESTCASE ID: C9173
     *
     * @group test_priority_2
