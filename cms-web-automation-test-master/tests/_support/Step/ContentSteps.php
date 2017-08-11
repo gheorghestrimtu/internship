@@ -153,5 +153,21 @@ class ContentSteps extends \AcceptanceTester {
         $list=$I->grabMultiple(ContentPage::$all_guids);
         $I->assertFalse(in_array('',$list),"I see GUID for all elements");
     }
+
+    public function clickRandomSeriesAndReturnSeason(){
+        $I=$this;
+        $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series['xpath']);
+        $seasons=$I->findElementInElement($randomSeries,'/td[' . ContentPage::$seasons_column . ']')->getText();
+        $I->findElementInElement($randomSeries,'/td['.ContentPage::$type_column.']')->click();
+        return $seasons;
+    }
+
+    public function seeCorrectNumberOfSeasons(){
+        $I=$this;
+        $seasons=$I->clickRandomSeriesAndReturnSeason();
+        $I->selectNumberOfItemsPerPage("All");
+        $rowCount=$I->findElements('xpath','//table/tbody/tr');
+        $I->assertEquals($seasons,count($rowCount),'Correct number of seasons');
+    }
 }
 

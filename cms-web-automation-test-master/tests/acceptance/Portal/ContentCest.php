@@ -243,11 +243,12 @@ class ContentCest
     }
 
 
-        /**
+    /**
     * TESTRAIL TESTCASE ID: C9177
     *
     * @group test_priority_2
     */
+    /*
     public function contentSeasons(AcceptanceTester $I)
     {
         $I->wantTo('Verify content Seasons show up correctly. - C9177');
@@ -260,8 +261,20 @@ class ContentCest
         $I->see('0', "//tr[3]/td[" . ContentPage::$seasonsCol . "]");
         $I->dontSee('0', "//tr[4]/td[" . ContentPage::$seasonsCol . "]");
         $I->see('0', "//tr[5]/td[" . ContentPage::$seasonsCol . "]");
-    }
+    }*/
 
+    /**
+     * TESTRAIL TESTCASE ID: C9177
+     *
+     * @group test_priority_2
+     */
+    public function contentSeasons(ContentSteps $I)
+    {
+        $I->wantTo('Verify content Seasons show up correctly. - C9177');
+        $I->amOnContentPage();
+        $I->selectNumberOfItemsPerPage("All");
+        $I->seeCorrectNumberOfSeasons();
+    }
     /**
     * TESTRAIL TESTCASE ID: C9178
     *
