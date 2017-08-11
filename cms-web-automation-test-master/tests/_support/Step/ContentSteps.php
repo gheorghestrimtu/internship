@@ -192,5 +192,12 @@ class ContentSteps extends \AcceptanceTester {
         $rowCount=$I->findElements('xpath','//table/tbody/tr');
         $I->assertEquals($episodes,count($rowCount),'Correct number of episodes');
     }
+
+    public function seePublishedPercentage(){
+        $I=$this;
+        $percentageList=$I->grabMultiple(ContentPage::$all_published_percentage['xpath']);
+        $regexedPercentageList=preg_grep('/^\d+(?:\.\d+)?%$/',$percentageList);
+        $I->assertEquals($regexedPercentageList,$percentageList,'Published entries are percentages');
+    }
 }
 

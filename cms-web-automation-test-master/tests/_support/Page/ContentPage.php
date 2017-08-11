@@ -20,6 +20,7 @@ class ContentPage {
     public static $all_titles=['xpath'=>'//table//tr//td[3]'];
     public static $all_types=['xpath'=>'//table//tr/td[4]'];
     public static $all_guids=['xpath'=>'//table//tr/td[5]'];
+    public static $all_published_percentage=['xpath'=>'//table//tr/td[8]'];
 
 
     public static $checkbox = ['xpath' => '/td/input[@type="checkbox"]'];

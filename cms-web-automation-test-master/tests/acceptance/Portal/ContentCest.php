@@ -317,6 +317,7 @@ class ContentCest
     *
     * @group test_priority_2
     */
+    /*
     public function publishedStatus(AcceptanceTester $I)
     {
         $I->wantTo('Verify content Published Status show up correctly. - C225123');
@@ -330,8 +331,23 @@ class ContentCest
         $I->see('0%', "//tr[4]/td[" . ContentPage::$publishedPercentCol . "]");
         $I->see('0%', "//tr[5]/td[" . ContentPage::$publishedPercentCol . "]");
     }
+    */
 
     /**
+     * TESTRAIL TESTCASE ID: C225123
+     *
+     * @group test_priority_2
+     */
+    public function publishedStatus(ContentSteps $I)
+    {
+        $I->wantTo('Verify content Published Status show up correctly. - C225123');
+        $I->amOnContentPage();
+        $I->see('Published');
+        $I->seePublishedPercentage();
+    }
+
+
+        /**
     * TESTRAIL TESTCASE ID: C214839
     *
     * @group test_priority_2
