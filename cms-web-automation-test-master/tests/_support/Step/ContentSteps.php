@@ -131,5 +131,13 @@ class ContentSteps extends \AcceptanceTester {
         return $this->grabTextFrom(['xpath'=>'//table/tbody/tr[contains(. ,\''.$type.'\')]['.$position.']/td[5]']);
     }
 
+    public function shouldSeeTableSortedByTitle(){
+        $I=$this;
+        $titleList=$I->grabMultiple(ContentPage::$all_titles);
+        $sortedTitleList=$titleList;
+        natcasesort($sortedTitleList);
+        $I->assertEquals($sortedTitleList,$titleList,'Should be sorted alphabetically');
+    }
+
 
 }

@@ -115,6 +115,7 @@ class ContentCest
     *
     * @group test_priority_2
     */
+    /*
     public function contentTitlesAlphabeticalOnLoad(AcceptanceTester $I)
     {
         $I->wantTo('Verify content titles are alphabetical upon loading. - C166967');
@@ -128,8 +129,22 @@ class ContentCest
         $I->see('Ab', "//tr[4]/td[" . ContentPage::$titleCol . "]");
         $I->see('AC', "//tr[5]/td[" . ContentPage::$titleCol . "]");
     }
+    */
 
     /**
+     * TESTRAIL TESTCASE ID: C166967
+     *
+     * @group test_priority_2
+     */
+    public function contentTitlesAlphabeticalOnLoad(ContentSteps $I){
+        $I->wantTo('Verify content titles are alphabetical upon loading. - C166967');
+        $I->amOnContentPage();
+        $I->selectNumberOfItemsPerPage("All");
+        $I->shouldSeeTableSortedByTitle();
+    }
+
+
+        /**
     * TESTRAIL TESTCASE ID: C166970
     *
     * @group test_priority_2

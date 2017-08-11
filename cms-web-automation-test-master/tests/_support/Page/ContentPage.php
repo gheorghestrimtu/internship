@@ -17,6 +17,7 @@ class ContentPage {
     public static $published_column = 8;
     public static $transcode_percent_col = '9';
 
+    public static $all_titles=['xpath'=>'//table//tr//td[3]'];
 
 
     public static $checkbox = ['xpath' => '/td/input[@type="checkbox"]'];
