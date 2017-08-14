@@ -3,6 +3,8 @@ namespace Step;
 
 use Page\ContentPage;
 use Page\ContentEditPage;
+use Page\ContentSeasonPage;
+use Page\ContentSeriesPage;
 
 class ContentSteps extends \AcceptanceTester {
 
@@ -173,7 +175,7 @@ class ContentSteps extends \AcceptanceTester {
 
     public function clickRandomSeasonAndReturnEpisode(){
         $I=$this;
-        $randomSeason=$I->findRandomElement('//tr[descendant::td[position()=4 and text()="Season" ] ]');
+        $randomSeason=$I->findRandomElement(ContentSeriesPage::$all_seasons);
         $episodes=$I->findElementInElement($randomSeason,'/td[6]')->getText();
         $I->findElementInElement($randomSeason,'/td[6]')->click();
         return $episodes;
@@ -190,7 +192,7 @@ class ContentSteps extends \AcceptanceTester {
         $I=$this;
         $I->selectNumberOfItemsPerPage("All");
         $seasons=$I->clickRandomSeriesAndReturnSeason();
-        $rowCount=$I->findElements('xpath','//table/tbody/tr');
+        $rowCount=$I->findElements('xpath',ContentSeriesPage::$table_rows);
         $I->assertEquals($seasons,count($rowCount),'Correct number of seasons');
     }
 
@@ -198,7 +200,7 @@ class ContentSteps extends \AcceptanceTester {
         $I=$this;
         $I->selectNumberOfItemsPerPage("All");
         $episodes=$I->clickRandomSeasonAndReturnEpisode();
-        $rowCount=$I->findElements('xpath','//table/tbody/tr');
+        $rowCount=$I->findElements('xpath',ContentSeasonPage::$table_rows);
         $I->assertEquals($episodes,count($rowCount),'Correct number of episodes');
     }
 
@@ -206,6 +208,8 @@ class ContentSteps extends \AcceptanceTester {
         $I=$this;
         $percentageList=$I->grabMultiple(ContentPage::$all_published_percentage['xpath']);
         $regexedPercentageList=preg_grep('/^\d+(?:\.\d+)?%$/',$percentageList);
+
+        $I->waitForRegExp();
         $I->assertEquals($regexedPercentageList,$percentageList,'Published entries are percentages');
     }
 
@@ -215,5 +219,23 @@ class ContentSteps extends \AcceptanceTester {
         $regexedPercentageList=preg_grep('/^\d+(?:\.\d+)?%$|N\/A/',$percentageList);
         $I->assertEquals($regexedPercentageList,$percentageList,'Transcoded entries are percentages or N/A');
     }
+
+    public function shouldSeeTableSortedByPublished(){
+        $I=$this;
+        $publishedList=$I->grabMultiple(ContentPage::$all_published_percentage);
+        $sortedPublishedList=$publishedList;
+        natcasesort($sortedPublishedList);
+        $I->assertEquals($sortedPublishedList,$publishedList,'Tabel Should be sorted by Published');
+    }
+
+    public function shouldSeeTableReverseSortedByPublished(){
+        $I=$this;
+        $publishedList=$I->grabMultiple(ContentPage::$all_published_percentage);
+        $sortedPublishedList=$publishedList;
+        natcasesort($sortedPublishedList);
+        $reverseSortedPublishedList=array_reverse($sortedPublishedList,true);
+        $I->assertEquals($reverseSortedPublishedList,$publishedList,'Table Should be reverse sorted by Published');
+    }
+
 }
 

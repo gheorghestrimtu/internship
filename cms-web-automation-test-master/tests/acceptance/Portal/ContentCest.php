@@ -428,11 +428,12 @@ class ContentCest
         $I->shouldSeeTableReverseSortedByTitle();
     }
 
-        /**
+    /**
     * TESTRAIL TESTCASE ID: C225127
     *
     * @group test_priority_2
     */
+    /*
     public function sortContentByPublishedPercent(AcceptanceTester $I)
     {
         $I->wantTo('Verify content can be sorted by Published Percent. - C225127');
@@ -455,6 +456,23 @@ class ContentCest
         $I->waitForText('100%', 30, "//tr[3]/td[" . ContentPage::$publishedPercentCol . "]");
         $I->waitForText('100%', 30, "//tr[4]/td[" . ContentPage::$publishedPercentCol . "]");
         $I->waitForText('100%', 30, "//tr[5]/td[" . ContentPage::$publishedPercentCol . "]");
+    }
+    */
+
+    /**
+     * TESTRAIL TESTCASE ID: C225127
+     *
+     * @group test_priority_2
+     */
+    public function sortContentByPublishedPercent(ContentSteps $I)
+    {
+        $I->wantTo('Verify content can be sorted by Published Percent. - C225127');
+        $I->amOnContentPage();
+        $I->waitForElementVisible(ContentPage::$table_header);
+        $I->click(ContentPage::$table_header_published);
+        $I->shouldSeeTableSortedByPublished();
+        $I->click(ContentPage::$table_header_published);
+        $I->shouldSeeTableReverseSortedByPublished();
     }
 
     /**
