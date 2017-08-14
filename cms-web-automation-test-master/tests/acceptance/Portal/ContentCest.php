@@ -532,11 +532,12 @@ class ContentCest
     }
 
 
-        /**
+    /**
     * TESTRAIL TESTCASE ID: C36891
     *
     * @group test_priority_2
     */
+    /*
     public function publishedPercentRoundsDown(AcceptanceTester $I)
     {
         $I->wantTo('Verify Published Percent rounds down. - C36891');
@@ -546,6 +547,22 @@ class ContentCest
 
         $I->expect('Since 2 of the 3 eps are published, 66.6% rounds down to 66%');
         $I->see('66%', "//span[contains(text(), 'Test Series Publish Percentages')]/../../td[". ContentPage::$publishedPercentCol ."]");
+    }
+    */
+
+    /**
+     * TESTRAIL TESTCASE ID: C36891
+     *
+     * @group test_priority_2
+     */
+    public function publishedPercentRoundsDown(ContentSteps $I)
+    {
+        $I->wantTo('Verify Published Percent rounds down. - C36891');
+        $I->amOnContentPage();
+        $I->findContentItemByTitle(ContentPage::$title_for_testing_publish_percentages);
+        $I->expect('Since 2 of the 3 eps are published, 66.6% rounds down to 66%');
+        $I->see('66%', ContentPage::$published_percentages_for_title_for_testing_publish_percentages);
+
     }
 
     /**

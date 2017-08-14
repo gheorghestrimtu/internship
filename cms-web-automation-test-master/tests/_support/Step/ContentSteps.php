@@ -232,5 +232,14 @@ class ContentSteps extends \AcceptanceTester {
         $I->assertEquals($reverseSortedTranscodedList,$transcodedList,'Table Should be reverse sorted by Transcoded');
     }
 
+    public function findContentItemByTitle($title)
+    {
+        $I=$this;
+        $I->selectNumberOfItemsPerPage("All");
+        $I->amGoingTo('Wait for ' . $title . ' to be visible.');
+        $I->waitForElement(ContentPage::tableRowByTitle($title), 60);
+    }
+
+
 }
 
