@@ -249,6 +249,15 @@ class ContentSteps extends \AcceptanceTester {
         return $guid;
     }
 
+    public function clickRandomSeriesAndReturnGuid(){
+        $I=$this;
+        $I->selectNumberOfItemsPerPage("All");
+        $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series['xpath']);
+        $guid=$I->findElementInElement($randomSeries,'/td[' . ContentPage::$guid_column . ']')->getText();
+        $I->findElementInElement($randomSeries,'/td['.ContentPage::$type_column.']')->click();
+        return $guid;
+    }
+
 
 }
 

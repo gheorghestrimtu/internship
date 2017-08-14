@@ -6,6 +6,7 @@ use Step\ContentEditSteps;
 use Step\LoginSteps;
 use Codeception\Example;
 use Page\ContentEditPage;
+use Page\ContentSeriesPage;
 
 class ContentCest
 {
@@ -806,11 +807,12 @@ class ContentCest
 
     }
 
-        /**
+    /**
     * TESTRAIL TESTCASE ID: C11004
     *
     * @group test_priority_2
     */
+    /*
     public function clickSeriesRow(AcceptanceTester $I)
     {
         $I->wantTo('Verify we are taken to the right page when clicking a series row. - C11004');
@@ -822,9 +824,22 @@ class ContentCest
         ContentUtils::findContentItemByTitle($I, 'First');
         ContentUtils::findContentItemByTitle($I, 'Second');
         ContentUtils::findContentItemByTitle($I, 'Season 6');
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C11004
+     *
+     * @group test_priority_2
+     */
+    public function clickSeriesRow(ContentSteps $I)
+    {
+        $I->wantTo('Verify we are taken to the right page when clicking a series row. - C11004');
+        $I->amOnContentPage();
+        $guid=$I->clickRandomSeriesAndReturnGuid();
+        $I->seeInCurrentUrl(ContentSeriesPage::urlByGuid($guid));
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C22281
     *
     * @group test_priority_1
