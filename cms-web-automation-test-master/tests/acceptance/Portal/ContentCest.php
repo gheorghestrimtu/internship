@@ -5,6 +5,7 @@ use Step\ContentSteps;
 use Step\ContentEditSteps;
 use Step\LoginSteps;
 use Codeception\Example;
+use Page\ContentEditPage;
 
 class ContentCest
 {
@@ -106,6 +107,7 @@ class ContentCest
     public function contentTitles(ContentSteps $I){
         $I->wantTo('Verify content titles show up correctly. - C9174');
         $I->amOnContentPage();
+
         $guid=$I->chooseGuidOfItemByTypeAndPosition('Movie',1);
         $I->shouldSeeTitleIsValid($guid);
     }
@@ -766,11 +768,12 @@ class ContentCest
 
     }
 
-        /**
+    /**
     * TESTRAIL TESTCASE ID: C11005
     *
     * @group test_priority_2
     */
+    /*
     public function clickMovieRow(AcceptanceTester $I)
     {
         $I->wantTo('Verify we are taken to the right page when clicking a movie row. - C11005');
@@ -784,8 +787,26 @@ class ContentCest
         $I->dontSee('EPISODES');
         $I->dontSee('SEASONS');
     }
+    */
 
     /**
+     * TESTRAIL TESTCASE ID: C11005
+     *
+     * @group test_priority_2
+     */
+    public function clickMovieRow(ContentSteps $I)
+    {
+        $I->wantTo('Verify we are taken to the right page when clicking a movie row. - C11005');
+        $I->amOnContentPage();
+        $guid=$I->clickRandomMovieAndReturnGuid();
+        $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
+        $I->see('Videos');
+        $I->see('Images');
+        $I->see('Attributes');
+
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C11004
     *
     * @group test_priority_2
