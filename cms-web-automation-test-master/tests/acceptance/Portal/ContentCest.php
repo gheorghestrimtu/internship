@@ -670,11 +670,12 @@ class ContentCest
     }
 
 
-        /**
+    /**
     * TESTRAIL TESTCASE ID: C15526
     *
     * @group test_priority_2
     */
+    /*
     public function filterByMediaTypeMovie(AcceptanceTester $I)
     {
         $I->wantTo('Verify we can filter by Media Type Movie - C15526');
@@ -690,9 +691,26 @@ class ContentCest
 
         $I->expect('Only movies appear now.');
         $I->dontSeeElement("//td[text()='Series']");
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C15526
+     *
+     * @group test_priority_2
+     */
+    public function filterByMediaTypeMovie(ContentSteps $I)
+    {
+        $I->wantTo('Verify we can filter by Media Type Movie - C15526');
+        $I->amOnContentPage();
+        $I->selectNumberOfItemsPerPage("All");
+        $I->moveMouseOver(ContentPage::$addFilterDropdown);
+        $I->waitForElementVisible(ContentPage::$addFilterDropdown_movie);
+        $I->click(ContentPage::$addFilterDropdown_movie);
+        $I->expect('Only movie appear now.');
+        $I->dontSeeElement(ContentPage::$rows_with_series);
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C15527
     *
     * @group test_priority_2
