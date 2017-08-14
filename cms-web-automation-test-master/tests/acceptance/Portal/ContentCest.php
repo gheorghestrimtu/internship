@@ -480,6 +480,7 @@ class ContentCest
     *
     * @group test_priority_2
     */
+    /*
     public function sortContentByTranscodePercent(AcceptanceTester $I)
     {
         $I->wantTo('Verify content can be sorted by Transcode Percent. - C214842');
@@ -504,8 +505,26 @@ class ContentCest
         $I->waitForText('N/A', 30, "//tr[5]/td[" . ContentPage::$transcodePercentCol . "]");
         $I->waitForText('N/A', 30, "//tr[6]/td[" . ContentPage::$transcodePercentCol . "]");
     }
-
+    */
     /**
+     * TESTRAIL TESTCASE ID: C214842
+     *
+     * @group test_priority_2
+     */
+    public function sortContentByTranscodePercent(ContentSteps $I)
+    {
+        $I->wantTo('Verify content can be sorted by Transcode Percent. - C214842');
+        $I->amOnContentPage();
+        $I->waitForElementVisible(ContentPage::$table_header);
+        $I->click(ContentPage::$table_header_transcoded);
+        $I->shouldSeeTableSortedByTranscoded();
+        $I->click(ContentPage::$table_header_transcoded);
+        $I->shouldSeeTableReverseSortedByTranscoded();
+
+    }
+
+
+        /**
     * TESTRAIL TESTCASE ID: C36891
     *
     * @group test_priority_2

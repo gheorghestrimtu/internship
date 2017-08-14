@@ -237,5 +237,22 @@ class ContentSteps extends \AcceptanceTester {
         $I->assertEquals($reverseSortedPublishedList,$publishedList,'Table Should be reverse sorted by Published');
     }
 
+    public function shouldSeeTableSortedByTranscoded(){
+        $I=$this;
+        $transcodedList=$I->grabMultiple(ContentPage::$all_transcoded_percentage);
+        $sortedTranscodedList=$transcodedList;
+        natcasesort($sortedTranscodedList);
+        $I->assertEquals($sortedTranscodedList,$transcodedList,'Tabel Should be sorted by Transcoded');
+    }
+
+    public function shouldSeeTableReverseSortedByTranscoded(){
+        $I=$this;
+        $transcodedList=$I->grabMultiple(ContentPage::$all_transcoded_percentage);
+        $sortedTranscodedList=$transcodedList;
+        natcasesort($sortedTranscodedList);
+        $reverseSortedTranscodedList=array_reverse($sortedTranscodedList,true);
+        $I->assertEquals($reverseSortedTranscodedList,$transcodedList,'Table Should be reverse sorted by Transcoded');
+    }
+
 }
 
