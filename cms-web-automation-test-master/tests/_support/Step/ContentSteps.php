@@ -102,14 +102,14 @@ class ContentSteps extends \AcceptanceTester {
 
     public function shouldSeePageDropdownElements($numberOfElements){
         if($numberOfElements=='All'){
-            $howMany=$this->grabTextFrom(['xpath'=>'//table/tfoot//div/div']);
+            $howMany=$this->grabTextFrom(ContentPage::$maximum_items);
             $max=substr($howMany,strpos($howMany,'of')+3);
-            $this->assertEquals($max, count($this->findElements('//table/tbody/tr')), 'Should have ' . $max . ' items per page');
+            $this->assertEquals($max, count($this->findElements(ContentPage::$table_rows['xpath'])), 'Should have ' . $max . ' items per page');
             return;
         }
         //$this->seeElement(['xpath'=>'//table//tr['. $numberOfElements .']']);
         //$this->dontSeeElement(['xpath'=>'//table//tr['. ($numberOfElements+1) .']']);
-        $this->assertEquals($numberOfElements, count($this->findElements('//table/tbody/tr')), 'Should have ' . $numberOfElements . ' items per page');
+        $this->assertEquals($numberOfElements, count($this->findElements(ContentPage::$table_rows['xpath'])), 'Should have ' . $numberOfElements . ' items per page');
 
     }
 
@@ -124,9 +124,19 @@ class ContentSteps extends \AcceptanceTester {
         $row=ContentPage::row_by_guid($titleGuid);
         $title=$I->grabTextFrom(['xpath'=>'//table//tr['.$row.']//td['.ContentPage::$title_column.']']);
         $I->clickEditPencil($row);
+        $I->waitAjaxLoad();
         $I->seeInField(ContentEditPage::$title,$title);
         //$input=$I->grabValueFrom(ContentEditPage::$title);
         //$I->assertEquals($title,$input);
+    }
+
+    public function chooseRandomContentAndReturnGuid(){
+        $I=$this;
+        $I->waitAjaxLoad();
+        $I->selectNumberOfItemsPerPage("All");
+        $randomMovie=$I->findRandomElement(ContentPage::$table_rows['xpath']);
+        $guid=$I->findElementInElement($randomMovie,'/td[' . ContentPage::$guid_column . ']')->getText();
+        return $guid;
     }
 
     public function chooseGuidOfItemByTypeAndPosition($type,$position){
@@ -137,17 +147,18 @@ class ContentSteps extends \AcceptanceTester {
         $I=$this;
         $titleList=$I->grabMultiple(ContentPage::$all_titles);
         $sortedTitleList=$titleList;
-        natcasesort($sortedTitleList);
-        $I->assertEquals($sortedTitleList,$titleList,'Should be sorted alphabetically');
+        usort($sortedTitleList, 'strcasecmp');
+        $I->assertTrue($sortedTitleList===$titleList,'Should be sorted alphabetically');
+        //$I->assertEquals($sortedTitleList,$titleList,'Should be sorted alphabetically');
     }
 
     public function shouldSeeTableReverseSortedByTitle(){
         $I=$this;
         $titleList=$I->grabMultiple(ContentPage::$all_titles);
         $sortedTitleList=$titleList;
-        natcasesort($sortedTitleList);
-        $reverseSortedTitleList=array_reverse($sortedTitleList,true);
-        $I->assertEquals($reverseSortedTitleList,$titleList,'Should be sorted reverse alphabetically');
+        usort($sortedTitleList, 'strcasecmp');
+        $reverseSortedTitleList=array_reverse($sortedTitleList);
+        $I->assertTrue($reverseSortedTitleList===$titleList,'Should be sorted reverse alphabetically');
     }
 
     public function shouldSeeOnlyMoviesAndSeries(){
@@ -186,8 +197,6 @@ class ContentSteps extends \AcceptanceTester {
         $I=$this;
         $percentageList=$I->grabMultiple(ContentPage::$all_published_percentage['xpath']);
         $regexedPercentageList=preg_grep('/^\d+(?:\.\d+)?%$/',$percentageList);
-
-        $I->waitForRegExp();
         $I->assertEquals($regexedPercentageList,$percentageList,'Published entries are percentages');
     }
 
@@ -202,24 +211,24 @@ class ContentSteps extends \AcceptanceTester {
         $I=$this;
         $publishedList=$I->grabMultiple(ContentPage::$all_published_percentage);
         $sortedPublishedList=$publishedList;
-        natcasesort($sortedPublishedList);
-        $I->assertEquals($sortedPublishedList,$publishedList,'Tabel Should be sorted by Published');
+        usort($sortedPublishedList,'strnatcasecmp');
+        $I->assertTrue($publishedList===$sortedPublishedList,'Tabel Should be sorted by Published');
     }
 
     public function shouldSeeTableReverseSortedByPublished(){
         $I=$this;
         $publishedList=$I->grabMultiple(ContentPage::$all_published_percentage);
         $sortedPublishedList=$publishedList;
-        natcasesort($sortedPublishedList);
-        $reverseSortedPublishedList=array_reverse($sortedPublishedList,true);
-        $I->assertEquals($reverseSortedPublishedList,$publishedList,'Table Should be reverse sorted by Published');
+        usort($sortedPublishedList,'strnatcasecmp');
+        $reverseSortedPublishedList=array_reverse($sortedPublishedList);
+        $I->assertTrue($reverseSortedPublishedList===$publishedList,'Table Should be reverse sorted by Published');
     }
 
     public function shouldSeeTableSortedByTranscoded(){
         $I=$this;
         $transcodedList=$I->grabMultiple(ContentPage::$all_transcoded_percentage);
         $sortedTranscodedList=$transcodedList;
-        natcasesort($sortedTranscodedList);
+        usort($sortedTranscodedList,'strnatcasecmp');
         $I->assertEquals($sortedTranscodedList,$transcodedList,'Tabel Should be sorted by Transcoded');
     }
 
@@ -227,8 +236,8 @@ class ContentSteps extends \AcceptanceTester {
         $I=$this;
         $transcodedList=$I->grabMultiple(ContentPage::$all_transcoded_percentage);
         $sortedTranscodedList=$transcodedList;
-        natcasesort($sortedTranscodedList);
-        $reverseSortedTranscodedList=array_reverse($sortedTranscodedList,true);
+        usort($sortedTranscodedList,'strnatcasecmp');
+        $reverseSortedTranscodedList=array_reverse($sortedTranscodedList);
         $I->assertEquals($reverseSortedTranscodedList,$transcodedList,'Table Should be reverse sorted by Transcoded');
     }
 

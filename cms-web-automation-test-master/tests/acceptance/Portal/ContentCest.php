@@ -13,17 +13,18 @@ class ContentCest
     public static $environment = 'undefined';
     public static $loginCookie = 'undefined';
 
-    public function _before(LoginSteps $I) {
+    public function _before(LoginSteps $I)
+    {
         $I->login();
     }
 
     //CONTENT SCREEN
 
     /**
-    * TESTRAIL TESTCASE ID: C15511
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C15511
+     *
+     * @group test_priority_2
+     */
     /*
     public function displayPerPageDropdown(AcceptanceTester $I)
     {
@@ -68,7 +69,7 @@ class ContentCest
      * @example { "numberOfElements": "20" }
      * @example { "numberOfElements": "All" }
      */
-    public function displayPerPageDropdown(ContentSteps $I,Example $example)
+    public function displayPerPageDropdown(ContentSteps $I, Example $example)
     {
 
         $I->wantTo('Verify Display Per Page dropdown works correctly. - C15511');
@@ -79,10 +80,10 @@ class ContentCest
 
 
     /**
-    * TESTRAIL TESTCASE ID: C9174
-    *
-    * @group test_priority_1
-    */
+     * TESTRAIL TESTCASE ID: C9174
+     *
+     * @group test_priority_1
+     */
     /*
     public function contentTitles(AcceptanceTester $I)
     {
@@ -105,19 +106,19 @@ class ContentCest
      * @group test_priority_1
      */
 
-    public function contentTitles(ContentSteps $I){
+    public function contentTitles(ContentSteps $I)
+    {
         $I->wantTo('Verify content titles show up correctly. - C9174');
         $I->amOnContentPage();
-
-        $guid=$I->chooseGuidOfItemByTypeAndPosition('Movie',1);
+        $guid = $I->chooseRandomContentAndReturnGuid();
         $I->shouldSeeTitleIsValid($guid);
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C166967
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C166967
+     *
+     * @group test_priority_2
+     */
     /*
     public function contentTitlesAlphabeticalOnLoad(AcceptanceTester $I)
     {
@@ -139,7 +140,8 @@ class ContentCest
      *
      * @group test_priority_2
      */
-    public function contentTitlesAlphabeticalOnLoad(ContentSteps $I){
+    public function contentTitlesAlphabeticalOnLoad(ContentSteps $I)
+    {
         $I->wantTo('Verify content titles are alphabetical upon loading. - C166967');
         $I->amOnContentPage();
         $I->selectNumberOfItemsPerPage("All");
@@ -147,11 +149,12 @@ class ContentCest
     }
 
 
-        /**
-    * TESTRAIL TESTCASE ID: C166970
-    *
-    * @group test_priority_2
-    */
+    /**
+     * TESTRAIL TESTCASE ID: C166970
+     *
+     * @group test_priority_2
+     */
+    /*
     public function alphabeticalSortNotCaseSensitive(AcceptanceTester $I)
     {
         $I->wantTo('Verify alphabetical sorting on titles is not case sensitive. - C166970');
@@ -164,13 +167,13 @@ class ContentCest
         $I->see('AA', "//tr[3]/td[" . ContentPage::$titleCol . "]");
         $I->see('Ab', "//tr[4]/td[" . ContentPage::$titleCol . "]");
         $I->see('AC', "//tr[5]/td[" . ContentPage::$titleCol . "]");
-    }
+    }*/
 
     /**
-    * TESTRAIL TESTCASE ID: C9175
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C9175
+     *
+     * @group test_priority_2
+     */
     /*
     public function contentTypes(AcceptanceTester $I)
     {
@@ -201,10 +204,10 @@ class ContentCest
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C9176
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C9176
+     *
+     * @group test_priority_2
+     */
     /*
     public function contentIds(AcceptanceTester $I)
     {
@@ -247,10 +250,10 @@ class ContentCest
 
 
     /**
-    * TESTRAIL TESTCASE ID: C9177
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C9177
+     *
+     * @group test_priority_2
+     */
     /*
     public function contentSeasons(AcceptanceTester $I)
     {
@@ -276,16 +279,17 @@ class ContentCest
         $I->wantTo('Verify content Seasons show up correctly. - C9177');
         $I->amOnContentPage();
         $I->selectNumberOfItemsPerPage("All");
-        $seasons=$I->clickRandomSeriesAndReturnNumberOfSeasons();
+        $seasons = $I->clickRandomSeriesAndReturnNumberOfSeasons();
         $I->expectTo("See Content Series Page");
-        $I=$I2;
+
+        $I = $I2;
         $I->seeCorrectNumberOfSeasons($seasons);
     }
     /**
-    * TESTRAIL TESTCASE ID: C9178
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C9178
+     *
+     * @group test_priority_2
+     */
     /*
     public function contentEpisodes(AcceptanceTester $I)
     {
@@ -307,27 +311,27 @@ class ContentCest
      *
      * @group test_priority_2
      */
-    public function contentEpisodes(ContentSteps $I,\Step\ContentSeriesSteps $I2, \Step\ContentSeasonSteps $I3)
+    public function contentEpisodes(ContentSteps $I, \Step\ContentSeriesSteps $I2, \Step\ContentSeasonSteps $I3)
     {
         $I->wantTo('Verify content Episodes show up correctly. - C9178');
         $I->amOnContentPage();
         $I->selectNumberOfItemsPerPage("All");
         $I->clickRandomSeriesWithEpisodes();
         $I->expectTo("See Content Series Page");
-        $I=$I2;
-        $episodes=$I->clickRandomSeasonAndReturnNumberOfEpisodes();
+        $I = $I2;
+        $episodes = $I->clickRandomSeasonAndReturnNumberOfEpisodes();
         $I->expectTo("See Content Season Page");
-        $I=$I3;
+        $I = $I3;
         $I->seeCorrectNumberOfEpisodes($episodes);
 
     }
 
 
     /**
-    * TESTRAIL TESTCASE ID: C225123
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C225123
+     *
+     * @group test_priority_2
+     */
     /*
     public function publishedStatus(AcceptanceTester $I)
     {
@@ -359,10 +363,10 @@ class ContentCest
 
 
     /**
-    * TESTRAIL TESTCASE ID: C214839
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C214839
+     *
+     * @group test_priority_2
+     */
     /*
     public function transcodeStatus(AcceptanceTester $I)
     {
@@ -394,9 +398,9 @@ class ContentCest
 
     /**
      * TESTRAIL TESTCASE ID: C9173
-    *
-    * @group test_priority_2
-    */
+     *
+     * @group test_priority_2
+     */
     /*
     public function sortContentByTitle(AcceptanceTester $I)
     {
@@ -440,10 +444,10 @@ class ContentCest
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C225127
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C225127
+     *
+     * @group test_priority_2
+     */
     /*
     public function sortContentByPublishedPercent(AcceptanceTester $I)
     {
@@ -487,10 +491,10 @@ class ContentCest
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C214842
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C214842
+     *
+     * @group test_priority_2
+     */
     /*
     public function sortContentByTranscodePercent(AcceptanceTester $I)
     {
@@ -536,10 +540,10 @@ class ContentCest
 
 
     /**
-    * TESTRAIL TESTCASE ID: C36891
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C36891
+     *
+     * @group test_priority_2
+     */
     /*
     public function publishedPercentRoundsDown(AcceptanceTester $I)
     {
@@ -569,10 +573,10 @@ class ContentCest
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C214841
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C214841
+     *
+     * @group test_priority_2
+     */
     /*
     public function transcodePercentRoundsDown(AcceptanceTester $I)
     {
@@ -601,10 +605,10 @@ class ContentCest
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C214840
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C214840
+     *
+     * @group test_priority_2
+     */
     /*
     public function transcodeStatusIgnoresExtras(AcceptanceTester $I)
     {
@@ -629,14 +633,14 @@ class ContentCest
         $I->amOnContentPage();
         $I->findContentItemByTitle(ContentPage::$title_for_testing_transcode_status_ignores_extras);
         $I->expect('The episode is transcoded by the extra is not. Therefore transcode status is still 100%.');
-        $I->see('100%',ContentPage::$transcoded_percentages_for_title_for_testing_transcode_status_ignores_extras);
+        $I->see('100%', ContentPage::$transcoded_percentages_for_title_for_testing_transcode_status_ignores_extras);
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C15525
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C15525
+     *
+     * @group test_priority_2
+     */
     /*
     public function filterByMediaTypeSeries(AcceptanceTester $I)
     {
@@ -674,10 +678,10 @@ class ContentCest
 
 
     /**
-    * TESTRAIL TESTCASE ID: C15526
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C15526
+     *
+     * @group test_priority_2
+     */
     /*
     public function filterByMediaTypeMovie(AcceptanceTester $I)
     {
@@ -714,10 +718,10 @@ class ContentCest
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C15527
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C15527
+     *
+     * @group test_priority_2
+     */
     /*
     public function filterByMediaTypeRemoveFilter(AcceptanceTester $I)
     {
@@ -770,10 +774,10 @@ class ContentCest
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C11005
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C11005
+     *
+     * @group test_priority_2
+     */
     /*
     public function clickMovieRow(AcceptanceTester $I)
     {
@@ -799,7 +803,7 @@ class ContentCest
     {
         $I->wantTo('Verify we are taken to the right page when clicking a movie row. - C11005');
         $I->amOnContentPage();
-        $guid=$I->clickRandomMovieAndReturnGuid();
+        $guid = $I->clickRandomMovieAndReturnGuid();
         $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
         $I->see('Videos');
         $I->see('Images');
@@ -808,10 +812,10 @@ class ContentCest
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C11004
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C11004
+     *
+     * @group test_priority_2
+     */
     /*
     public function clickSeriesRow(AcceptanceTester $I)
     {
@@ -835,15 +839,15 @@ class ContentCest
     {
         $I->wantTo('Verify we are taken to the right page when clicking a series row. - C11004');
         $I->amOnContentPage();
-        $guid=$I->clickRandomSeriesAndReturnGuid();
+        $guid = $I->clickRandomSeriesAndReturnGuid();
         $I->seeInCurrentUrl(ContentSeriesPage::urlByGuid($guid));
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C22281
-    *
-    * @group test_priority_1
-    */
+     * TESTRAIL TESTCASE ID: C22281
+     *
+     * @group test_priority_1
+     */
     /*
     public function clickEditOnMovie(AcceptanceTester $I)
     {
@@ -869,7 +873,7 @@ class ContentCest
     {
         $I->wantTo('Verify that clicking the edit icon on a movie takes us to the edit movie page. - C22281');
         $I->amOnContentPage();
-        $guid=$I->clickEditPencilOnRandomMovieAndReturnGuid();
+        $guid = $I->clickEditPencilOnRandomMovieAndReturnGuid();
         $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
         $I->waitAjaxLoad();
         $I->see('Videos');
@@ -878,10 +882,10 @@ class ContentCest
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C22280
-    *
-    * @group test_priority_1
-    */
+     * TESTRAIL TESTCASE ID: C22280
+     *
+     * @group test_priority_1
+     */
     /*
     public function clickEditOnSeries(AcceptanceTester $I)
     {
@@ -907,7 +911,7 @@ class ContentCest
     {
         $I->wantTo('Verify that clicking the edit icon on a seires takes us to the edit series page. - C22280');
         $I->amOnContentPage();
-        $guid=$I->clickEditPencilOnRandomSeriesAndReturnGuid();
+        $guid = $I->clickEditPencilOnRandomSeriesAndReturnGuid();
         $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
         $I->waitAjaxLoad();
         $I->see('Seasons');
@@ -918,12 +922,14 @@ class ContentCest
 
     }
 
-        /**
+    /**
      * TESTRAIL TESTCASE ID: C225135
      *
      * @group test_priority_2
      */
-    public function seeSeriesArt(ContentSteps $I, ContentEditSteps $contentEditSteps) {
+
+    public function seeSeriesArt(ContentSteps $I, ContentEditSteps $contentEditSteps)
+    {
         $I->wantTo('Verify if landscape posters appear in the column to the right of the check boxes. - C225135');
 
         $I->amOnContentPage();
@@ -940,6 +946,7 @@ class ContentCest
      *
      * @group test_priority_2
      */
+
     public function publishContentMovie(ContentSteps $I, ContentEditSteps $contentEditSteps) {
         $I->wantTo('Verify if user can publish movie from content page - C15512');
         $I->amOnContentPage();
