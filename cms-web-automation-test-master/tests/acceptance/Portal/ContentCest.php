@@ -268,12 +268,15 @@ class ContentCest
      *
      * @group test_priority_2
      */
-    public function contentSeasons(ContentSteps $I)
+    public function contentSeasons(ContentSteps $I, \Step\ContentSeriesSteps $I2)
     {
         $I->wantTo('Verify content Seasons show up correctly. - C9177');
         $I->amOnContentPage();
         $I->selectNumberOfItemsPerPage("All");
-        $I->seeCorrectNumberOfSeasons();
+        $seasons=$I->clickRandomSeriesAndReturnNumberOfSeasons();
+        $I->expectTo("See Content Series Page");
+        $I=$I2;
+        $I->seeCorrectNumberOfSeasons($seasons);
     }
     /**
     * TESTRAIL TESTCASE ID: C9178
@@ -301,13 +304,18 @@ class ContentCest
      *
      * @group test_priority_2
      */
-    public function contentEpisodes(ContentSteps $I)
+    public function contentEpisodes(ContentSteps $I,\Step\ContentSeriesSteps $I2, \Step\ContentSeasonSteps $I3)
     {
         $I->wantTo('Verify content Episodes show up correctly. - C9178');
         $I->amOnContentPage();
         $I->selectNumberOfItemsPerPage("All");
         $I->clickRandomSeriesWithEpisodes();
-        $I->seeCorrectNumberOfEpisodes();
+        $I->expectTo("See Content Series Page");
+        $I=$I2;
+        $episodes=$I->clickRandomSeasonAndReturnNumberOfEpisodes();
+        $I->expectTo("See Content Season Page");
+        $I=$I3;
+        $I->seeCorrectNumberOfEpisodes($episodes);
 
     }
 

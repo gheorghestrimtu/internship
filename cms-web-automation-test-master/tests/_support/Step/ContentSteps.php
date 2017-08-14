@@ -165,43 +165,21 @@ class ContentSteps extends \AcceptanceTester {
         $I->assertFalse(in_array('',$list),"I see GUID for all elements");
     }
 
-    public function clickRandomSeriesAndReturnSeason(){
+    public function clickRandomSeriesAndReturnNumberOfSeasons(){
         $I=$this;
+        $I->selectNumberOfItemsPerPage("All");
         $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series['xpath']);
         $seasons=$I->findElementInElement($randomSeries,'/td[' . ContentPage::$seasons_column . ']')->getText();
         $I->findElementInElement($randomSeries,'/td['.ContentPage::$type_column.']')->click();
         return $seasons;
     }
 
-    public function clickRandomSeasonAndReturnEpisode(){
-        $I=$this;
-        $randomSeason=$I->findRandomElement(ContentSeriesPage::$all_seasons);
-        $episodes=$I->findElementInElement($randomSeason,'/td[6]')->getText();
-        $I->findElementInElement($randomSeason,'/td[6]')->click();
-        return $episodes;
-    }
+
 
     public function clickRandomSeriesWithEpisodes(){
         $I=$this;
         $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series_and_episodes['xpath']);
         $I->findElementInElement($randomSeries,'/td['.ContentPage::$type_column.']')->click();
-    }
-
-
-    public function seeCorrectNumberOfSeasons(){
-        $I=$this;
-        $I->selectNumberOfItemsPerPage("All");
-        $seasons=$I->clickRandomSeriesAndReturnSeason();
-        $rowCount=$I->findElements('xpath',ContentSeriesPage::$table_rows);
-        $I->assertEquals($seasons,count($rowCount),'Correct number of seasons');
-    }
-
-    public function seeCorrectNumberOfEpisodes(){
-        $I=$this;
-        $I->selectNumberOfItemsPerPage("All");
-        $episodes=$I->clickRandomSeasonAndReturnEpisode();
-        $rowCount=$I->findElements('xpath',ContentSeasonPage::$table_rows);
-        $I->assertEquals($episodes,count($rowCount),'Correct number of episodes');
     }
 
     public function seePublishedPercentage(){
