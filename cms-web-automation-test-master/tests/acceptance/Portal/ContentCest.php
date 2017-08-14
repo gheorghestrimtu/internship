@@ -839,11 +839,12 @@ class ContentCest
         $I->seeInCurrentUrl(ContentSeriesPage::urlByGuid($guid));
     }
 
-        /**
+    /**
     * TESTRAIL TESTCASE ID: C22281
     *
     * @group test_priority_1
     */
+    /*
     public function clickEditOnMovie(AcceptanceTester $I)
     {
         $I->wantTo('Verify that clicking the edit icon on a movie takes us to the edit movie page. - C22281');
@@ -857,9 +858,25 @@ class ContentCest
         $I->see('IMAGES');
         $I->dontSee('EPISODES');
         $I->dontSee('SEASONS');
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C22281
+     *
+     * @group test_priority_1
+     */
+    public function clickEditOnMovie(ContentSteps $I)
+    {
+        $I->wantTo('Verify that clicking the edit icon on a movie takes us to the edit movie page. - C22281');
+        $I->amOnContentPage();
+        $guid=$I->clickEditPencilOnRandomMovieAndReturnGuid();
+        $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
+        $I->see('Videos');
+        $I->see('Images');
+        $I->see('Attributes');
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C22280
     *
     * @group test_priority_1

@@ -258,6 +258,14 @@ class ContentSteps extends \AcceptanceTester {
         return $guid;
     }
 
+    public function clickEditPencilOnRandomMovieAndReturnGuid(){
+        $I=$this;
+        $I->selectNumberOfItemsPerPage("All");
+        $randomMovie=$I->findRandomElement(ContentPage::$rows_with_movie['xpath']);
+        $guid=$I->findElementInElement($randomMovie,'/td[' . ContentPage::$guid_column . ']')->getText();
+        $I->findElementInElement($randomMovie,ContentPage::$edit_pencil['xpath'])->click();
+        return $guid;
+    }
 
 }
 
