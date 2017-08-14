@@ -570,6 +570,7 @@ class ContentCest
     *
     * @group test_priority_2
     */
+    /*
     public function transcodePercentRoundsDown(AcceptanceTester $I)
     {
         $I->wantTo('Verify Transcode Percent rounds down. - C214841');
@@ -580,12 +581,28 @@ class ContentCest
         $I->expect('Since 2 of the 3 eps are transcoded, 66.6% rounds down to 66%');
         $I->see('66%', "//span[contains(text(), 'Test Series Transcode Percentages')]/../../td[". ContentPage::$transcodePercentCol ."]");
     }
+    */
+
+    /**
+     * TESTRAIL TESTCASE ID: C214841
+     *
+     * @group test_priority_2
+     */
+    public function transcodePercentRoundsDown(ContentSteps $I)
+    {
+        $I->wantTo('Verify Transcode Percent rounds down. - C214841');
+        $I->amOnContentPage();
+        $I->findContentItemByTitle(ContentPage::$title_for_testing_transcoded_percentages);
+        $I->expect('Since 2 of the 3 eps are transcoded, 66.6% rounds down to 66%');
+        $I->see('66%', ContentPage::$transcoded_percentages_for_title_for_testing_transcoded_percentages);
+    }
 
     /**
     * TESTRAIL TESTCASE ID: C214840
     *
     * @group test_priority_2
     */
+    /*
     public function transcodeStatusIgnoresExtras(AcceptanceTester $I)
     {
         $I->wantTo('Verify Transcode Percent is not affected by Extras. - C214840');
@@ -596,8 +613,23 @@ class ContentCest
         $I->expect('The episode is transcoded by the extra is not. Therefore transcode status is still 100%.');
         $I->see('100%', "//span[contains(text(), 'Series Transcoding Extras')]/../../td[". ContentPage::$transcodePercentCol ."]");
     }
+    */
 
     /**
+     * TESTRAIL TESTCASE ID: C214840
+     *
+     * @group test_priority_2
+     */
+    public function transcodeStatusIgnoresExtras(ContentSteps $I)
+    {
+        $I->wantTo('Verify Transcode Percent is not affected by Extras. - C214840');
+        $I->amOnContentPage();
+        $I->findContentItemByTitle(ContentPage::$title_for_testing_transcode_status_ignores_extras);
+        $I->expect('The episode is transcoded by the extra is not. Therefore transcode status is still 100%.');
+        $I->see('100%',ContentPage::$transcoded_percentages_for_title_for_testing_transcode_status_ignores_extras);
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C15525
     *
     * @group test_priority_2

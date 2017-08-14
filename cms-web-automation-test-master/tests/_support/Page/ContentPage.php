@@ -40,8 +40,14 @@ class ContentPage {
     public static $table_header_published = ['xpath' => '//table//tr/th[8]'];
     public static $table_header_transcoded = ['xpath' => '//table//tr/th[9]'];
 
+    //Special Titles
     public static $title_for_testing_publish_percentages='Test Series Publish Percentages';
     public static $published_percentages_for_title_for_testing_publish_percentages=['xpath'=>'//span[contains(text(), \'Test Series Publish Percentages\')]/../../td[8]'];
+    public static $title_for_testing_transcoded_percentages='Test Series Transcode Percentages';
+    public static $transcoded_percentages_for_title_for_testing_transcoded_percentages=['xpath'=>'//span[contains(text(), \'Test Series Transcode Percentages\')]/../../td[9]'];
+    public static $title_for_testing_transcode_status_ignores_extras='Series Transcoding Extras';
+    public static $transcoded_percentages_for_title_for_testing_transcode_status_ignores_extras=['xpath'=>'//span[contains(text(), \'Series Transcoding Extras\')]/../../td[9]'];
+
 
     // Catalog Actions
     public static $publish_content_button = '//div[@class="catalog-actions"]//button[text()="Publish Content"]';
