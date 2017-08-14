@@ -39,7 +39,7 @@ class ContentPage {
     public static $per_page_dropdown = ['xpath' => '//table//select'];
     public static $rows_with_series = ['xpath' => '//tr[descendant::td[position()=4 and text()="Series"] ]'];
     public static $rows_with_series_and_episodes = ['xpath' => '//tr[descendant::td[position()=6 and text()!="0"]]'];
-    public static $rows_with_movie = ['xpath' => '//tr[descendant::td[position()=4 and text()="Movies"]]'];
+    public static $rows_with_movie = ['xpath' => '//tr[descendant::td[position()=4 and text()="Movie"]]'];
 
     //Table Header
     public static $table_header = ['xpath' => '//table//tr/th'];

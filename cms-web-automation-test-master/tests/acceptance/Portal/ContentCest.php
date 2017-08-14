@@ -710,11 +710,12 @@ class ContentCest
         $I->dontSeeElement(ContentPage::$rows_with_series);
     }
 
-        /**
+    /**
     * TESTRAIL TESTCASE ID: C15527
     *
     * @group test_priority_2
     */
+    /*
     public function filterByMediaTypeRemoveFilter(AcceptanceTester $I)
     {
         $I->wantTo('Verify we can remove a set Media Type filter - C15527');
@@ -739,8 +740,33 @@ class ContentCest
         $I->expect('Movies reappear.');
         $I->seeElement("//td[text()='Movie']");
     }
+    */
 
     /**
+     * TESTRAIL TESTCASE ID: C15527
+     *
+     * @group test_priority_2
+     */
+    public function filterByMediaTypeRemoveFilter(ContentSteps $I)
+    {
+        $I->wantTo('Verify we can remove a set Media Type filter - C15527');
+        $I->amOnContentPage();
+        $I->selectNumberOfItemsPerPage("All");
+        $I->moveMouseOver(ContentPage::$addFilterDropdown);
+        $I->waitForElementVisible(ContentPage::$addFilterDropdown_series);
+        $I->click(ContentPage::$addFilterDropdown_series);
+        $I->expect('Only series appear now.');
+        $I->dontSeeElement(ContentPage::$rows_with_movie);
+        $I->amGoingTo('Remove the filter.');
+        $I->moveMouseOver(ContentPage::$addFilterDropdown);
+        $I->waitForElementVisible(ContentPage::$addFilterDropdown_remove);
+        $I->click(ContentPage::$addFilterDropdown_remove);
+        $I->expect('Movies reappear.');
+        $I->seeElement(ContentPage::$rows_with_movie);
+
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C11005
     *
     * @group test_priority_2
