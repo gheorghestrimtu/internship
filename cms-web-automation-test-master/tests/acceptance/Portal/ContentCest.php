@@ -871,16 +871,18 @@ class ContentCest
         $I->amOnContentPage();
         $guid=$I->clickEditPencilOnRandomMovieAndReturnGuid();
         $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
+        $I->waitAjaxLoad();
         $I->see('Videos');
         $I->see('Images');
         $I->see('Attributes');
     }
 
-        /**
+    /**
     * TESTRAIL TESTCASE ID: C22280
     *
     * @group test_priority_1
     */
+    /*
     public function clickEditOnSeries(AcceptanceTester $I)
     {
         $I->wantTo('Verify that clicking the edit icon on a seires takes us to the edit series page. - C22280');
@@ -894,9 +896,29 @@ class ContentCest
         $I->waitForText('SEASONS', 30);
         $I->waitForText('IMAGES', 30);
         $I->waitForText('VIDEOS', 30);
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C22280
+     *
+     * @group test_priority_1
+     */
+    public function clickEditOnSeries(ContentSteps $I)
+    {
+        $I->wantTo('Verify that clicking the edit icon on a seires takes us to the edit series page. - C22280');
+        $I->amOnContentPage();
+        $guid=$I->clickEditPencilOnRandomSeriesAndReturnGuid();
+        $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
+        $I->waitAjaxLoad();
+        $I->see('Seasons');
+        $I->see('Episodes');
+        $I->see('Images');
+        $I->see('Attributes');
+        $I->see('Videos');
+
+    }
+
+        /**
      * TESTRAIL TESTCASE ID: C225135
      *
      * @group test_priority_2

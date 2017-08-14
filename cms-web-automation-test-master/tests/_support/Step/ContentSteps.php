@@ -267,5 +267,13 @@ class ContentSteps extends \AcceptanceTester {
         return $guid;
     }
 
+    public function clickEditPencilOnRandomSeriesAndReturnGuid(){
+        $I=$this;
+        $I->selectNumberOfItemsPerPage("All");
+        $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series['xpath']);
+        $guid=$I->findElementInElement($randomSeries,'/td[' . ContentPage::$guid_column . ']')->getText();
+        $I->findElementInElement($randomSeries,ContentPage::$edit_pencil['xpath'])->click();
+        return $guid;
+    }
 }
 
