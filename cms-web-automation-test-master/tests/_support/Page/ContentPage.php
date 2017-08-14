@@ -7,6 +7,12 @@ class ContentPage {
 
     // Content Table
 
+    //Content list pages
+    public static $addFilterDropdown = ['css'=>'div.opener'];
+    public static $addFilterDropdown_series = ['xpath'=>"//div[@class='options']//div[text()='Series']"];
+    public static $addFilterDropdown_movie = ['xpath'=>"//div[@class='options']//div[text()='Movies']"];
+    public static $addFilterDropdown_remove = ['xpath' => "//div[@class='options']//div[@class='remove']"];
+
     //Table rows - Content Page
     public static $checkbox_column = '1';
     public static $title_column = '3';
@@ -33,6 +39,7 @@ class ContentPage {
     public static $per_page_dropdown = ['xpath' => '//table//select'];
     public static $rows_with_series = ['xpath' => '//tr[descendant::td[position()=4 and text()="Series"] ]'];
     public static $rows_with_series_and_episodes = ['xpath' => '//tr[descendant::td[position()=6 and text()!="0"]]'];
+    public static $rows_with_movie = ['xpath' => '//tr[descendant::td[position()=4 and text()="Movies"]]'];
 
     //Table Header
     public static $table_header = ['xpath' => '//table//tr/th'];
