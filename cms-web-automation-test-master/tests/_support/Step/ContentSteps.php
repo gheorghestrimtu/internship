@@ -140,7 +140,7 @@ class ContentSteps extends \AcceptanceTester {
     }
 
     public function chooseGuidOfItemByTypeAndPosition($type,$position){
-        return $this->grabTextFrom(['xpath'=>'//table/tbody/tr[contains(. ,\''.$type.'\')]['.$position.']/td[5]']);
+        return $this->grabTextFrom(ContentPage::findGuidByTypeAndPosition($type,$position));
     }
 
     public function shouldSeeTableSortedByTitle(){
@@ -163,6 +163,7 @@ class ContentSteps extends \AcceptanceTester {
 
     public function shouldSeeOnlyMoviesAndSeries(){
         $I=$this;
+        $I->waitForElementVisible(ContentPage::$all_types['xpath']);
         $I->selectNumberOfItemsPerPage("All");
         $list=$I->grabMultiple(ContentPage::$all_types);
         $listWithoutMoviesAndSeries=array_diff($list,['Movie','Series']);
@@ -171,6 +172,7 @@ class ContentSteps extends \AcceptanceTester {
 
     public function shouldSeeGuidsAreListed(){
         $I=$this;
+        $I->waitForElementVisible(ContentPage::$all_guids['xpath']);
         $I->selectNumberOfItemsPerPage("All");
         $list=$I->grabMultiple(ContentPage::$all_guids);
         $I->assertFalse(in_array('',$list),"I see GUID for all elements");
@@ -189,12 +191,14 @@ class ContentSteps extends \AcceptanceTester {
 
     public function clickRandomSeriesWithEpisodes(){
         $I=$this;
+        $I->waitAjaxLoad();
         $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series_and_episodes['xpath']);
         $I->findElementInElement($randomSeries,'/td['.ContentPage::$type_column.']')->click();
     }
 
     public function seePublishedPercentage(){
         $I=$this;
+        $I->see('Published');
         $percentageList=$I->grabMultiple(ContentPage::$all_published_percentage['xpath']);
         $regexedPercentageList=preg_grep('/^\d+(?:\.\d+)?%$/',$percentageList);
         $I->assertEquals($regexedPercentageList,$percentageList,'Published entries are percentages');
@@ -202,6 +206,7 @@ class ContentSteps extends \AcceptanceTester {
 
     public function seeTranscodedPercentage(){
         $I=$this;
+        $I->see('Transcoded');
         $percentageList=$I->grabMultiple(ContentPage::$all_transcoded_percentage['xpath']);
         $regexedPercentageList=preg_grep('/^\d+(?:\.\d+)?%$|N\/A/',$percentageList);
         $I->assertEquals($regexedPercentageList,$percentageList,'Transcoded entries are percentages or N/A');
@@ -246,7 +251,7 @@ class ContentSteps extends \AcceptanceTester {
         $I=$this;
         $I->selectNumberOfItemsPerPage("All");
         $I->amGoingTo('Wait for ' . $title . ' to be visible.');
-        $I->waitForElement(ContentPage::tableRowByTitle($title), 60);
+        $I->waitForElement(ContentPage::findTitle($title), 60);
     }
 
     public function clickRandomMovieAndReturnGuid(){

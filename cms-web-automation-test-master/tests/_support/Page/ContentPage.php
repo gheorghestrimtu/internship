@@ -17,10 +17,10 @@ class ContentPage {
     public static $checkbox_column = '1';
     public static $title_column = '3';
     public static $type_column = '4';
-    public static $guid_column = 5;
+    public static $guid_column = '5';
     public static $seasons_column = '6';
     public static $episodes_column = '7';
-    public static $published_column = 8;
+    public static $published_column = '8';
     public static $transcode_percent_col = '9';
 
     public static $table_rows=['xpath'=>'//table/tbody/tr'];
@@ -43,6 +43,8 @@ class ContentPage {
     public static $rows_with_series = ['xpath' => '//tr[descendant::td[position()=4 and text()="Series"] ]'];
     public static $rows_with_series_and_episodes = ['xpath' => '//tr[descendant::td[position()=6 and text()!="0"]]'];
     public static $rows_with_movie = ['xpath' => '//tr[descendant::td[position()=4 and text()="Movie"]]'];
+
+    public static $guid_by_type_and_position = ['xpath' => '//table/tbody/tr[contains(. ,\'{{type}}\')][{{position}}]/td[5]'];
 
     //Table Header
     public static $table_header = ['xpath' => '//table//tr/th'];
@@ -78,9 +80,14 @@ class ContentPage {
         return str_replace('{{guid}}', $guid, self::$row_with_guid['xpath']);
     }
 
-    public static function tableRowByTitle($title)
+    public static function findTitle($title)
     {
         return "//tr/td/span[text()='" . $title . "']";
+    }
+
+    public static function findGuidByTypeAndPosition($type, $position)
+    {
+        return str_replace(['{{type}}','{{position}}'],[$type,$position],self::$guid_by_type_and_position);
     }
 
 }

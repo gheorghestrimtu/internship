@@ -7,6 +7,9 @@ use Step\LoginSteps;
 use Codeception\Example;
 use Page\ContentEditPage;
 use Page\ContentSeriesPage;
+use Step\ContentSeriesSteps;
+use Step\ContentSeasonSteps;
+
 
 class ContentCest
 {
@@ -199,7 +202,6 @@ class ContentCest
     {
         $I->wantTo('Verify content types show up correctly. - C9175');
         $I->amOnContentPage();
-        $I->waitForElementVisible(ContentPage::$all_types['xpath']);
         $I->shouldSeeOnlyMoviesAndSeries();
     }
 
@@ -244,7 +246,6 @@ class ContentCest
     {
         $I->wantTo('Verify content IDs show up correctly. - C9176');
         $I->amOnContentPage();
-        $I->waitForElementVisible(ContentPage::$all_guids['xpath']);
         $I->shouldSeeGuidsAreListed();
     }
 
@@ -274,13 +275,12 @@ class ContentCest
      *
      * @group test_priority_2
      */
-    public function contentSeasons(ContentSteps $I, \Step\ContentSeriesSteps $I2)
+    public function contentSeasons(ContentSteps $I, ContentSeriesSteps $I2)
     {
         $I->wantTo('Verify content Seasons show up correctly. - C9177');
         $I->amOnContentPage();
         $I->selectNumberOfItemsPerPage("All");
         $seasons = $I->clickRandomSeriesAndReturnNumberOfSeasons();
-        $I->expectTo("See Content Series Page");
 
         $I = $I2;
         $I->seeCorrectNumberOfSeasons($seasons);
@@ -311,16 +311,16 @@ class ContentCest
      *
      * @group test_priority_2
      */
-    public function contentEpisodes(ContentSteps $I, \Step\ContentSeriesSteps $I2, \Step\ContentSeasonSteps $I3)
+    public function contentEpisodes(ContentSteps $I, ContentSeriesSteps $I2, ContentSeasonSteps $I3)
     {
         $I->wantTo('Verify content Episodes show up correctly. - C9178');
         $I->amOnContentPage();
         $I->selectNumberOfItemsPerPage("All");
         $I->clickRandomSeriesWithEpisodes();
-        $I->expectTo("See Content Series Page");
+
         $I = $I2;
         $episodes = $I->clickRandomSeasonAndReturnNumberOfEpisodes();
-        $I->expectTo("See Content Season Page");
+
         $I = $I3;
         $I->seeCorrectNumberOfEpisodes($episodes);
 
@@ -357,7 +357,6 @@ class ContentCest
     {
         $I->wantTo('Verify content Published Status show up correctly. - C225123');
         $I->amOnContentPage();
-        $I->see('Published');
         $I->seePublishedPercentage();
     }
 
@@ -392,7 +391,6 @@ class ContentCest
     {
         $I->wantTo('Verify content Transcode Status show up correctly. - C214839');
         $I->amOnContentPage();
-        $I->see('Transcoded');
         $I->seeTranscodedPercentage();
     }
 
@@ -957,6 +955,7 @@ class ContentCest
         $I->shouldSeeContentIsPublished($guid);
 
         $contentEditSteps->unpublishContent($guid);
+
     }
 
 }
