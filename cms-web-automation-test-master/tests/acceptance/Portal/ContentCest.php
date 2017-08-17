@@ -1,40 +1,39 @@
 <?php
 
+use Page\ContentPage;
 use Step\ContentSteps;
 use Step\ContentEditSteps;
+use Step\LoginSteps;
+use Codeception\Example;
+use Page\ContentEditPage;
+use Page\ContentSeriesPage;
+use Step\ContentSeriesSteps;
+use Step\ContentSeasonSteps;
+use Page\ContentMovieEditPage;
+
 
 class ContentCest
 {
     public static $environment = 'undefined';
     public static $loginCookie = 'undefined';
 
-    public function _before(AcceptanceTester $I)
+    public function _before(LoginSteps $I)
     {
-        $I->amOnPage('/');
-        //Set the environment for the cest
-        if (ContentCest::$environment == 'undefined')
-        {
-            ContentCest::$environment = AcceptanceUtils::getEnvironment($I);
-        }
-
-        ContentCest::$loginCookie = AcceptanceUtils::login($I, LoginInfo::$username, LoginInfo::$password, ContentCest::$loginCookie);
-        
-    }
-
-    public function _after(AcceptanceTester $I)
-    {
+        $I->login();
     }
 
     //CONTENT SCREEN
+
     /**
-    * TESTRAIL TESTCASE ID: C15511
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C15511
+     *
+     * @group test_priority_2
+     */
+    /*
     public function displayPerPageDropdown(AcceptanceTester $I)
     {
         $I->wantTo('Verify Display Per Page dropdown works correctly. - C15511');
-        $I->amOnPage('/chan/crunchyroll/catalog');
+        $I->amOnPage(::$URL);
 
         $I->amGoingTo('Select 10 on dropdown.');
         $I->selectOption("//table//select", '10');
@@ -64,12 +63,32 @@ class ContentCest
         $I->waitForElementNotVisible("//table//tr[101]", 30);
         $I->waitForElementVisible("//table//tr[100]", 30);
     }
+    */
+    /**
+     * * TESTRAIL TESTCASE ID: C15511
+     *
+     * @group test_priority_2
+     *
+     * @example { "numberOfElements": "10" }
+     * @example { "numberOfElements": "20" }
+     * @example { "numberOfElements": "All" }
+     */
+    public function displayPerPageDropdown(ContentSteps $I, Example $example)
+    {
+
+        $I->wantTo('Verify Display Per Page dropdown works correctly. - C15511');
+        $I->amOnContentPage();
+        $I->selectNumberOfItemsPerPage($example['numberOfElements']);
+        $I->shouldSeePageDropdownElements($example['numberOfElements']);
+    }
+
 
     /**
-    * TESTRAIL TESTCASE ID: C9174
-    *
-    * @group test_priority_1
-    */
+     * TESTRAIL TESTCASE ID: C9174
+     *
+     * @group test_priority_1
+     */
+    /*
     public function contentTitles(AcceptanceTester $I)
     {
         $I->wantTo('Verify content titles show up correctly. - C9174');
@@ -83,12 +102,28 @@ class ContentCest
         $I->see('Ab', "//tr[4]/td[" . ContentPage::$titleCol . "]");
         $I->see('AC', "//tr[5]/td[" . ContentPage::$titleCol . "]");
     }
+    */
 
     /**
-    * TESTRAIL TESTCASE ID: C166967
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C9174
+     *
+     * @group test_priority_1
+     */
+
+    public function contentTitles(ContentSteps $I)
+    {
+        $I->wantTo('Verify content titles show up correctly. - C9174');
+        $I->amOnContentPage();
+        $guid = $I->chooseRandomContentAndReturnGuid();
+        $I->shouldSeeTitleIsValid($guid);
+    }
+
+    /**
+     * TESTRAIL TESTCASE ID: C166967
+     *
+     * @group test_priority_2
+     */
+    /*
     public function contentTitlesAlphabeticalOnLoad(AcceptanceTester $I)
     {
         $I->wantTo('Verify content titles are alphabetical upon loading. - C166967');
@@ -102,12 +137,28 @@ class ContentCest
         $I->see('Ab', "//tr[4]/td[" . ContentPage::$titleCol . "]");
         $I->see('AC', "//tr[5]/td[" . ContentPage::$titleCol . "]");
     }
+    */
 
     /**
-    * TESTRAIL TESTCASE ID: C166970
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C166967
+     *
+     * @group test_priority_2
+     */
+    public function contentTitlesAlphabeticalOnLoad(ContentSteps $I)
+    {
+        $I->wantTo('Verify content titles are alphabetical upon loading. - C166967');
+        $I->amOnContentPage();
+        $I->selectNumberOfItemsPerPage("All");
+        $I->shouldSeeTableSortedByTitle();
+    }
+
+
+    /**
+     * TESTRAIL TESTCASE ID: C166970
+     *
+     * @group test_priority_2
+     */
+    /*
     public function alphabeticalSortNotCaseSensitive(AcceptanceTester $I)
     {
         $I->wantTo('Verify alphabetical sorting on titles is not case sensitive. - C166970');
@@ -120,13 +171,14 @@ class ContentCest
         $I->see('AA', "//tr[3]/td[" . ContentPage::$titleCol . "]");
         $I->see('Ab', "//tr[4]/td[" . ContentPage::$titleCol . "]");
         $I->see('AC', "//tr[5]/td[" . ContentPage::$titleCol . "]");
-    }
+    }*/
 
     /**
-    * TESTRAIL TESTCASE ID: C9175
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C9175
+     *
+     * @group test_priority_2
+     */
+    /*
     public function contentTypes(AcceptanceTester $I)
     {
         $I->wantTo('Verify content types show up correctly. - C9175');
@@ -140,12 +192,26 @@ class ContentCest
         $I->see('Movie', "//tr[4]/td[" . ContentPage::$typeCol . "]");
         $I->see('Series', "//tr[5]/td[" . ContentPage::$typeCol . "]");
     }
+    */
 
     /**
-    * TESTRAIL TESTCASE ID: C9176
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C9175
+     *
+     * @group test_priority_2
+     */
+    public function contentTypes(ContentSteps $I)
+    {
+        $I->wantTo('Verify content types show up correctly. - C9175');
+        $I->amOnContentPage();
+        $I->shouldSeeOnlyType(['Movie','Series']);
+    }
+
+    /**
+     * TESTRAIL TESTCASE ID: C9176
+     *
+     * @group test_priority_2
+     */
+    /*
     public function contentIds(AcceptanceTester $I)
     {
         $I->wantTo('Verify content IDs show up correctly. - C9176');
@@ -170,12 +236,27 @@ class ContentCest
             $I->see('GYJQ2EEV6', "//tr[5]/td[" . ContentPage::$guidCol . "]");
         }
     }
+    */
 
     /**
-    * TESTRAIL TESTCASE ID: C9177
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C9176
+     *
+     * @group test_priority_2
+     */
+    public function contentIds(ContentSteps $I)
+    {
+        $I->wantTo('Verify content IDs show up correctly. - C9176');
+        $I->amOnContentPage();
+        $I->shouldSeeGuidsAreListed();
+    }
+
+
+    /**
+     * TESTRAIL TESTCASE ID: C9177
+     *
+     * @group test_priority_2
+     */
+    /*
     public function contentSeasons(AcceptanceTester $I)
     {
         $I->wantTo('Verify content Seasons show up correctly. - C9177');
@@ -188,13 +269,29 @@ class ContentCest
         $I->see('0', "//tr[3]/td[" . ContentPage::$seasonsCol . "]");
         $I->dontSee('0', "//tr[4]/td[" . ContentPage::$seasonsCol . "]");
         $I->see('0', "//tr[5]/td[" . ContentPage::$seasonsCol . "]");
-    }
+    }*/
 
     /**
-    * TESTRAIL TESTCASE ID: C9178
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C9177
+     *
+     * @group test_priority_2
+     */
+    public function contentSeasons(ContentSteps $I, ContentSeriesSteps $I2)
+    {
+        $I->wantTo('Verify content Seasons show up correctly. - C9177');
+        $I->amOnContentPage();
+        $I->selectNumberOfItemsPerPage("All");
+        $seasons = $I->clickRandomSeriesAndReturnNumberOfSeasons();
+
+        $I = $I2;
+        $I->seeCorrectNumberOfSeasons($seasons);
+    }
+    /**
+     * TESTRAIL TESTCASE ID: C9178
+     *
+     * @group test_priority_2
+     */
+    /*
     public function contentEpisodes(AcceptanceTester $I)
     {
         $I->wantTo('Verify content Episodes show up correctly. - C9178');
@@ -208,12 +305,35 @@ class ContentCest
         $I->dontSee('0', "//tr[4]/td[" . ContentPage::$episodesCol . "]");
         $I->see('0', "//tr[5]/td[" . ContentPage::$episodesCol . "]");
     }
+    */
 
     /**
-    * TESTRAIL TESTCASE ID: C225123
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C9178
+     *
+     * @group test_priority_2
+     */
+    public function contentEpisodes(ContentSteps $I, ContentSeriesSteps $I2, ContentSeasonSteps $I3)
+    {
+        $I->wantTo('Verify content Episodes show up correctly. - C9178');
+        $I->amOnContentPage();
+        $I->selectNumberOfItemsPerPage("All");
+        $I->clickRandomSeriesWithEpisodes();
+
+        $I = $I2;
+        $episodes = $I->clickRandomSeasonAndReturnNumberOfEpisodes();
+
+        $I = $I3;
+        $I->seeCorrectNumberOfEpisodes($episodes);
+
+    }
+
+
+    /**
+     * TESTRAIL TESTCASE ID: C225123
+     *
+     * @group test_priority_2
+     */
+    /*
     public function publishedStatus(AcceptanceTester $I)
     {
         $I->wantTo('Verify content Published Status show up correctly. - C225123');
@@ -227,12 +347,27 @@ class ContentCest
         $I->see('0%', "//tr[4]/td[" . ContentPage::$publishedPercentCol . "]");
         $I->see('0%', "//tr[5]/td[" . ContentPage::$publishedPercentCol . "]");
     }
+    */
 
     /**
-    * TESTRAIL TESTCASE ID: C214839
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C225123
+     *
+     * @group test_priority_2
+     */
+    public function publishedStatus(ContentSteps $I)
+    {
+        $I->wantTo('Verify content Published Status show up correctly. - C225123');
+        $I->amOnContentPage();
+        $I->seePublishedPercentage();
+    }
+
+
+    /**
+     * TESTRAIL TESTCASE ID: C214839
+     *
+     * @group test_priority_2
+     */
+    /*
     public function transcodeStatus(AcceptanceTester $I)
     {
         $I->wantTo('Verify content Transcode Status show up correctly. - C214839');
@@ -246,12 +381,26 @@ class ContentCest
         $I->see('100%', "//tr[4]/td[" . ContentPage::$transcodePercentCol . "]");
         $I->see('N/A', "//tr[5]/td[" . ContentPage::$transcodePercentCol . "]");
     }
+    */
 
     /**
-    * TESTRAIL TESTCASE ID: C9173
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C214839
+     *
+     * @group test_priority_2
+     */
+    public function transcodeStatus(ContentSteps $I)
+    {
+        $I->wantTo('Verify content Transcode Status show up correctly. - C214839');
+        $I->amOnContentPage();
+        $I->seeTranscodedPercentage();
+    }
+
+    /**
+     * TESTRAIL TESTCASE ID: C9173
+     *
+     * @group test_priority_2
+     */
+    /*
     public function sortContentByTitle(AcceptanceTester $I)
     {
         $I->wantTo('Verify content can be sorted by title. - C9173');
@@ -275,12 +424,30 @@ class ContentCest
         $I->waitForText('Y Movie', 30, "//tr[4]/td[" . ContentPage::$titleCol . "]");
         $I->waitForText('X Movie', 30, "//tr[5]/td[" . ContentPage::$titleCol . "]");
     }
+    */
 
     /**
-    * TESTRAIL TESTCASE ID: C225127
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C9173
+     *
+     * @group test_priority_2
+     */
+    public function sortContentByTitle(ContentSteps $I)
+    {
+        $I->wantTo('Verify content can be sorted by title. - C9173');
+        $I->amOnContentPage();
+        $I->waitForElementVisible(ContentPage::$table_header);
+        $I->click(ContentPage::$table_header_title);
+        $I->shouldSeeTableSortedByTitle();
+        $I->click(ContentPage::$table_header_title);
+        $I->shouldSeeTableReverseSortedByTitle();
+    }
+
+    /**
+     * TESTRAIL TESTCASE ID: C225127
+     *
+     * @group test_priority_2
+     */
+    /*
     public function sortContentByPublishedPercent(AcceptanceTester $I)
     {
         $I->wantTo('Verify content can be sorted by Published Percent. - C225127');
@@ -304,12 +471,30 @@ class ContentCest
         $I->waitForText('100%', 30, "//tr[4]/td[" . ContentPage::$publishedPercentCol . "]");
         $I->waitForText('100%', 30, "//tr[5]/td[" . ContentPage::$publishedPercentCol . "]");
     }
+    */
 
     /**
-    * TESTRAIL TESTCASE ID: C214842
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C225127
+     *
+     * @group test_priority_2
+     */
+    public function sortContentByPublishedPercent(ContentSteps $I)
+    {
+        $I->wantTo('Verify content can be sorted by Published Percent. - C225127');
+        $I->amOnContentPage();
+        $I->waitForElementVisible(ContentPage::$table_header);
+        $I->click(ContentPage::$table_header_published);
+        $I->shouldSeeTableSortedByPublished();
+        $I->click(ContentPage::$table_header_published);
+        $I->shouldSeeTableReverseSortedByPublished();
+    }
+
+    /**
+     * TESTRAIL TESTCASE ID: C214842
+     *
+     * @group test_priority_2
+     */
+    /*
     public function sortContentByTranscodePercent(AcceptanceTester $I)
     {
         $I->wantTo('Verify content can be sorted by Transcode Percent. - C214842');
@@ -334,12 +519,31 @@ class ContentCest
         $I->waitForText('N/A', 30, "//tr[5]/td[" . ContentPage::$transcodePercentCol . "]");
         $I->waitForText('N/A', 30, "//tr[6]/td[" . ContentPage::$transcodePercentCol . "]");
     }
+    */
+    /**
+     * TESTRAIL TESTCASE ID: C214842
+     *
+     * @group test_priority_2
+     */
+    public function sortContentByTranscodePercent(ContentSteps $I)
+    {
+        $I->wantTo('Verify content can be sorted by Transcode Percent. - C214842');
+        $I->amOnContentPage();
+        $I->waitForElementVisible(ContentPage::$table_header);
+        $I->click(ContentPage::$table_header_transcoded);
+        $I->shouldSeeTableSortedByTranscoded();
+        $I->click(ContentPage::$table_header_transcoded);
+        $I->shouldSeeTableReverseSortedByTranscoded();
+
+    }
+
 
     /**
-    * TESTRAIL TESTCASE ID: C36891
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C36891
+     *
+     * @group test_priority_2
+     */
+    /*
     public function publishedPercentRoundsDown(AcceptanceTester $I)
     {
         $I->wantTo('Verify Published Percent rounds down. - C36891');
@@ -350,12 +554,29 @@ class ContentCest
         $I->expect('Since 2 of the 3 eps are published, 66.6% rounds down to 66%');
         $I->see('66%', "//span[contains(text(), 'Test Series Publish Percentages')]/../../td[". ContentPage::$publishedPercentCol ."]");
     }
+    */
 
     /**
-    * TESTRAIL TESTCASE ID: C214841
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C36891
+     *
+     * @group test_priority_2
+     */
+    public function publishedPercentRoundsDown(ContentSteps $I)
+    {
+        $I->wantTo('Verify Published Percent rounds down. - C36891');
+        $I->amOnContentPage();
+        $I->findContentItemByTitle(ContentPage::$title_for_testing_publish_percentages);
+        $I->expect('Since 2 of the 3 eps are published, 66.6% rounds down to 66%');
+        $I->see('66%', ContentPage::$published_percentages_for_title_for_testing_publish_percentages);
+
+    }
+
+    /**
+     * TESTRAIL TESTCASE ID: C214841
+     *
+     * @group test_priority_2
+     */
+    /*
     public function transcodePercentRoundsDown(AcceptanceTester $I)
     {
         $I->wantTo('Verify Transcode Percent rounds down. - C214841');
@@ -366,12 +587,28 @@ class ContentCest
         $I->expect('Since 2 of the 3 eps are transcoded, 66.6% rounds down to 66%');
         $I->see('66%', "//span[contains(text(), 'Test Series Transcode Percentages')]/../../td[". ContentPage::$transcodePercentCol ."]");
     }
+    */
 
     /**
-    * TESTRAIL TESTCASE ID: C214840
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C214841
+     *
+     * @group test_priority_2
+     */
+    public function transcodePercentRoundsDown(ContentSteps $I)
+    {
+        $I->wantTo('Verify Transcode Percent rounds down. - C214841');
+        $I->amOnContentPage();
+        $I->findContentItemByTitle(ContentPage::$title_for_testing_transcoded_percentages);
+        $I->expect('Since 2 of the 3 eps are transcoded, 66.6% rounds down to 66%');
+        $I->see('66%', ContentPage::$transcoded_percentages_for_title_for_testing_transcoded_percentages);
+    }
+
+    /**
+     * TESTRAIL TESTCASE ID: C214840
+     *
+     * @group test_priority_2
+     */
+    /*
     public function transcodeStatusIgnoresExtras(AcceptanceTester $I)
     {
         $I->wantTo('Verify Transcode Percent is not affected by Extras. - C214840');
@@ -382,86 +619,74 @@ class ContentCest
         $I->expect('The episode is transcoded by the extra is not. Therefore transcode status is still 100%.');
         $I->see('100%', "//span[contains(text(), 'Series Transcoding Extras')]/../../td[". ContentPage::$transcodePercentCol ."]");
     }
+    */
 
     /**
-    * TESTRAIL TESTCASE ID: C15525
-    *
-    * @group test_priority_2
-    */
-    public function filterByMediaTypeSeries(AcceptanceTester $I)
+     * TESTRAIL TESTCASE ID: C214840
+     *
+     * @group test_priority_2
+     */
+    public function transcodeStatusIgnoresExtras(ContentSteps $I)
     {
-        $I->wantTo('Verify we can filter by Media Type Series - C15525');
-        $I->amOnPage(ContentPage::$URL);
-
-        $I->amGoingTo('Make sure all content is displayed.');
-        ContentUtils::findContentItemByTitle($I, 'ZZ');
-
-        $I->amGoingTo('Open the filter dropdown and select Series.');
-        $I->moveMouseOver(ContentPage::$addFilterDropdown);
-        $I->waitForElementVisible(ContentPage::$addFilterDropdown_series);
-        $I->click(ContentPage::$addFilterDropdown_series);
-
-        $I->expect('Only series appear now.');
-        $I->dontSeeElement("//td[text()='Movie']");
+        $I->wantTo('Verify Transcode Percent is not affected by Extras. - C214840');
+        $I->amOnContentPage();
+        $I->findContentItemByTitle(ContentPage::$title_for_testing_transcode_status_ignores_extras);
+        $I->expect('The episode is transcoded by the extra is not. Therefore transcode status is still 100%.');
+        $I->see('100%', ContentPage::$transcoded_percentages_for_title_for_testing_transcode_status_ignores_extras);
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C15526
-    *
-    * @group test_priority_2
-    */
-    public function filterByMediaTypeMovie(AcceptanceTester $I)
-    {
-        $I->wantTo('Verify we can filter by Media Type Movie - C15526');
-        $I->amOnPage(ContentPage::$URL);
-
-        $I->amGoingTo('Make sure all content is displayed.');
-        ContentUtils::findContentItemByTitle($I, 'ZZ');
-
-        $I->amGoingTo('Open the filter dropdown and select Movie.');
-        $I->moveMouseOver(ContentPage::$addFilterDropdown);
-        $I->waitForElementVisible(ContentPage::$addFilterDropdown_movie);
-        $I->click(ContentPage::$addFilterDropdown_movie);
-
-        $I->expect('Only movies appear now.');
-        $I->dontSeeElement("//td[text()='Series']");
-    }
-
-    /**
-    * TESTRAIL TESTCASE ID: C15527
-    *
-    * @group test_priority_2
-    */
-    public function filterByMediaTypeRemoveFilter(AcceptanceTester $I)
+     * TESTRAIL TESTCASE ID: C15527
+     *
+     * @group test_priority_2
+     */
+    public function filterByMediaTypeSeriesRemoveFilter(ContentSteps $I)
     {
         $I->wantTo('Verify we can remove a set Media Type filter - C15527');
-        $I->amOnPage(ContentPage::$URL);
-
-        $I->amGoingTo('Make sure all content is displayed.');
-        ContentUtils::findContentItemByTitle($I, 'ZZ');
-
-        $I->amGoingTo('Open the filter dropdown and select Series.');
+        $I->amOnContentPage();
+        $I->selectNumberOfItemsPerPage("All");
         $I->moveMouseOver(ContentPage::$addFilterDropdown);
         $I->waitForElementVisible(ContentPage::$addFilterDropdown_series);
         $I->click(ContentPage::$addFilterDropdown_series);
-
         $I->expect('Only series appear now.');
-        $I->dontSeeElement("//td[text()='Movie']");
-
+        $I->shouldSeeOnlyType(['Series']);
         $I->amGoingTo('Remove the filter.');
         $I->moveMouseOver(ContentPage::$addFilterDropdown);
         $I->waitForElementVisible(ContentPage::$addFilterDropdown_remove);
         $I->click(ContentPage::$addFilterDropdown_remove);
-
         $I->expect('Movies reappear.');
-        $I->seeElement("//td[text()='Movie']");
+        $I->shouldSeeOnlyType(['Movie','Series']);
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C11005
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: Needs to be added to testrail
+     *
+     * @group test_priority_2
+     */
+    public function filterByMediaTypeMovieRemoveFilter(ContentSteps $I)
+    {
+        $I->wantTo('Verify we can remove a set Media Type filter - needs to be added to test rail');
+        $I->amOnContentPage();
+        $I->selectNumberOfItemsPerPage("All");
+        $I->moveMouseOver(ContentPage::$addFilterDropdown);
+        $I->waitForElementVisible(ContentPage::$addFilterDropdown_movie);
+        $I->click(ContentPage::$addFilterDropdown_movie);
+        $I->expect('Only movie appear now.');
+        $I->shouldSeeOnlyType(['Movie']);
+        $I->amGoingTo('Remove the filter.');
+        $I->moveMouseOver(ContentPage::$addFilterDropdown);
+        $I->waitForElementVisible(ContentPage::$addFilterDropdown_remove);
+        $I->click(ContentPage::$addFilterDropdown_remove);
+        $I->expect('Series reappear.');
+        $I->shouldSeeOnlyType(['Movie','Series']);
+    }
+
+    /**
+     * TESTRAIL TESTCASE ID: C11005
+     *
+     * @group test_priority_2
+     */
+    /*
     public function clickMovieRow(AcceptanceTester $I)
     {
         $I->wantTo('Verify we are taken to the right page when clicking a movie row. - C11005');
@@ -475,12 +700,32 @@ class ContentCest
         $I->dontSee('EPISODES');
         $I->dontSee('SEASONS');
     }
+    */
 
     /**
-    * TESTRAIL TESTCASE ID: C11004
-    *
-    * @group test_priority_2
-    */
+     * TESTRAIL TESTCASE ID: C11005
+     *
+     * @group test_priority_2
+     */
+    public function clickMovieRow(ContentSteps $I)
+    {
+        $I->wantTo('Verify we are taken to the right page when clicking a movie row. - C11005');
+        $I->amOnContentPage();
+        $guid = $I->clickRandomContentInTableAndReturnGuid(ContentPage::$rows_with_movie);
+        $I->waitAjaxLoad();
+        $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
+        $I->see("Videos","h1");
+        $I->see("Images","h1");
+        $I->see("Attributes","h1");
+
+    }
+
+    /**
+     * TESTRAIL TESTCASE ID: C11004
+     *
+     * @group test_priority_2
+     */
+    /*
     public function clickSeriesRow(AcceptanceTester $I)
     {
         $I->wantTo('Verify we are taken to the right page when clicking a series row. - C11004');
@@ -492,13 +737,30 @@ class ContentCest
         ContentUtils::findContentItemByTitle($I, 'First');
         ContentUtils::findContentItemByTitle($I, 'Second');
         ContentUtils::findContentItemByTitle($I, 'Season 6');
+    }*/
+
+    /**
+     * TESTRAIL TESTCASE ID: C11004
+     *
+     * @group test_priority_2
+     */
+    public function clickSeriesRow(ContentSteps $I)
+    {
+        $I->wantTo('Verify we are taken to the right page when clicking a series row. - C11004');
+        $I->amOnContentPage();
+        $guid = $I->clickRandomContentInTableAndReturnGuid(ContentPage::$rows_with_series);
+        $I->seeInCurrentUrl(ContentSeriesPage::urlByGuid($guid));
+        $I->see("Title","th");
+        $I->see("Content","a");
+        $I->see("VRV Content Management System","footer");
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C22281
-    *
-    * @group test_priority_1
-    */
+     * TESTRAIL TESTCASE ID: C22281
+     *
+     * @group test_priority_1
+     */
+    /*
     public function clickEditOnMovie(AcceptanceTester $I)
     {
         $I->wantTo('Verify that clicking the edit icon on a movie takes us to the edit movie page. - C22281');
@@ -512,13 +774,31 @@ class ContentCest
         $I->see('IMAGES');
         $I->dontSee('EPISODES');
         $I->dontSee('SEASONS');
+    }*/
+
+    /**
+     * TESTRAIL TESTCASE ID: C22281
+     *
+     * @group test_priority_1
+     */
+    public function clickEditOnMovie(ContentSteps $I)
+    {
+        $I->wantTo('Verify that clicking the edit icon on a movie takes us to the edit movie page. - C22281');
+        $I->amOnContentPage();
+        $guid = $I->clickEditPencilOnRandomContentInTableAndReturnGuid(ContentPage::$rows_with_movie);
+        $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
+        $I->waitAjaxLoad();
+        $I->see('Videos','h1');
+        $I->see('Images','h1');
+        $I->see('Attributes','h1');
     }
 
     /**
-    * TESTRAIL TESTCASE ID: C22280
-    *
-    * @group test_priority_1
-    */
+     * TESTRAIL TESTCASE ID: C22280
+     *
+     * @group test_priority_1
+     */
+    /*
     public function clickEditOnSeries(AcceptanceTester $I)
     {
         $I->wantTo('Verify that clicking the edit icon on a seires takes us to the edit series page. - C22280');
@@ -532,6 +812,26 @@ class ContentCest
         $I->waitForText('SEASONS', 30);
         $I->waitForText('IMAGES', 30);
         $I->waitForText('VIDEOS', 30);
+    }*/
+
+    /**
+     * TESTRAIL TESTCASE ID: C22280
+     *
+     * @group test_priority_1
+     */
+    public function clickEditOnSeries(ContentSteps $I)
+    {
+        $I->wantTo('Verify that clicking the edit icon on a seires takes us to the edit series page. - C22280');
+        $I->amOnContentPage();
+        $guid = $I->clickEditPencilOnRandomContentInTableAndReturnGuid(ContentPage::$rows_with_series);
+        $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
+        $I->waitAjaxLoad();
+        $I->see('Seasons','h1');
+        $I->see('Episodes','h1');
+        $I->see('Images','h1');
+        $I->see('Attributes','h1');
+        $I->see('Videos','h1');
+
     }
 
     /**
@@ -539,7 +839,9 @@ class ContentCest
      *
      * @group test_priority_2
      */
-    public function seeSeriesArt(ContentSteps $I, ContentEditSteps $contentEditSteps) {
+
+    public function seeSeriesArt(ContentSteps $I, ContentEditSteps $contentEditSteps)
+    {
         $I->wantTo('Verify if landscape posters appear in the column to the right of the check boxes. - C225135');
 
         $I->amOnContentPage();
@@ -556,6 +858,7 @@ class ContentCest
      *
      * @group test_priority_2
      */
+
     public function publishContentMovie(ContentSteps $I, ContentEditSteps $contentEditSteps) {
         $I->wantTo('Verify if user can publish movie from content page - C15512');
         $I->amOnContentPage();
@@ -566,6 +869,7 @@ class ContentCest
         $I->shouldSeeContentIsPublished($guid);
 
         $contentEditSteps->unpublishContent($guid);
+
     }
 
 }

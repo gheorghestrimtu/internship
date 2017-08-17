@@ -5,6 +5,7 @@ abstract class ContentEditPage {
 
     public static $URL = '/catalog/content/{{guid}}';
 
+
     // ATTRIBUTES
     public static $title = ['xpath' => '//label[contains(text()," Title")]/following-sibling::input'];
     public static $channel = ['xpath' => '//label[text() = "Channel"]/following-sibling::span'];
@@ -100,5 +101,9 @@ abstract class ContentEditPage {
             default:
                 return ContentMovieEditPage::getEditGuid();
         }
+    }
+
+    public static function urlByGuid($guid){
+        return str_replace('{{guid}}',$guid,self::$URL);
     }
 }
