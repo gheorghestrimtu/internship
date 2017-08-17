@@ -4,26 +4,14 @@ use Codeception\Example;
 use Page\ContentEditPage;
 use Step\ImageEditSteps;
 use Step\ContentEpisodeEditSteps;
+use Step\LoginSteps;
 
 class EpisodeEditCest
 {
-    public static $environment = 'undefined';
-    public static $loginCookie = 'undefined';
 
-    public function _before(AcceptanceTester $I)
+    public function _before(LoginSteps $I)
     {
-        $I->amOnPage('/');
-        //Set the environment for the cest
-        if (EpisodeEditCest::$environment == 'undefined')
-        {
-            EpisodeEditCest::$environment = AcceptanceUtils::getEnvironment($I);
-        }
-
-        EpisodeEditCest::$loginCookie = AcceptanceUtils::login($I, LoginInfo::$username, LoginInfo::$password, EpisodeEditCest::$loginCookie);
-    }
-
-    public function _after(AcceptanceTester $I)
-    {
+        $I->login();
     }
 
     //TESTS
@@ -31,7 +19,9 @@ class EpisodeEditCest
     * TESTRAIL TESTCASE ID: C22274
     *
     * @group test_priority_2
+     * @group publish
     */
+    /*
     public function publishEpisode(AcceptanceTester $I)
     {
         $I->wantTo('Verify we can publish a episode. - C22274');
@@ -60,13 +50,27 @@ class EpisodeEditCest
         $I->expect('Episode is still published.');
         $I->waitForText('Users who match window settings can view and/or watch content as defined.', 30);
         $I->seeElement(ContentPage::$publishCheckboxChecked);
+    }*/
+
+    /**
+     * TESTRAIL TESTCASE ID: C22274
+     *
+     * @group test_priority_2
+     * @group publish
+     */
+    public function publishEpisode(ContentEpisodeEditSteps $I)
+    {
+        $I->wantTo('Verify we can publish a episode. - C22274');
+
     }
+
 
     /**
     * TESTRAIL TESTCASE ID: C57541
     *
     * @depends publishEpisode
     * @group test_priority_2
+     * @group publish
     */
     public function unpublishEpisode(AcceptanceTester $I)
     {

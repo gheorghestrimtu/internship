@@ -254,37 +254,20 @@ class ContentSteps extends \AcceptanceTester {
         $I->waitForElement(ContentPage::findTitle($title), 60);
     }
 
-    public function clickRandomMovieAndReturnGuid(){
+    public function clickRandomContentInTableAndReturnGuid($rows_with_content_selector){
         $I=$this;
         $I->selectNumberOfItemsPerPage("All");
-        $randomMovie=$I->findRandomElement(ContentPage::$rows_with_movie['xpath']);
-        $guid=$I->findElementInElement($randomMovie,'/td[' . ContentPage::$guid_column . ']')->getText();
-        $I->findElementInElement($randomMovie,'/td['.ContentPage::$type_column.']')->click();
-        return $guid;
-    }
-
-    public function clickRandomSeriesAndReturnGuid(){
-        $I=$this;
-        $I->selectNumberOfItemsPerPage("All");
-        $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series['xpath']);
+        $randomSeries=$I->findRandomElement($rows_with_content_selector);
         $guid=$I->findElementInElement($randomSeries,'/td[' . ContentPage::$guid_column . ']')->getText();
         $I->findElementInElement($randomSeries,'/td['.ContentPage::$type_column.']')->click();
         return $guid;
     }
 
-    public function clickEditPencilOnRandomMovieAndReturnGuid(){
-        $I=$this;
-        $I->selectNumberOfItemsPerPage("All");
-        $randomMovie=$I->findRandomElement(ContentPage::$rows_with_movie['xpath']);
-        $guid=$I->findElementInElement($randomMovie,'/td[' . ContentPage::$guid_column . ']')->getText();
-        $I->findElementInElement($randomMovie,ContentPage::$edit_pencil['xpath'])->click();
-        return $guid;
-    }
 
-    public function clickEditPencilOnRandomSeriesAndReturnGuid(){
+    public function clickEditPencilOnRandomContentInTableAndReturnGuid($rows_with_content_selector){
         $I=$this;
         $I->selectNumberOfItemsPerPage("All");
-        $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series['xpath']);
+        $randomSeries=$I->findRandomElement($rows_with_content_selector);
         $guid=$I->findElementInElement($randomSeries,'/td[' . ContentPage::$guid_column . ']')->getText();
         $I->findElementInElement($randomSeries,ContentPage::$edit_pencil['xpath'])->click();
         return $guid;

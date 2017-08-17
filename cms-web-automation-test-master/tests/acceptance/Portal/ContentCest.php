@@ -801,7 +801,7 @@ class ContentCest
     {
         $I->wantTo('Verify we are taken to the right page when clicking a movie row. - C11005');
         $I->amOnContentPage();
-        $guid = $I->clickRandomMovieAndReturnGuid();
+        $guid = $I->clickRandomContentInTableAndReturnGuid(ContentPage::$rows_with_movie);
         $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
         $I->see('Videos');
         $I->see('Images');
@@ -837,7 +837,7 @@ class ContentCest
     {
         $I->wantTo('Verify we are taken to the right page when clicking a series row. - C11004');
         $I->amOnContentPage();
-        $guid = $I->clickRandomSeriesAndReturnGuid();
+        $guid = $I->clickRandomContentInTableAndReturnGuid(ContentPage::$rows_with_series);
         $I->seeInCurrentUrl(ContentSeriesPage::urlByGuid($guid));
     }
 
@@ -871,7 +871,7 @@ class ContentCest
     {
         $I->wantTo('Verify that clicking the edit icon on a movie takes us to the edit movie page. - C22281');
         $I->amOnContentPage();
-        $guid = $I->clickEditPencilOnRandomMovieAndReturnGuid();
+        $guid = $I->clickEditPencilOnRandomContentInTableAndReturnGuid(ContentPage::$rows_with_movie);
         $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
         $I->waitAjaxLoad();
         $I->see('Videos');
@@ -909,7 +909,7 @@ class ContentCest
     {
         $I->wantTo('Verify that clicking the edit icon on a seires takes us to the edit series page. - C22280');
         $I->amOnContentPage();
-        $guid = $I->clickEditPencilOnRandomSeriesAndReturnGuid();
+        $guid = $I->clickEditPencilOnRandomContentInTableAndReturnGuid(ContentPage::$rows_with_series);
         $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
         $I->waitAjaxLoad();
         $I->see('Seasons');
