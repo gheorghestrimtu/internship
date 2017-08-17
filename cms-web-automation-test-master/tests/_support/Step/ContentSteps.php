@@ -107,8 +107,6 @@ class ContentSteps extends \AcceptanceTester {
             $this->assertEquals($max, count($this->findElements(ContentPage::$table_rows['xpath'])), 'Should have ' . $max . ' items per page');
             return;
         }
-        //$this->seeElement(['xpath'=>'//table//tr['. $numberOfElements .']']);
-        //$this->dontSeeElement(['xpath'=>'//table//tr['. ($numberOfElements+1) .']']);
         $this->assertEquals($numberOfElements, count($this->findElements(ContentPage::$table_rows['xpath'])), 'Should have ' . $numberOfElements . ' items per page');
 
     }
@@ -116,7 +114,6 @@ class ContentSteps extends \AcceptanceTester {
     public function clickEditPencil($row){
         $this->moveMouseOver(['xpath'=> '//table//tr['. $row .']']);
         $this->click(ContentPage::$edit_pencil);
-        //tr[1]//i[contains(@class, "edit") and contains(@class, "fa-pencil")]
     }
 
     public function shouldSeeTitleIsValid($titleGuid){
@@ -126,8 +123,6 @@ class ContentSteps extends \AcceptanceTester {
         $I->clickEditPencil($row);
         $I->waitAjaxLoad();
         $I->seeInField(ContentEditPage::$title,$title);
-        //$input=$I->grabValueFrom(ContentEditPage::$title);
-        //$I->assertEquals($title,$input);
     }
 
     public function chooseRandomContentAndReturnGuid(){
@@ -149,7 +144,6 @@ class ContentSteps extends \AcceptanceTester {
         $sortedTitleList=$titleList;
         usort($sortedTitleList, 'strcasecmp');
         $I->assertTrue($sortedTitleList===$titleList,'Should be sorted alphabetically');
-        //$I->assertEquals($sortedTitleList,$titleList,'Should be sorted alphabetically');
     }
 
     public function shouldSeeTableReverseSortedByTitle(){
@@ -167,6 +161,15 @@ class ContentSteps extends \AcceptanceTester {
         $I->selectNumberOfItemsPerPage("All");
         $list=$I->grabMultiple(ContentPage::$all_types);
         $listWithoutMoviesAndSeries=array_diff($list,['Movie','Series']);
+        $I->assertTrue(count($listWithoutMoviesAndSeries)==0,"Only Movies and Series in type column");
+    }
+
+    public function shouldSeeOnlyType($typeArray){
+        $I=$this;
+        $I->waitForElementVisible(ContentPage::$all_types['xpath']);
+        $I->selectNumberOfItemsPerPage("All");
+        $list=$I->grabMultiple(ContentPage::$all_types);
+        $listWithoutMoviesAndSeries=array_diff($list,$typeArray);
         $I->assertTrue(count($listWithoutMoviesAndSeries)==0,"Only Movies and Series in type column");
     }
 
@@ -216,7 +219,9 @@ class ContentSteps extends \AcceptanceTester {
         $I=$this;
         $publishedList=$I->grabMultiple(ContentPage::$all_published_percentage);
         $sortedPublishedList=$publishedList;
-        usort($sortedPublishedList,'strnatcasecmp');
+        usort($sortedPublishedList,'strcasecmp');
+        print_r($sortedPublishedList);
+        print_r($publishedList);
         $I->assertTrue($publishedList===$sortedPublishedList,'Tabel Should be sorted by Published');
     }
 
@@ -224,7 +229,7 @@ class ContentSteps extends \AcceptanceTester {
         $I=$this;
         $publishedList=$I->grabMultiple(ContentPage::$all_published_percentage);
         $sortedPublishedList=$publishedList;
-        usort($sortedPublishedList,'strnatcasecmp');
+        usort($sortedPublishedList,'strcasecmp');
         $reverseSortedPublishedList=array_reverse($sortedPublishedList);
         $I->assertTrue($reverseSortedPublishedList===$publishedList,'Table Should be reverse sorted by Published');
     }
