@@ -33,7 +33,25 @@ class ContentEpisodeEditPage extends ContentEditPage {
         return self::${'guid_edit_' . APPLICATION_ENV};
     }
 
-
     public static $guid_for_testing_1='GY7582XM6';
+    public static $guid_for_publish='';
+
+    public static $rows_with_unpuplished_episodes=['xpath'=>'//tr[descendant::td[7][text()!="Yes" ]]'];
+
+    public static $type_column='5';
+    public static $guid_column='6';
+
+    public static $series = ['xpath' => '//label[text() = "Series Title"]'];
+    public static $season = ['xpath' => '//label[text() = "Season Title"]'];
+    public static $season_number = ['xpath' => '//label[text() = "Season Number"]'];
+    public static $episode_title_input = ['xpath' => '//label[text() = "Episode Title"]/following-sibling::input'];
+    public static $episode_number = ['xpath' => '//label[text() = "Episode Number"]'];
+    public static $episode_description = ['xpath' => '//label[text() = "Description"]'];
+
+    public static $field = ['xpath' => '//label[text() = "{{field}}"]'];
+
+    public static function getField($fieldName){
+        return str_replace('{{field}}', $fieldName, self::$field['xpath']);
+    }
 
 }

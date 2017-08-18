@@ -68,9 +68,9 @@ class SideNavCest
      *
      * @group test_priority_2
      *
-     * @example{"item":"Content", "breadcrumbText":"CONTENT", "element":"table", "link":"contentLink", "test_id":"C9172"}
-     * @example{"item":"Feed", "breadcrumbText":"FEED", "element":"firstFeedContainer", "link":"feedLink", "test_id":"C9179"}
-     * @example{"item":"Channels", "breadcrumbText":"CHANNELS", "element":"channelsContainer", "link":"channelsLink", "test_id":"C19528"}
+     * @example{"item":"Content", "breadcrumbText":"CONTENT", "element":"table", "link":"content_link", "test_id":"C9172"}
+     * @example{"item":"Feed", "breadcrumbText":"FEED", "element":"firstFeedContainer", "link":"feed_link", "test_id":"C9179"}
+     * @example{"item":"Channels", "breadcrumbText":"CHANNELS", "element":"channelsContainer", "link":"channels_link", "test_id":"C19528"}
      *
      */
     public function clickContentFeedChannels(SideNavSteps $I, \Codeception\Example $example)

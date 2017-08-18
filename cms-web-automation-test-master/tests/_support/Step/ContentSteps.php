@@ -5,8 +5,9 @@ use Page\ContentPage;
 use Page\ContentEditPage;
 use Page\ContentSeasonPage;
 use Page\ContentSeriesPage;
+use Step\AbstractStep;
 
-class ContentSteps extends \AcceptanceTester {
+class ContentSteps extends AbstractStep {
 
     public $temp = [];
 
@@ -202,6 +203,13 @@ class ContentSteps extends \AcceptanceTester {
         $I=$this;
         $I->waitAjaxLoad();
         $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series_and_episodes['xpath']);
+        $I->findElementInElement($randomSeries,'/td['.ContentPage::$type_column.']')->click();
+    }
+
+    public function clickRandomSeriesWithUnpuplishedEpisodes(){
+        $I=$this;
+        $I->waitAjaxLoad();
+        $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series_and_unpuplished_episodes['xpath']);
         $I->findElementInElement($randomSeries,'/td['.ContentPage::$type_column.']')->click();
     }
 

@@ -7,6 +7,7 @@ class AbstractPage {
     // Top menu
     public static $channel_dropdown = ['xpath' => '//nav/select[@name="channel"]'];
     public static $channel_dropdown_options = ['xpath' => '//nav/select[@name="channel"]/option'];
+    public static $channel_dropdown_selected_option = ['xpath' => '//nav/select[@name="channel"]/option[@selected]'];
     public static $channels_array = ['VRV', 'Cartoon Hangover', 'Crunchyroll', 'Funimation', 'Geek & Sundry', 'Ginx', 'Machinima', 'Mondo', 'Nerdist', 'RiffTrax', 'Rooster Teeth', 'Seeso', 'Shudder'];
 
     // Side bar
@@ -15,6 +16,7 @@ class AbstractPage {
     public static $feed_link = ['xpath' => '//*[@id="workspace"]/section/nav/ul//a[text()="Feed"]'];
     public static $channels_link = ['xpath' => '//*[@id="workspace"]/section/nav/ul//a[text()="Channels"]'];
     public static $ftp_accounts_link = ['xpath' => '//*[@id="workspace"]/section/nav/ul//a[text()="FTP ACCOUNTS"]'];
+    public static $sidenav = 'div.side-nav';
 
     public static $URL = '';
     public static $PortalAndContentTestingURL = '/chan/partnertest/catalog';
@@ -29,11 +31,7 @@ class AbstractPage {
     public static $firstFeedContainer="div.panel.feed-editor";
     public static $channelsContainer="div.channels";
 
-    public static $sidenav = 'div.side-nav';
-
-    public static $contentLink = "//*[@id='workspace']/section/nav/ul//a[text()='Content']";
-    public static $feedLink = "//*[@id='workspace']/section/nav/ul//a[text()='Feed']";
-    public static $channelsLink = "//*[@id='workspace']/section/nav/ul//a[text()='Channels']";
+    public static $table_rows=['xpath'=>'//table/tbody/tr'];
 
     /**
      * Basic route example for your current URL

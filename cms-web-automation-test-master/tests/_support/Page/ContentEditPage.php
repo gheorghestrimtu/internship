@@ -1,7 +1,7 @@
 <?php
 namespace Page;
 
-abstract class ContentEditPage {
+abstract class ContentEditPage extends AbstractPage {
 
     public static $URL = '/catalog/content/{{guid}}';
 

@@ -294,4 +294,12 @@ class ContentEditSteps extends ContentSteps {
         ];
     }
 
+    public function shouldSeeChannelTitle(){
+        $I=$this;
+        $I->waitAjaxLoad();
+        $selected_channel=$I->grabTextFrom(ContentEditPage::$channel_dropdown_selected_option);
+        $published_channel=$I->grabTextFrom(ContentEditPage::$channel);
+        $I->assertEquals(trim($selected_channel),trim($published_channel));
+    }
+
 }
