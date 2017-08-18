@@ -8,18 +8,18 @@
 
 namespace Step;
 
-use Page\SideNavPage;
+use Page\AbstractPage;
 
 class SideNavSteps extends \AcceptanceTester
 {
     public function amOnPortalAndContentTestingPage(){
         $I=$this;
-        $I->amOnPage(SideNavPage::$PortalAndContentTestingURL);
+        $I->amOnPage(AbstractPage::$PortalAndContentTestingURL);
         $I->waitAjaxLoad();
     }
 
     public function waitForBreadcrumbs($text){
         $I=$this;
-        $I->waitForText($text, 30, SideNavPage::$breadcrumbs);
+        $I->waitForText($text, 30, AbstractPage::$breadcrumbs);
     }
 }

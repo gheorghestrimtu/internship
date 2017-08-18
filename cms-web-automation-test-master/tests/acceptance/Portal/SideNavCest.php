@@ -1,8 +1,8 @@
 <?php
 
-use \Page\SideNavPage;
 use \Step\SideNavSteps;
 use \Step\LoginSteps;
+use \Page\AbstractPage;
 
 class SideNavCest
 {
@@ -77,8 +77,8 @@ class SideNavCest
     {
         $I->wantTo('Verify that clicking '.$example["item"].' link in the side nav takes us to the '.$example["item"].' page. - '.$example["test_id"].' ');
         $I->amOnPortalAndContentTestingPage();
-        $I->click(SideNavPage::${$example["link"]});
+        $I->click(AbstractPage::${$example["link"]});
         $I->waitForBreadcrumbs($example["breadcrumbText"]);
-        $I->waitForElementVisible(SideNavPage::${$example["element"]}, 30);
+        $I->waitForElementVisible(AbstractPage::${$example["element"]}, 30);
     }
 }
