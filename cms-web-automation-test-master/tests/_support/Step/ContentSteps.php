@@ -107,8 +107,6 @@ class ContentSteps extends \AcceptanceTester {
             $this->assertEquals($max, count($this->findElements(ContentPage::$table_rows['xpath'])), 'Should have ' . $max . ' items per page');
             return;
         }
-        //$this->seeElement(['xpath'=>'//table//tr['. $numberOfElements .']']);
-        //$this->dontSeeElement(['xpath'=>'//table//tr['. ($numberOfElements+1) .']']);
         $this->assertEquals($numberOfElements, count($this->findElements(ContentPage::$table_rows['xpath'])), 'Should have ' . $numberOfElements . ' items per page');
 
     }
@@ -116,7 +114,6 @@ class ContentSteps extends \AcceptanceTester {
     public function clickEditPencil($row){
         $this->moveMouseOver(['xpath'=> '//table//tr['. $row .']']);
         $this->click(ContentPage::$edit_pencil);
-        //tr[1]//i[contains(@class, "edit") and contains(@class, "fa-pencil")]
     }
 
     public function shouldSeeTitleIsValid($titleGuid){
@@ -126,8 +123,6 @@ class ContentSteps extends \AcceptanceTester {
         $I->clickEditPencil($row);
         $I->waitAjaxLoad();
         $I->seeInField(ContentEditPage::$title,$title);
-        //$input=$I->grabValueFrom(ContentEditPage::$title);
-        //$I->assertEquals($title,$input);
     }
 
     public function chooseRandomContentAndReturnGuid(){
@@ -145,11 +140,16 @@ class ContentSteps extends \AcceptanceTester {
 
     public function shouldSeeTableSortedByTitle(){
         $I=$this;
-        $titleList=$I->grabMultiple(ContentPage::$all_titles);
+        $titleList=array_map('strtolower',$I->grabMultiple(ContentPage::$all_titles));
         $sortedTitleList=$titleList;
-        usort($sortedTitleList, 'strcasecmp');
-        $I->assertTrue($sortedTitleList===$titleList,'Should be sorted alphabetically');
-        //$I->assertEquals($sortedTitleList,$titleList,'Should be sorted alphabetically');
+        sort($sortedTitleList);
+        for($i=0;$i<count($titleList);$i++){
+            if($titleList[$i]!=$sortedTitleList[$i]){
+                echo ($i+1).'|';
+            }
+        }
+        print_r($sortedTitleList);
+        $I->assertTrue(array_values($sortedTitleList)===array_values($titleList),'Should be sorted alphabetically');
     }
 
     public function shouldSeeTableReverseSortedByTitle(){
@@ -167,6 +167,15 @@ class ContentSteps extends \AcceptanceTester {
         $I->selectNumberOfItemsPerPage("All");
         $list=$I->grabMultiple(ContentPage::$all_types);
         $listWithoutMoviesAndSeries=array_diff($list,['Movie','Series']);
+        $I->assertTrue(count($listWithoutMoviesAndSeries)==0,"Only Movies and Series in type column");
+    }
+
+    public function shouldSeeOnlyType($typeArray){
+        $I=$this;
+        $I->waitForElementVisible(ContentPage::$all_types['xpath']);
+        $I->selectNumberOfItemsPerPage("All");
+        $list=$I->grabMultiple(ContentPage::$all_types);
+        $listWithoutMoviesAndSeries=array_diff($list,$typeArray);
         $I->assertTrue(count($listWithoutMoviesAndSeries)==0,"Only Movies and Series in type column");
     }
 
@@ -216,7 +225,9 @@ class ContentSteps extends \AcceptanceTester {
         $I=$this;
         $publishedList=$I->grabMultiple(ContentPage::$all_published_percentage);
         $sortedPublishedList=$publishedList;
-        usort($sortedPublishedList,'strnatcasecmp');
+        usort($sortedPublishedList,'strcasecmp');
+        print_r($sortedPublishedList);
+        print_r($publishedList);
         $I->assertTrue($publishedList===$sortedPublishedList,'Tabel Should be sorted by Published');
     }
 
@@ -224,7 +235,7 @@ class ContentSteps extends \AcceptanceTester {
         $I=$this;
         $publishedList=$I->grabMultiple(ContentPage::$all_published_percentage);
         $sortedPublishedList=$publishedList;
-        usort($sortedPublishedList,'strnatcasecmp');
+        usort($sortedPublishedList,'strcasecmp');
         $reverseSortedPublishedList=array_reverse($sortedPublishedList);
         $I->assertTrue($reverseSortedPublishedList===$publishedList,'Table Should be reverse sorted by Published');
     }
@@ -254,37 +265,20 @@ class ContentSteps extends \AcceptanceTester {
         $I->waitForElement(ContentPage::findTitle($title), 60);
     }
 
-    public function clickRandomMovieAndReturnGuid(){
+    public function clickRandomContentInTableAndReturnGuid($rows_with_content_selector){
         $I=$this;
         $I->selectNumberOfItemsPerPage("All");
-        $randomMovie=$I->findRandomElement(ContentPage::$rows_with_movie['xpath']);
-        $guid=$I->findElementInElement($randomMovie,'/td[' . ContentPage::$guid_column . ']')->getText();
-        $I->findElementInElement($randomMovie,'/td['.ContentPage::$type_column.']')->click();
-        return $guid;
-    }
-
-    public function clickRandomSeriesAndReturnGuid(){
-        $I=$this;
-        $I->selectNumberOfItemsPerPage("All");
-        $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series['xpath']);
+        $randomSeries=$I->findRandomElement($rows_with_content_selector);
         $guid=$I->findElementInElement($randomSeries,'/td[' . ContentPage::$guid_column . ']')->getText();
         $I->findElementInElement($randomSeries,'/td['.ContentPage::$type_column.']')->click();
         return $guid;
     }
 
-    public function clickEditPencilOnRandomMovieAndReturnGuid(){
-        $I=$this;
-        $I->selectNumberOfItemsPerPage("All");
-        $randomMovie=$I->findRandomElement(ContentPage::$rows_with_movie['xpath']);
-        $guid=$I->findElementInElement($randomMovie,'/td[' . ContentPage::$guid_column . ']')->getText();
-        $I->findElementInElement($randomMovie,ContentPage::$edit_pencil['xpath'])->click();
-        return $guid;
-    }
 
-    public function clickEditPencilOnRandomSeriesAndReturnGuid(){
+    public function clickEditPencilOnRandomContentInTableAndReturnGuid($rows_with_content_selector){
         $I=$this;
         $I->selectNumberOfItemsPerPage("All");
-        $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series['xpath']);
+        $randomSeries=$I->findRandomElement($rows_with_content_selector);
         $guid=$I->findElementInElement($randomSeries,'/td[' . ContentPage::$guid_column . ']')->getText();
         $I->findElementInElement($randomSeries,ContentPage::$edit_pencil['xpath'])->click();
         return $guid;

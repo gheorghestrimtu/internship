@@ -9,6 +9,7 @@ use Page\ContentEditPage;
 use Page\ContentSeriesPage;
 use Step\ContentSeriesSteps;
 use Step\ContentSeasonSteps;
+use Page\ContentMovieEditPage;
 
 
 class ContentCest
@@ -202,7 +203,7 @@ class ContentCest
     {
         $I->wantTo('Verify content types show up correctly. - C9175');
         $I->amOnContentPage();
-        $I->shouldSeeOnlyMoviesAndSeries();
+        $I->shouldSeeOnlyType(['Movie','Series']);
     }
 
     /**
@@ -635,140 +636,49 @@ class ContentCest
     }
 
     /**
-     * TESTRAIL TESTCASE ID: C15525
+     * TESTRAIL TESTCASE ID: C15527
      *
      * @group test_priority_2
      */
-    /*
-    public function filterByMediaTypeSeries(AcceptanceTester $I)
+    public function filterByMediaTypeSeriesRemoveFilter(ContentSteps $I)
     {
-        $I->wantTo('Verify we can filter by Media Type Series - C15525');
-        $I->amOnPage(ContentPage::$URL);
-
-        $I->amGoingTo('Make sure all content is displayed.');
-        ContentUtils::findContentItemByTitle($I, 'ZZ');
-
-        $I->amGoingTo('Open the filter dropdown and select Series.');
-        $I->moveMouseOver(ContentPage::$addFilterDropdown);
-        $I->waitForElementVisible(ContentPage::$addFilterDropdown_series);
-        $I->click(ContentPage::$addFilterDropdown_series);
-
-        $I->expect('Only series appear now.');
-        $I->dontSeeElement("//td[text()='Movie']");
-    }*/
-
-    /**
-     * TESTRAIL TESTCASE ID: C15525
-     *
-     * @group test_priority_2
-     */
-    public function filterByMediaTypeSeries(ContentSteps $I)
-    {
-        $I->wantTo('Verify we can filter by Media Type Series - C15525');
+        $I->wantTo('Verify we can remove a set Media Type filter - C15527');
         $I->amOnContentPage();
         $I->selectNumberOfItemsPerPage("All");
         $I->moveMouseOver(ContentPage::$addFilterDropdown);
         $I->waitForElementVisible(ContentPage::$addFilterDropdown_series);
         $I->click(ContentPage::$addFilterDropdown_series);
         $I->expect('Only series appear now.');
-        $I->dontSeeElement(ContentPage::$rows_with_movie);
+        $I->shouldSeeOnlyType(['Series']);
+        $I->amGoingTo('Remove the filter.');
+        $I->moveMouseOver(ContentPage::$addFilterDropdown);
+        $I->waitForElementVisible(ContentPage::$addFilterDropdown_remove);
+        $I->click(ContentPage::$addFilterDropdown_remove);
+        $I->expect('Movies reappear.');
+        $I->shouldSeeOnlyType(['Movie','Series']);
     }
 
-
     /**
-     * TESTRAIL TESTCASE ID: C15526
+     * TESTRAIL TESTCASE ID: Needs to be added to testrail
      *
      * @group test_priority_2
      */
-    /*
-    public function filterByMediaTypeMovie(AcceptanceTester $I)
+    public function filterByMediaTypeMovieRemoveFilter(ContentSteps $I)
     {
-        $I->wantTo('Verify we can filter by Media Type Movie - C15526');
-        $I->amOnPage(ContentPage::$URL);
-
-        $I->amGoingTo('Make sure all content is displayed.');
-        ContentUtils::findContentItemByTitle($I, 'ZZ');
-
-        $I->amGoingTo('Open the filter dropdown and select Movie.');
-        $I->moveMouseOver(ContentPage::$addFilterDropdown);
-        $I->waitForElementVisible(ContentPage::$addFilterDropdown_movie);
-        $I->click(ContentPage::$addFilterDropdown_movie);
-
-        $I->expect('Only movies appear now.');
-        $I->dontSeeElement("//td[text()='Series']");
-    }*/
-
-    /**
-     * TESTRAIL TESTCASE ID: C15526
-     *
-     * @group test_priority_2
-     */
-    public function filterByMediaTypeMovie(ContentSteps $I)
-    {
-        $I->wantTo('Verify we can filter by Media Type Movie - C15526');
+        $I->wantTo('Verify we can remove a set Media Type filter - needs to be added to test rail');
         $I->amOnContentPage();
         $I->selectNumberOfItemsPerPage("All");
         $I->moveMouseOver(ContentPage::$addFilterDropdown);
         $I->waitForElementVisible(ContentPage::$addFilterDropdown_movie);
         $I->click(ContentPage::$addFilterDropdown_movie);
         $I->expect('Only movie appear now.');
-        $I->dontSeeElement(ContentPage::$rows_with_series);
-    }
-
-    /**
-     * TESTRAIL TESTCASE ID: C15527
-     *
-     * @group test_priority_2
-     */
-    /*
-    public function filterByMediaTypeRemoveFilter(AcceptanceTester $I)
-    {
-        $I->wantTo('Verify we can remove a set Media Type filter - C15527');
-        $I->amOnPage(ContentPage::$URL);
-
-        $I->amGoingTo('Make sure all content is displayed.');
-        ContentUtils::findContentItemByTitle($I, 'ZZ');
-
-        $I->amGoingTo('Open the filter dropdown and select Series.');
-        $I->moveMouseOver(ContentPage::$addFilterDropdown);
-        $I->waitForElementVisible(ContentPage::$addFilterDropdown_series);
-        $I->click(ContentPage::$addFilterDropdown_series);
-
-        $I->expect('Only series appear now.');
-        $I->dontSeeElement("//td[text()='Movie']");
-
+        $I->shouldSeeOnlyType(['Movie']);
         $I->amGoingTo('Remove the filter.');
         $I->moveMouseOver(ContentPage::$addFilterDropdown);
         $I->waitForElementVisible(ContentPage::$addFilterDropdown_remove);
         $I->click(ContentPage::$addFilterDropdown_remove);
-
-        $I->expect('Movies reappear.');
-        $I->seeElement("//td[text()='Movie']");
-    }
-    */
-
-    /**
-     * TESTRAIL TESTCASE ID: C15527
-     *
-     * @group test_priority_2
-     */
-    public function filterByMediaTypeRemoveFilter(ContentSteps $I)
-    {
-        $I->wantTo('Verify we can remove a set Media Type filter - C15527');
-        $I->amOnContentPage();
-        $I->selectNumberOfItemsPerPage("All");
-        $I->moveMouseOver(ContentPage::$addFilterDropdown);
-        $I->waitForElementVisible(ContentPage::$addFilterDropdown_series);
-        $I->click(ContentPage::$addFilterDropdown_series);
-        $I->expect('Only series appear now.');
-        $I->dontSeeElement(ContentPage::$rows_with_movie);
-        $I->amGoingTo('Remove the filter.');
-        $I->moveMouseOver(ContentPage::$addFilterDropdown);
-        $I->waitForElementVisible(ContentPage::$addFilterDropdown_remove);
-        $I->click(ContentPage::$addFilterDropdown_remove);
-        $I->expect('Movies reappear.');
-        $I->seeElement(ContentPage::$rows_with_movie);
-
+        $I->expect('Series reappear.');
+        $I->shouldSeeOnlyType(['Movie','Series']);
     }
 
     /**
@@ -801,11 +711,12 @@ class ContentCest
     {
         $I->wantTo('Verify we are taken to the right page when clicking a movie row. - C11005');
         $I->amOnContentPage();
-        $guid = $I->clickRandomMovieAndReturnGuid();
+        $guid = $I->clickRandomContentInTableAndReturnGuid(ContentPage::$rows_with_movie);
+        $I->waitAjaxLoad();
         $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
-        $I->see('Videos');
-        $I->see('Images');
-        $I->see('Attributes');
+        $I->see("Videos","h1");
+        $I->see("Images","h1");
+        $I->see("Attributes","h1");
 
     }
 
@@ -837,8 +748,11 @@ class ContentCest
     {
         $I->wantTo('Verify we are taken to the right page when clicking a series row. - C11004');
         $I->amOnContentPage();
-        $guid = $I->clickRandomSeriesAndReturnGuid();
+        $guid = $I->clickRandomContentInTableAndReturnGuid(ContentPage::$rows_with_series);
         $I->seeInCurrentUrl(ContentSeriesPage::urlByGuid($guid));
+        $I->see("Title","th");
+        $I->see("Content","a");
+        $I->see("VRV Content Management System","footer");
     }
 
     /**
@@ -871,12 +785,12 @@ class ContentCest
     {
         $I->wantTo('Verify that clicking the edit icon on a movie takes us to the edit movie page. - C22281');
         $I->amOnContentPage();
-        $guid = $I->clickEditPencilOnRandomMovieAndReturnGuid();
+        $guid = $I->clickEditPencilOnRandomContentInTableAndReturnGuid(ContentPage::$rows_with_movie);
         $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
         $I->waitAjaxLoad();
-        $I->see('Videos');
-        $I->see('Images');
-        $I->see('Attributes');
+        $I->see('Videos','h1');
+        $I->see('Images','h1');
+        $I->see('Attributes','h1');
     }
 
     /**
@@ -909,14 +823,14 @@ class ContentCest
     {
         $I->wantTo('Verify that clicking the edit icon on a seires takes us to the edit series page. - C22280');
         $I->amOnContentPage();
-        $guid = $I->clickEditPencilOnRandomSeriesAndReturnGuid();
+        $guid = $I->clickEditPencilOnRandomContentInTableAndReturnGuid(ContentPage::$rows_with_series);
         $I->seeInCurrentUrl(ContentEditPage::urlByGuid($guid));
         $I->waitAjaxLoad();
-        $I->see('Seasons');
-        $I->see('Episodes');
-        $I->see('Images');
-        $I->see('Attributes');
-        $I->see('Videos');
+        $I->see('Seasons','h1');
+        $I->see('Episodes','h1');
+        $I->see('Images','h1');
+        $I->see('Attributes','h1');
+        $I->see('Videos','h1');
 
     }
 
