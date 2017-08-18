@@ -2,12 +2,16 @@
 
 use Codeception\Example;
 use Page\ContentEditPage;
+use Page\ContentEpisodeEditPage;
 use Step\ImageEditSteps;
 use Step\ContentEpisodeEditSteps;
 use Step\LoginSteps;
 
 class EpisodeEditCest
 {
+
+    public static $environment = 'undefined';
+    public static $loginCookie = 'undefined';
 
     public function _before(LoginSteps $I)
     {
@@ -50,7 +54,8 @@ class EpisodeEditCest
         $I->expect('Episode is still published.');
         $I->waitForText('Users who match window settings can view and/or watch content as defined.', 30);
         $I->seeElement(ContentPage::$publishCheckboxChecked);
-    }*/
+    }
+    */
 
     /**
      * TESTRAIL TESTCASE ID: C22274
@@ -61,8 +66,30 @@ class EpisodeEditCest
     public function publishEpisode(ContentEpisodeEditSteps $I)
     {
         $I->wantTo('Verify we can publish a episode. - C22274');
+        if(EpisodeEditCest::$environment == 'staging')
+        {
+            $guid = ContentEpisodeEditPage::$episodeEditData_staging;
+        }
+        else //proto0
+        {
+            $guid = ContentEpisodeEditPage::$episodeEditData_proto0;
+        }
 
+        $I->amOnContentEditPage($guid);
+        $I->waitForText('Media is currently hidden from all users.', 30);
+
+        $I->click(ContentEpisodeEditPage::$published_checkbox);
+        $I->waitForText('Users who match window settings can view and/or watch content as defined.', 30);
+        $I->click('Save Changes');
+        $I->wait(2);
+
+        $I->amOnContentEditPage($guid);
+
+        $I->waitForText('Users who match window settings can view and/or watch content as defined.', 30);
+        $I->seeElement(ContentEpisodeEditPage::$published_checkbox_checked);
     }
+
+
 
 
     /**
@@ -72,6 +99,7 @@ class EpisodeEditCest
     * @group test_priority_2
      * @group publish
     */
+    /*
     public function unpublishEpisode(AcceptanceTester $I)
     {
         $I->wantTo('Verify we can unpublish a episode. - C57541');
@@ -98,6 +126,34 @@ class EpisodeEditCest
         $I->amOnPage(ContentPage::$contentUrl . $guid);
 
         $I->expect('Episode is still unpublished.');
+        $I->waitForText('Media is currently hidden from all users.', 30);
+    }*/
+
+    /**
+     * TESTRAIL TESTCASE ID: C57541
+     *
+     * @depends publishEpisode
+     * @group test_priority_2
+     * @group publish
+     */
+    public function unpublishEpisode(ContentEpisodeEditSteps $I)
+    {
+        $I->wantTo('Verify we can unpublish a episode. - C57541');
+        if(EpisodeEditCest::$environment == 'staging')
+        {
+            $guid = TestContentGuids::$episodeEditData_staging;
+        }
+        else //proto0
+        {
+            $guid = TestContentGuids::$episodeEditData_proto0;
+        }
+        $I->amOnContentEditPage($guid);
+        $I->waitForText('Users who match window settings can view and/or watch content as defined.', 30);
+        $I->click(ContentEpisodeEditPage::$published_checkbox);
+        $I->waitForText('Media is currently hidden from all users.', 30);
+        $I->click('Save Changes');
+        $I->wait(2);
+        $I->amOnContentEditPage($guid);
         $I->waitForText('Media is currently hidden from all users.', 30);
     }
 

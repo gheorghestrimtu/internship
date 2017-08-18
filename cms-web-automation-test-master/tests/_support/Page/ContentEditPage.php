@@ -30,6 +30,7 @@ abstract class ContentEditPage {
     public static $published_unchecked_text = 'Media is currently hidden from all users.';
     public static $published_checked_text = 'Users who match window settings can view and/or watch content as defined.';
     public static $published_checkbox = ['xpath' => '(//div[@class="form-item"])[descendant::span[text()="Published"]]//label[contains(@class, "checkbox")]'];
+    public static $published_checkbox_checked = "(//div[contains(@class, 'attributes')])[1]//label[contains(@class, 'checked')]";
 
     public static $last_published_format = 'F d, Y g:i A T';
     public static $last_published = ['xpath' => '//div[./h1[text()="Visibility"]]//div[@class="messages"]/small'];
