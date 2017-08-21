@@ -26,6 +26,16 @@ abstract class ContentEditPage extends AbstractPage {
     public static $linked_card_2_title = ['xpath' => '//div[contains(@class, "content-card") and position() = 2]/h2/span'];
     public static $linked_card_2_channel = ['xpath' => '//div[contains(@class, "content-card") and position() = 2]/h1'];
 
+    //Calendar
+    public static $calendar_caption_xpath = '//*[@class="DayPicker-Caption"]';
+    public static $calendar_main_xpath = '//div[contains(@class, "DayPicker") and contains(@class, "DayPicker")]';
+    public static $calendar_main = 'div.DayPicker.DayPicker--en';
+    public static $calendar_prevBtn = 'span.DayPicker-NavButton--prev';
+    public static $calendar_nextBtn = 'span.DayPicker-NavButton--next';
+
+    public static $calendar_confirm = "//*[text()='OK']";
+    public static $calendar_cancel = "//*[text()='Cancel']";
+
     // Visibility
     public static $published_unchecked_text = 'Media is currently hidden from all users.';
     public static $published_checked_text = 'Users who match window settings can view and/or watch content as defined.';

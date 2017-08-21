@@ -15,6 +15,7 @@ class ContentSeasonSteps extends ContentSteps {
     public function clickRandomSeasonWithEpisodes(){
         $I=$this;
         $I->waitAjaxLoad();
+        $I->selectNumberOfItemsPerPage("All");
         $randomSeries=$I->findRandomElement(ContentSeasonPage::$rows_with_episodes['xpath']);
         $I->findElementInElement($randomSeries,'/td['.ContentSeasonPage::$type_column.']')->click();
     }
@@ -22,6 +23,7 @@ class ContentSeasonSteps extends ContentSteps {
     public function clickRandomSeasonWithUnpuplishedEpisodes(){
         $I=$this;
         $I->waitAjaxLoad();
+        $I->selectNumberOfItemsPerPage("All");
         $randomSeries=$I->findRandomElement(ContentSeasonPage::$rows_with_unpuplished_episodes['xpath']);
         $I->findElementInElement($randomSeries,'/td['.ContentSeasonPage::$type_column.']')->click();
     }

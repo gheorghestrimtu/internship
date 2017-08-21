@@ -34,8 +34,9 @@ class ContentEpisodeEditSteps extends ContentEditSteps
     {
         $I = $this;
         $I->waitAjaxLoad();
+        $I->selectNumberOfItemsPerPage("All");
         $randomEpisode = $I->findRandomElement(ContentEpisodeEditPage::$table_rows['xpath']);
-        ContentEpisodeEditPage::$guid_for_publish = $I->findElementInElement($randomEpisode, '/td[' . ContentEpisodeEditPage::$guid_column . ']')->getText();
+        ContentEpisodeEditPage::$guid_for_random_episode = $I->findElementInElement($randomEpisode, '/td[' . ContentEpisodeEditPage::$guid_column . ']')->getText();
         $I->findElementInElement($randomEpisode, '/td[' . ContentEpisodeEditPage::$type_column . ']')->click();
     }
 
@@ -43,8 +44,9 @@ class ContentEpisodeEditSteps extends ContentEditSteps
     {
         $I = $this;
         $I->waitAjaxLoad();
+        $I->selectNumberOfItemsPerPage("All");
         $randomEpisode = $I->findRandomElement(ContentEpisodeEditPage::$rows_with_unpuplished_episodes['xpath']);
-        ContentEpisodeEditPage::$guid_for_publish = $I->findElementInElement($randomEpisode, '/td[' . ContentEpisodeEditPage::$guid_column . ']')->getText();
+        ContentEpisodeEditPage::$guid_for_random_episode = $I->findElementInElement($randomEpisode, '/td[' . ContentEpisodeEditPage::$guid_column . ']')->getText();
         $I->findElementInElement($randomEpisode, '/td[' . ContentEpisodeEditPage::$type_column . ']')->click();
     }
 

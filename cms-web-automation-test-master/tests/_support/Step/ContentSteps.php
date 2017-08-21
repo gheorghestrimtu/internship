@@ -202,6 +202,7 @@ class ContentSteps extends AbstractStep {
     public function clickRandomSeriesWithEpisodes(){
         $I=$this;
         $I->waitAjaxLoad();
+        $I->selectNumberOfItemsPerPage("All");
         $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series_and_episodes['xpath']);
         $I->findElementInElement($randomSeries,'/td['.ContentPage::$type_column.']')->click();
     }
@@ -209,6 +210,7 @@ class ContentSteps extends AbstractStep {
     public function clickRandomSeriesWithUnpuplishedEpisodes(){
         $I=$this;
         $I->waitAjaxLoad();
+        $I->selectNumberOfItemsPerPage("All");
         $randomSeries=$I->findRandomElement(ContentPage::$rows_with_series_and_unpuplished_episodes['xpath']);
         $I->findElementInElement($randomSeries,'/td['.ContentPage::$type_column.']')->click();
     }

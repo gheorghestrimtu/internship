@@ -46,9 +46,9 @@ class Acceptance extends \Codeception\Module {
         return $this->findElement($locator)->isDisplayed();
     }
 
-    public function waitElementToBeClickable($selector) {
+    public function waitElementToBeClickable($selector, $timeout = 10) {
         $condition = WebDriverExpectedCondition::elementToBeClickable(\WebDriverBy::xpath($selector));
-        $this->getWebDriver()->wait(10)->until($condition);
+        $this->getWebDriver()->wait($timeout)->until($condition);
     }
 
     public function waitForRegExp($pattern, $timeout = 10, $selector = null) {

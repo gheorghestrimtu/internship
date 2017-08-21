@@ -302,4 +302,52 @@ class ContentEditSteps extends ContentSteps {
         $I->assertEquals(trim($selected_channel),trim($published_channel));
     }
 
+    public function setDate( $inputToSet, $monthYear, $dayOfMonth, $formattedDate, $pastOrFuture) {
+        $I=$this;
+        $I->amGoingTo('Open calendar');
+        $I->wait(5);
+        $I->scrollTo($inputToSet);
+        $I->click($inputToSet);
+        $I->waitForElementVisible(ContentEditPage::$calendar_main, 30);
+
+        if (self::isFuture($dayOfMonth . ' ' . $monthYear, $I->grabValueFrom($inputToSet))) {
+            $button = ContentEditPage::$calendar_nextBtn;
+        } else {
+            $button = ContentEditPage::$calendar_prevBtn;
+        }
+
+        $I->amGoingTo('Set the date for ' . $dayOfMonth . 'th of ' . $monthYear);
+        $calendar = $I->findElement(ContentEditPage::$calendar_main_xpath);
+        $caption = $I->findElementInElement($calendar, ContentEditPage::$calendar_caption_xpath);
+        for ($u=0; $u < 24; $u++) {
+            $I->see($caption->getText());
+
+            if(!$I->isDisplayed("//div[contains(text(), '" . $monthYear . "')]")) {
+                $I->scrollTo($button);
+                $I->click($button);
+                $I->wait(3);
+            } else {
+                $I->wait(10); //Avoid stale elements
+                break;
+            }
+        }
+        $I->click("//div[contains(@class, 'DayPicker-Body')]//div[text()='" . $dayOfMonth . "']");
+
+        $I->expect('Correct date shows up in field.');
+        $I->wait(5);
+        $I->seeInField($inputToSet, $formattedDate);
+        $I->wait(1);
+
+        $I->amGoingTo('Click OK on the calendar.');
+        $I->click(ContentEditPage::$calendar_confirm);
+    }
+
+    function isFuture($time, $now = 'today') {
+        $now = strtotime($now);
+        $now = $now ? $now : strtotime('today');
+        return strtotime($time) > $now;
+    }
+
+
+
 }
