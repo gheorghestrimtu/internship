@@ -4,36 +4,16 @@ namespace Page;
 class ContentEpisodeEditPage extends ContentEditPage {
 
 
-    //For Viewing Full Data
-    private static $guid_view_full_proto0 = 'GYWEX5NNY';
-    private static $guid_view_full_staging = 'GY7582XM6';
+    public static $episodeViewData_proto0 = 'GYWEX5NNY';
+    public static $episodeViewData_staging = 'GY7582XM6';
 
-    //For Viewing Minimum Data
-    private static $guid_view_minimum_proto0 = 'GR9PJE1D6';
-    private static $guid_view_minimum_staging = 'GYJQD2XD6';
-
-    //For Editing Data
-    private static $guid_edit_proto0 = 'GR195D1Q6';
-    private static $guid_edit_staging = 'GRMG01W5R';
-
-
-    public static $episodeEditData_proto0 = 'GR195D1Q6';
-    public static $episodeEditData_staging = 'GY7582XM6';
-
-
-    public static function getViewGuid() {
-        return self::${'guid_view_full_' . APPLICATION_ENV};
-    }
-
-    public static function getViewMinimumGuid() {
-        return self::${'guid_view_minimum_' . APPLICATION_ENV};
-    }
+    public static $episodeViewMinimumData_proto0 = 'GR9PJE1D6';
+    public static $episodeViewMinimumData_staging = 'GYJQD2XD6';
 
     public static function getEditGuid() {
         return self::${'guid_edit_' . APPLICATION_ENV};
     }
 
-    public static $guid_for_testing_1='GY7582XM6';
     public static $guid_for_random_episode='';
 
     public static $rows_with_unpuplished_episodes=['xpath'=>'//tr[descendant::td[7][text()!="Yes" ]]'];
@@ -41,12 +21,30 @@ class ContentEpisodeEditPage extends ContentEditPage {
     public static $type_column='5';
     public static $guid_column='6';
 
-    public static $series = ['xpath' => '//label[text() = "Series Title"]'];
-    public static $season = ['xpath' => '//label[text() = "Season Title"]'];
-    public static $season_number = ['xpath' => '//label[text() = "Season Number"]'];
     public static $episode_title_input = ['xpath' => '//label[text() = "Episode Title"]/following-sibling::input'];
     public static $episode_number_input = ['xpath' => '//label[text() = "Episode Number"]/following-sibling::input'];
     public static $episode_description_input = ['xpath' => '//label[text() = "Description"]/following-sibling::textarea'];
+    //Videos
+    public static $videoTable = "//h1[text()='Videos']/..//table";
+
+    public static $videoTable_titleHeader = "//h1[text()='Videos']/..//table/thead/tr/th[1]";
+    public static $videoTable_firstTitle = "//h1[text()='Videos']/..//table/tbody/tr/td[1]/span";
+
+    public static $videoTable_durationHeader = "//h1[text()='Videos']/..//table/thead/tr/th[2]";
+    public static $videoTable_firstDuration = "//h1[text()='Videos']/..//table/tbody/tr/td[2]";
+
+    public static $videoTable_guidHeader = "//h1[text()='Videos']/..//table/thead/tr/th[3]";
+    public static $videoTable_firstGuid = "//h1[text()='Videos']/..//table/tbody/tr/td[3]";
+
+    //Images
+    public static $imagesTable = "//h1[text()='Images']/..//table";
+
+    public static $imagesTable_titleHeader = "//h1[text()='Images']/..//table/thead/tr/th[2]";
+    public static $imagesTable_firstTitle = "//h1[text()='Images']/..//table/tbody/tr/td[2]";
+
+    public static $imagesTable_typeHeader = "//h1[text()='Images']/..//table/thead/tr/th[3]";
+    public static $imagesTable_firstType = "//h1[text()='Images']/..//table/tbody/tr/td[3]";
+
 
     public static $field = ['xpath' => '//label[text() = "{{field}}"]'];
 

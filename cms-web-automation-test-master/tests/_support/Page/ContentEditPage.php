@@ -4,6 +4,7 @@ namespace Page;
 abstract class ContentEditPage extends AbstractPage {
 
     public static $URL = '/catalog/content/{{guid}}';
+    public static $contentUrl = '/catalog/content/'; //Requires guid to be valid
 
 
     // ATTRIBUTES
@@ -25,13 +26,22 @@ abstract class ContentEditPage extends AbstractPage {
     public static $linked_card_2_guid = ['xpath' => '//div[contains(@class, "content-card") and position() = 2]/*[@class="guid"]'];
     public static $linked_card_2_title = ['xpath' => '//div[contains(@class, "content-card") and position() = 2]/h2/span'];
     public static $linked_card_2_channel = ['xpath' => '//div[contains(@class, "content-card") and position() = 2]/h1'];
-
+    //Content pages
+    public static $attributesList = 'div.attributes';
+    public static $sortableTable = 'table.sortable';
+    public static $clickableTable = 'table.clickable';
     //Calendar
     public static $calendar_caption_xpath = '//*[@class="DayPicker-Caption"]';
     public static $calendar_main_xpath = '//div[contains(@class, "DayPicker") and contains(@class, "DayPicker")]';
     public static $calendar_main = 'div.DayPicker.DayPicker--en';
     public static $calendar_prevBtn = 'span.DayPicker-NavButton--prev';
     public static $calendar_nextBtn = 'span.DayPicker-NavButton--next';
+    public static $selected_date='//div[contains(@class,"DayPicker-Day--selected")]';
+    public static $clear_date_button='//div/button[contains(@class,"date-clear")]';
+    public static $calendar_hours='//div[@class="time-input"]/input[1]';
+    public static $calendar_minutes='//div[@class="time-input"]/input[2]';
+    public static $airDateRow = "//label[text()='Air Date']/..";
+    public static $airDateRow_editable = "//label[text()='Air Date']/..//input";
 
     public static $calendar_confirm = "//*[text()='OK']";
     public static $calendar_cancel = "//*[text()='Cancel']";
