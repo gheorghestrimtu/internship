@@ -13,7 +13,7 @@ abstract class ContentEditPage extends AbstractPage {
 
     // Related Content
     public static $linked_content_input = ['xpath' => '//label[text()="Linked Content"]/following-sibling::div//input'];
-    public static $linked_content_button = ['xpath' => '//label[text()="Linked Content"]/following-sibling::div//button'];
+    public static $linked_content_button = ['xpath' => '//button[contains(@class,"info")]'];
     public static $linked_content_unlink = ['xpath' => '//label[text()="Linked Content"]/following-sibling::div//a[@class="unlink"]'];
     public static $linked_content_error = ['xpath' => '//label[text()="Linked Content"]/following-sibling::div//div[@class="input-error"]'];
 

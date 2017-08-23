@@ -246,7 +246,9 @@ class ContentEditSteps extends ContentSteps {
         }
 
         // Link content
+        $I->scrollTo(ContentEditPage::$linked_content_button);
         $I->fillField(ContentEditPage::$linked_content_input, $guid);
+        $I->waitElementToBeClickable(ContentEditPage::$linked_content_button['xpath']);
         $I->click(ContentEditPage::$linked_content_button);
         $I->waitAjaxLoad();
 

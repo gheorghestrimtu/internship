@@ -7,9 +7,6 @@ use Step\ImageEditSteps;
 use Step\ContentEpisodeEditSteps;
 use Step\LoginSteps;
 use Step\ContentSeasonSteps;
-use Facebook\WebDriver\WebDriverWait;
-use Facebook\WebDriver\WebDriverExpectedCondition;
-use Facebook\WebDriver\WebDriverBy;
 
 class EpisodeEditCest
 {
@@ -884,7 +881,6 @@ class EpisodeEditCest
         $I->wantTo('Verify Episode Description can be edited. - C15634');
         $I->amOnRandomEpisodePage($I2);
         $oldDescription = $I->grabTextFrom(ContentEpisodeEditPage::$episode_description_input);
-        echo $oldDescription;
         $I->fillField(ContentEpisodeEditPage::$episode_description_input,'Automation Test Description');
         $I->pressSaveChangesButton();
         $I->amOnContentEditPage(ContentEpisodeEditPage::$guid_for_random_episode);
@@ -1436,6 +1432,7 @@ class EpisodeEditCest
         $I->shouldSeeContentWasLinked();
         $I->removeLinkedContent();
         $I->pressSaveChangesButton();
+
     }
 
 }
