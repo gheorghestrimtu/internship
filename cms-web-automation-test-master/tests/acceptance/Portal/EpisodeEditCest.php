@@ -2,28 +2,18 @@
 
 use Codeception\Example;
 use Page\ContentEditPage;
+use Page\ContentEpisodeEditPage;
 use Step\ImageEditSteps;
 use Step\ContentEpisodeEditSteps;
+use Step\LoginSteps;
+use Step\ContentSeasonSteps;
 
 class EpisodeEditCest
 {
-    public static $environment = 'undefined';
-    public static $loginCookie = 'undefined';
 
-    public function _before(AcceptanceTester $I)
+    public function _before(LoginSteps $I)
     {
-        $I->amOnPage('/');
-        //Set the environment for the cest
-        if (EpisodeEditCest::$environment == 'undefined')
-        {
-            EpisodeEditCest::$environment = AcceptanceUtils::getEnvironment($I);
-        }
-
-        EpisodeEditCest::$loginCookie = AcceptanceUtils::login($I, LoginInfo::$username, LoginInfo::$password, EpisodeEditCest::$loginCookie);
-    }
-
-    public function _after(AcceptanceTester $I)
-    {
+        $I->login();
     }
 
     //TESTS
@@ -31,7 +21,9 @@ class EpisodeEditCest
     * TESTRAIL TESTCASE ID: C22274
     *
     * @group test_priority_2
+     * @group publish
     */
+    /*
     public function publishEpisode(AcceptanceTester $I)
     {
         $I->wantTo('Verify we can publish a episode. - C22274');
@@ -61,13 +53,38 @@ class EpisodeEditCest
         $I->waitForText('Users who match window settings can view and/or watch content as defined.', 30);
         $I->seeElement(ContentPage::$publishCheckboxChecked);
     }
+    */
+
+    /**
+     * TESTRAIL TESTCASE ID: C22274
+     *
+     * @group test_priority_2
+     * @group publish
+     */
+    public function publishEpisode(ContentEpisodeEditSteps $I,ContentSeasonSteps $I2)
+    {
+        $I->wantTo('Verify we can publish an episode. - C22274');
+
+        $I->amOnRandomUnpuplishedEpisodePage($I2);
+        $I->waitForText(ContentEpisodeEditPage::$published_unchecked_text, 30);
+        $I->checkPublishCheckbox();
+        $I->pressSaveChangesButton();
+        $I->amOnContentEditPage(ContentEpisodeEditPage::$guid_for_random_episode);
+        $I->waitForText(ContentEpisodeEditPage::$published_checked_text, 30);
+        $I->seeElement(ContentEpisodeEditPage::$published_checkbox_checked);
+    }
+
+
+
 
     /**
     * TESTRAIL TESTCASE ID: C57541
     *
     * @depends publishEpisode
     * @group test_priority_2
+     * @group publish
     */
+    /*
     public function unpublishEpisode(AcceptanceTester $I)
     {
         $I->wantTo('Verify we can unpublish a episode. - C57541');
@@ -95,6 +112,24 @@ class EpisodeEditCest
 
         $I->expect('Episode is still unpublished.');
         $I->waitForText('Media is currently hidden from all users.', 30);
+    }*/
+
+    /**
+     * TESTRAIL TESTCASE ID: C57541
+     *
+     * @depends publishEpisode
+     * @group test_priority_2
+     * @group publish
+     */
+    public function unpublishEpisode(ContentEpisodeEditSteps $I)
+    {
+        $I->wantTo('Verify we can unpublish an episode. - C57541');
+        $I->amOnContentEditPage(ContentEpisodeEditPage::$guid_for_random_episode);
+        $I->waitForText(ContentEpisodeEditPage::$published_checked_text, 30);
+        $I->uncheckPublishCheckbox();
+        $I->pressSaveChangesButton();
+        $I->amOnContentEditPage(ContentEpisodeEditPage::$guid_for_random_episode);
+        $I->waitForText(ContentEpisodeEditPage::$published_unchecked_text, 30);
     }
 
     /**
@@ -102,6 +137,7 @@ class EpisodeEditCest
     *
     * @group test_priority_1
     */
+    /*
     public function channelNameDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify channel name is displayed on the Edit Episode page. - C15617');
@@ -117,13 +153,27 @@ class EpisodeEditCest
 
         $I->expect('Channel name is displayed.');
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
+    }*/
+
+    /**
+     * TESTRAIL TESTCASE ID: C15617
+     *
+     * @group test_priority_1
+     */
+    public function channelNameDisplayed(ContentEpisodeEditSteps $I, ContentSeasonSteps $I2)
+    {
+        $I->wantTo('Verify channel name is displayed on the Edit Episode page. - C15617');
+        $I->amOnRandomEpisodePage($I2);
+        $I->shouldSeeChannelTitle();
     }
+
 
     /**
     * TESTRAIL TESTCASE ID: C15618
     *
     * @group test_priority_1
     */
+    /*
     public function seriesTitleDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Series Title is displayed on the Edit Episode page. - C15618');
@@ -140,13 +190,14 @@ class EpisodeEditCest
         $I->expect('Series Title is displayed.');
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
         $I->see('Series View Filled Data For Automation', ContentPage::$seriesTitleRow);
-    }
+    }*/
 
     /**
     * TESTRAIL TESTCASE ID: C15619
     *
     * @group test_priority_1
     */
+    /*
     public function seasonTitleDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Season Title is displayed on the Edit Episode page. - C15619');
@@ -163,13 +214,15 @@ class EpisodeEditCest
         $I->expect('Season Title is displayed.');
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
         $I->see('Season View Filled Data For Automation', ContentPage::$seasonTitleRow);
-    }
+    }*/
+
 
     /**
     * TESTRAIL TESTCASE ID: C214859
     *
     * @group test_priority_1
     */
+    /*
     public function seasonNumberDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Season Number is displayed on the Edit Episode page. - C214859');
@@ -186,13 +239,14 @@ class EpisodeEditCest
         $I->expect('Season Number is displayed.');
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
         $I->see('1', ContentPage::$seasonNumberRow);
-    }
+    }*/
 
     /**
     * TESTRAIL TESTCASE ID: C15622
     *
     * @group test_priority_1
     */
+    /*
     public function episodeTitleDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Episode Title is displayed on the Edit Episode page. - C15622');
@@ -209,13 +263,14 @@ class EpisodeEditCest
         $I->expect('Episode Title is displayed.');
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
         $I->seeInField(ContentPage::$episodeTitleRow_editable, 'Episode View Filled Data For Automation');
-    }
+    }*/
 
     /**
     * TESTRAIL TESTCASE ID: C214860
     *
     * @group test_priority_1
     */
+    /*
     public function episodeNumberDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Episode Number is displayed on the Edit Episode page. - C214860');
@@ -232,13 +287,14 @@ class EpisodeEditCest
         $I->expect('Episode Number is displayed.');
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
         $I->seeInField(ContentPage::$episodeNumberRow_editable, '1');
-    }
+    }*/
 
     /**
     * TESTRAIL TESTCASE ID: C15623
     *
     * @group test_priority_1
     */
+    /*
     public function episodeLongDescriptionDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Episode Description is displayed on the Edit Episode page. - C15623');
@@ -255,13 +311,14 @@ class EpisodeEditCest
         $I->expect('Episode Description displayed.');
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
         $I->seeInField(ContentPage::$descriptionRow_editable, 'This is the episode automation uses to view all filled out data. Do not edit.');
-    }
+    }*/
 
     /**
     * TESTRAIL TESTCASE ID: C15624
     *
     * @group test_priority_1
     */
+    /*
     public function episodeCategoriesDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Episode Categories is displayed on the Edit Episode page. - C15624');
@@ -279,13 +336,14 @@ class EpisodeEditCest
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
         $I->seeElement(ContentPage::$categoriesRow);
         $I->see('Action/Comedy', "//span[contains(@class, 'tags-tagname')]");
-    }
+    }*/
 
     /**
     * TESTRAIL TESTCASE ID: C15625
     *
     * @group test_priority_1
     */
+    /*
     public function episodeTagsDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Episode Tags is displayed on the Edit Episode page. - C15625');
@@ -304,13 +362,14 @@ class EpisodeEditCest
         $I->seeElement(ContentPage::$tagsRow);
         $I->see('automation', "(//span[contains(@class, 'tags-tagname')])[2]");
         $I->see('view data', "(//span[contains(@class, 'tags-tagname')])[3]");
-    }
+    }*/
 
     /**
     * TESTRAIL TESTCASE ID: C15629
     *
     * @group test_priority_1
     */
+    /*
     public function episodeAirDateDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Episode Air Date is displayed on the Edit Episode page. - C15629');
@@ -327,6 +386,27 @@ class EpisodeEditCest
         $I->expect('Air Date displayed.');
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
         $I->seeInField(ContentPage::$airDateRow_editable, 'Oct 4, 2015 11:00 EDT');
+    }*/
+
+    /**
+     * TESTRAIL TESTCASE ID: C15618 C15619 C214859 C15622 C214860 C15623 C15624 C15625 C15629
+     *
+     * @group test_priority_1
+     * @example{"fieldName":"Series Title","testCaseID":"C15618"}
+     * @example{"fieldName":"Season Title","testCaseID":"C15619"}
+     * @example{"fieldName":"Season Number","testCaseID":"C214859"}
+     * @example{"fieldName":"Episode Title","testCaseID":"C15622"}
+     * @example{"fieldName":"Episode Number","testCaseID":"C214860"}
+     * @example{"fieldName":"Description","testCaseID":"C15623"}
+     * @example{"fieldName":"Categories","testCaseID":"C15624"}
+     * @example{"fieldName":"Tags","testCaseID":"C15625"}
+     * @example{"fieldName":"Air Date","testCaseID":"C15629"}
+     *
+     */
+    public function fieldsDisplayed(ContentEpisodeEditSteps $I, ContentSeasonSteps $I2, Example $example){
+        $I->wantTo('Verify '.$example['fieldName'].' is displayed on the Edit Episode page. -'.$example['testCaseID'].' ');
+        $I->amOnRandomEpisodePage($I2);
+        $I->shouldSeeField($example['fieldName']);
     }
 
     /**
@@ -334,6 +414,7 @@ class EpisodeEditCest
     *
     * @group test_priority_1
     */
+    /*
     public function episodeTitleEdit(AcceptanceTester $I)
     {
         $I->wantTo('Verify Episode Title can be edited. - C15633');
@@ -373,13 +454,36 @@ class EpisodeEditCest
         $I->waitForElementVisible(ContentPage::$attributesSection, 30);
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
         $I->seeInField(ContentPage::$episodeTitleRow_editable, 'The Episode Title');
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C15633
+     *
+     * @group test_priority_1
+     */
+    public function episodeTitleEdit(ContentEpisodeEditSteps $I, ContentSeasonSteps $I2)
+    {
+        $I->wantTo('Verify Episode Title can be edited. - C15633');
+        $I->amOnRandomEpisodePage($I2);
+        $oldTitle=$I->grabValueFrom(ContentEpisodeEditPage::$episode_title_input);
+        $testTitle="New Test Title";
+        $I->fillField(ContentEpisodeEditPage::$episode_title_input,$testTitle);
+        $I->pressSaveChangesButton();
+        $I->amOnContentEditPage(ContentEpisodeEditPage::$guid_for_random_episode);
+        $I->seeInField(ContentEpisodeEditPage::$episode_title_input,$testTitle);
+        $I->wait(2);
+        //Set Old Title back
+        $I->fillField(ContentEpisodeEditPage::$episode_title_input,$oldTitle);
+        $I->pressSaveChangesButton();
+    }
+
+
+        /**
     * TESTRAIL TESTCASE ID: C214861
     *
     * @group test_priority_1
     */
+    /*
     public function episodeNumberEdit(AcceptanceTester $I)
     {
         $I->wantTo('Verify Episode Number can be edited. - C214861');
@@ -419,13 +523,35 @@ class EpisodeEditCest
         $I->waitForElementVisible(ContentPage::$attributesSection, 30);
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
         $I->seeInField(ContentPage::$episodeNumberRow_editable, '1');
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C214861
+     *
+     * @group test_priority_1
+     */
+    public function episodeNumberEdit(ContentEpisodeEditSteps $I, ContentSeasonSteps $I2)
+    {
+        $I->wantTo('Verify Episode Number can be edited. - C214861');
+        $I->amOnRandomEpisodePage($I2);
+        $oldNumber=$I->grabValueFrom(ContentEpisodeEditPage::$episode_number_input);
+        $testNumber="1234";
+        $I->fillField(ContentEpisodeEditPage::$episode_number_input,$testNumber);
+        $I->pressSaveChangesButton();
+        $I->amOnContentEditPage(ContentEpisodeEditPage::$guid_for_random_episode);
+        $I->seeInField(ContentEpisodeEditPage::$episode_number_input,$testNumber);
+        $I->wait(2);
+        //Set Old Number back
+        $I->fillField(ContentEpisodeEditPage::$episode_number_input,$oldNumber);
+        $I->pressSaveChangesButton();
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C214862
     *
     * @group test_priority_2
     */
+    /*
     public function arrowKeysOnEpisodeNumber(AcceptanceTester $I)
     {
         $I->wantTo('Verify arrow keys increment episode number. - C214862');
@@ -466,13 +592,35 @@ class EpisodeEditCest
         
         $I->expect('Number is now 1');
         $I->seeInField(ContentPage::$episodeNumberRow_editable, '1');
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C214862
+     *
+     * @group test_priority_2
+     */
+    public function arrowKeysOnEpisodeNumber(ContentEpisodeEditSteps $I, ContentSeasonSteps $I2)
+    {
+        $I->wantTo('Verify arrow keys increment episode number. - C214862');
+        $I->amOnRandomEpisodePage($I2);
+        $oldNumber=$I->grabValueFrom(ContentEpisodeEditPage::$episode_number_input);
+        $I->amGoingTo('Press Up');
+        $I->pressKey(ContentEpisodeEditPage::$episode_number_input, \Facebook\Webdriver\WebDriverKeys::UP);
+        $I->pressSaveChangesButton();
+        $I->amOnContentEditPage(ContentEpisodeEditPage::$guid_for_random_episode);
+        $I->seeInField(ContentEpisodeEditPage::$episode_number_input,$oldNumber+1);
+        $I->wait(2);
+        //Set Old Number back
+        $I->fillField(ContentEpisodeEditPage::$episode_number_input,$oldNumber);
+        $I->pressSaveChangesButton();
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C214863
     *
     * @group test_priority_2
     */
+        /*
     public function negativeEpisodeNumber(AcceptanceTester $I)
     {
         $I->wantTo('Verify we cannot save a negative episode number. - C214863');
@@ -514,13 +662,32 @@ class EpisodeEditCest
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
         $I->seeInField(ContentPage::$episodeNumberRow_editable, '1');
         $I->dontSeeInField(ContentPage::$episodeNumberRow_editable, '-21');
+    }*/
+
+    /**
+     * TESTRAIL TESTCASE ID: C214863
+     *
+     * @group test_priority_2
+     */
+    public function negativeEpisodeNumber(ContentEpisodeEditSteps $I, ContentSeasonSteps $I2)
+    {
+        $I->wantTo('Verify we cannot save a negative episode number. - C214863');
+        $I->amOnRandomEpisodePage($I2);
+        $oldNumber=$I->grabValueFrom(ContentEpisodeEditPage::$episode_number_input);
+        $I->pressKey(ContentEpisodeEditPage::$episode_number_input, WebDriverKeys::LEFT,WebDriverKeys::LEFT,WebDriverKeys::LEFT, '-');
+        $I->pressSaveChangesButton();
+        $I->reloadPage();
+        $I->dontSeeInField(ContentEpisodeEditPage::$episode_number_input,-$oldNumber);
     }
+
+
 
     /**
     * TESTRAIL TESTCASE ID: C214864
     *
     * @group test_priority_2
     */
+    /*
     public function blankEpisodeNumber(AcceptanceTester $I)
     {
         $I->wantTo('Verify we can save a blank episode number. - C214864');
@@ -563,13 +730,36 @@ class EpisodeEditCest
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
         $I->seeInField(ContentPage::$episodeNumberRow_editable, '0');
         $I->dontSeeInField(ContentPage::$episodeNumberRow_editable, '1');
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C214864
+     *
+     * @group test_priority_2
+     */
+    public function blankEpisodeNumber(ContentEpisodeEditSteps $I, ContentSeasonSteps $I2)
+    {
+        $I->wantTo('Verify we can save a blank episode number. - C214864');
+        $I->amOnRandomEpisodePage($I2);
+        $oldNumber=$I->grabValueFrom(ContentEpisodeEditPage::$episode_number_input);
+        $I->doubleClick(ContentEpisodeEditPage::$episode_number_input['xpath']);
+        $I->pressKey(ContentEpisodeEditPage::$episode_number_input,WebDriverKeys::DELETE);
+        $I->pressSaveChangesButton();
+        $I->amOnContentEditPage(ContentEpisodeEditPage::$guid_for_random_episode);
+        $I->seeInField(ContentEpisodeEditPage::$episode_number_input,'0');
+        $I->wait(2);
+        //Set Old Number back
+        $I->fillField(ContentEpisodeEditPage::$episode_number_input,$oldNumber);
+        $I->pressSaveChangesButton();
+
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C214865
     *
     * @group test_priority_2
     */
+        /*
     public function zeroEpisodeNumber(AcceptanceTester $I)
     {
         $I->wantTo('Verify we can save 0 as an episode number. - C214865');
@@ -611,13 +801,35 @@ class EpisodeEditCest
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
         $I->seeInField(ContentPage::$episodeNumberRow_editable, '0');
         $I->dontSeeInField(ContentPage::$episodeNumberRow_editable, '1');
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C214865
+     *
+     * @group test_priority_2
+     */
+    public function zeroEpisodeNumber(ContentEpisodeEditSteps $I, ContentSeasonSteps $I2)
+    {
+        $I->wantTo('Verify we can save 0 as an episode number. - C214865');
+        $I->amOnRandomEpisodePage($I2);
+        $oldNumber=$I->grabValueFrom(ContentEpisodeEditPage::$episode_number_input);
+        $I->fillField(ContentEpisodeEditPage::$episode_number_input,'0');
+        $I->pressSaveChangesButton();
+        $I->amOnContentEditPage(ContentEpisodeEditPage::$guid_for_random_episode);
+        $I->seeInField(ContentEpisodeEditPage::$episode_number_input,'0');
+        $I->wait(2);
+        //Set Old Number back
+        $I->fillField(ContentEpisodeEditPage::$episode_number_input,$oldNumber);
+        $I->pressSaveChangesButton();
+    }
+
+
+        /**
     * TESTRAIL TESTCASE ID: C15634
     *
     * @group test_priority_1
     */
+    /*
     public function episodeDescriptionEdit(AcceptanceTester $I)
     {
         $I->wantTo('Verify Episode Description can be edited. - C15634');
@@ -657,9 +869,30 @@ class EpisodeEditCest
         $I->waitForElementVisible(ContentPage::$attributesSection, 30);
         $I->waitForText('Portal & Content Testing', 30, ContentPage::$channelRow);
         $I->seeInField(ContentPage::$descriptionRow_editable, 'This is an episode.');
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C15634
+     *
+     * @group test_priority_1
+     */
+    public function episodeDescriptionEdit(ContentEpisodeEditSteps $I, ContentSeasonSteps $I2)
+    {
+        $I->wantTo('Verify Episode Description can be edited. - C15634');
+        $I->amOnRandomEpisodePage($I2);
+        $oldDescription = $I->grabTextFrom(ContentEpisodeEditPage::$episode_description_input);
+        $I->fillField(ContentEpisodeEditPage::$episode_description_input,'Automation Test Description');
+        $I->pressSaveChangesButton();
+        $I->amOnContentEditPage(ContentEpisodeEditPage::$guid_for_random_episode);
+        $I->seeInField(ContentEpisodeEditPage::$episode_description_input,'Automation Test Description');
+        $I->wait(2);
+        //Set Old Description back
+        $I->findElement(ContentEpisodeEditPage::$episode_description_input)->clear();
+        $I->fillField(ContentEpisodeEditPage::$episode_description_input,$oldDescription.'  ');
+        $I->pressSaveChangesButton();
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C15637
     *
     * @group test_priority_1
@@ -667,6 +900,7 @@ class EpisodeEditCest
     *
     * For some reason this returns a stale element exception. Further investigation required.
     */
+    /*
     public function episodeAirDateEdit(AcceptanceTester $I)
     {
         $I->wantTo('Verify Air Date can be edited. - C15637');
@@ -691,13 +925,36 @@ class EpisodeEditCest
 
         $I->expect('Date is saved.');
         $I->seeInField(ContentPage::$airDateRow_editable, 'Jan 18, 2018 00:00 EST');
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C15637
+     *
+     * @group test_priority_1
+     * @group disabled
+     *
+     * For some reason this returns a stale element exception. Further investigation required.
+     */
+    public function episodeAirDateEdit(ContentEpisodeEditSteps $I, ContentSeasonSteps $I2)
+    {
+        $I->wantTo('Verify Air Date can be edited. - C15637');
+        $I->amOnRandomEpisodePage($I2);
+        $I->saveDate();
+        $I->setDate(ContentEditPage::$airDateRow_editable,'January 2018','18','0','0','Jan 18, 2018 00:00 EST');
+        $I->pressSaveChangesButton();
+        $I->amOnContentEditPage(ContentEpisodeEditPage::$guid_for_random_episode);
+        $I->seeInField(ContentEpisodeEditPage::$airDateRow_editable, 'Jan 18, 2018 00:00 EST');
+        //reset date
+        $I->setDate(ContentEditPage::$airDateRow_editable,$I->savedDate['monthYear'],$I->savedDate['dayOfMonth'],$I->savedDate['hours'],$I->savedDate['minutes'],$I->savedDate['formattedDate']);
+        $I->pressSaveChangesButton();
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C15640
     *
     * @group test_priority_2
     */
+    /*
     public function videoListDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Video List is displayed on the Edit Episode page. - C15640');
@@ -715,13 +972,27 @@ class EpisodeEditCest
         $I->waitForElementVisible(ContentPage::$clickableTable, 30);
         $I->see('VIDEOS');
         $I->see('series_view_filled_data_automation_1_episode_1_media_id', ContentPage::$videoTable);
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C15640
+     *
+     * @group test_priority_2
+     */
+    public function videoListDisplayed(ContentEpisodeEditSteps $I, ContentSeasonSteps $I2)
+    {
+        $I->wantTo('Verify Video List is displayed on the Edit Episode page. - C15640');
+        $I->amOnRandomEpisodePage($I2);
+        $I->see('VIDEOS','h1');
+        $I->waitForElementVisible(ContentPage::$clickableTable, 30);
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C15641
     *
     * @group test_priority_3
     */
+/*
     public function videoListUnsortable(AcceptanceTester $I)
     {
         $I->wantTo('Verify Video List is unsortable. - C15641');
@@ -740,13 +1011,20 @@ class EpisodeEditCest
         $I->see('VIDEOS');
         $I->see('series_view_filled_data_automation_1_episode_1_media_id', ContentPage::$videoTable);
         $I->dontSee('.sortable');
-    }
+    }*/
 
-    /**
+    public function videoListUnsortable(ContentEpisodeEditSteps $I, ContentSeasonSteps $I2)
+    {
+        $I->wantTo('Verify Video List is unsortable. - C15641');
+        $I->amOnRandomEpisodePage($I2);
+        $I->dontSeeSortableVideoTable();
+    }
+        /**
     * TESTRAIL TESTCASE ID: C15642
     *
     * @group test_priority_2
     */
+        /*
     public function videoListFilenameColumnDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Video List Filename Column is displayed on the Edit Episode page. - C15642');
@@ -765,13 +1043,26 @@ class EpisodeEditCest
         $I->see('VIDEOS');
         $I->see('Title', ContentPage::$videoTable_titleHeader);
         $I->see('series_view_filled_data_automation_1_episode_1_media_id', ContentPage::$videoTable_firstTitle);
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C15642
+     *
+     * @group test_priority_2
+     */
+    public function videoListFilenameColumnDisplayed(ContentEpisodeEditSteps $I)
+    {
+        $I->wantTo('Verify Video List Filename Column is displayed on the Edit Episode page. - C15642');
+        $I->amOnEpisodeEditPage();
+        $I->seeVideosTitle();
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C15643
     *
     * @group test_priority_2
     */
+    /*
     public function videoListDurationColumnDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Video List Duration Column is displayed on the Edit Episode page. - C15643');
@@ -790,13 +1081,26 @@ class EpisodeEditCest
         $I->see('VIDEOS');
         $I->see('Duration', ContentPage::$videoTable_durationHeader);
         $I->see('00:24:00', ContentPage::$videoTable_firstDuration);
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C15643
+     *
+     * @group test_priority_2
+     */
+    public function videoListDurationColumnDisplayed(ContentEpisodeEditSteps $I)
+    {
+        $I->wantTo('Verify Video List Duration Column is displayed on the Edit Episode page. - C15643');
+        $I->amOnEpisodeEditPage();
+        $I->seeVideosDuration();
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C15644
     *
     * @group test_priority_2
     */
+    /*
     public function videoListGuidColumnDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Video List GUID Column is displayed on the Edit Episode page. - C15644');
@@ -822,13 +1126,26 @@ class EpisodeEditCest
         {
             $I->see('GYGGPWMEY', ContentPage::$videoTable_firstGuid);
         }  
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C15644
+     *
+     * @group test_priority_2
+     */
+    public function videoListGuidColumnDisplayed(ContentEpisodeEditSteps $I)
+    {
+        $I->wantTo('Verify Video List GUID Column is displayed on the Edit Episode page. - C15644');
+        $I->amOnEpisodeEditPage();
+        $I->seeVideosGuid();
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C57548
     *
     * @group test_priority_2
     */
+    /*
     public function clickVideo(AcceptanceTester $I)
     {
         $I->wantTo('Verify we are taken to the right page when clicking a video listing from the season page. - C57548');
@@ -849,12 +1166,30 @@ class EpisodeEditCest
         $I->waitForText('VIDEO PREVIEW', 30);
         $I->seeInField("//label[text()=\"Video Title\"]/following-sibling::input", 'Episode Clip Video Filled Data For Automation');
     }
+    */
+
+    /**
+     * TESTRAIL TESTCASE ID: C57548
+     *
+     * @group test_priority_2
+     */
+    public function clickVideo(ContentEpisodeEditSteps $I)
+    {
+        $I->wantTo('Verify we are taken to the right page when clicking a video listing from the season page. - C57548');
+        $I->amOnEpisodeEditPage();
+        $I->click(ContentEpisodeEditPage::$firstVideo);
+        $I->see('Thumbnail','h1');
+        $I->see('Video Preview','h1');
+        $I->see('Attributes','h1');
+
+    }
 
     /**
     * TESTRAIL TESTCASE ID: C15646  
     *
     * @group test_priority_2
     */
+    /*
     public function imagesListDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Images List is displayed on the Edit Episode page. - C15646');
@@ -879,13 +1214,26 @@ class EpisodeEditCest
         {
             $I->see('45ad52a32ca5e4d374086aaa19c49e02.png', ContentPage::$imagesTable);
         }
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C15646
+     *
+     * @group test_priority_2
+     */
+    public function imagesListDisplayed(ContentEpisodeEditSteps $I)
+    {
+        $I->wantTo('Verify Images List is displayed on the Edit Episode page. - C15646');
+        $I->amOnEpisodeEditPage();
+        $I->seeImagesList();
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C15647
     *
     * @group test_priority_3
     */
+    /*
     public function imagesListUnsortable(AcceptanceTester $I)
     {
         $I->wantTo('Verify Images List is unsortable. - C15647');
@@ -911,13 +1259,26 @@ class EpisodeEditCest
             $I->see('45ad52a32ca5e4d374086aaa19c49e02.png', ContentPage::$imagesTable);
         }
         $I->dontSee('.sortable');
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C15647
+     *
+     * @group test_priority_3
+     */
+    public function imagesListUnsortable(ContentEpisodeEditSteps $I)
+    {
+        $I->wantTo('Verify Images List is unsortable. - C15647');
+        $I->amOnEpisodeEditPage();
+        $I->dontSeeSortableImagesTable();
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C15648
     *
     * @group test_priority_2
     */
+    /*
     public function imageListFilenameColumnDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Image List Filename Column is displayed on the Edit Episode page. - C15648');
@@ -943,13 +1304,25 @@ class EpisodeEditCest
         {
             $I->see('45ad52a32ca5e4d374086aaa19c49e02.png', ContentPage::$imagesTable_firstTitle);
         }
+    }*/
+    /**
+     * TESTRAIL TESTCASE ID: C15648
+     *
+     * @group test_priority_2
+     */
+    public function imageListFilenameColumnDisplayed(ContentEpisodeEditSteps $I)
+    {
+        $I->wantTo('Verify Image List Filename Column is displayed on the Edit Episode page. - C15648');
+        $I->amOnEpisodeEditPage();
+        $I->seeImagesTitle();
     }
 
-    /**
+        /**
     * TESTRAIL TESTCASE ID: C15649
     *
     * @group test_priority_2
     */
+    /*
     public function imageListTypeColumnDisplayed(AcceptanceTester $I)
     {
         $I->wantTo('Verify Image List Type Column is displayed on the Edit Episode page. - C15649');
@@ -975,13 +1348,26 @@ class EpisodeEditCest
         {
             $I->see('Landscape Poster', ContentPage::$imagesTable_firstType);
         }
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C15649
+     *
+     * @group test_priority_2
+     */
+    public function imageListTypeColumnDisplayed(ContentEpisodeEditSteps $I)
+    {
+        $I->wantTo('Verify Image List Type Column is displayed on the Edit Episode page. - C15649');
+        $I->amOnEpisodeEditPage();
+        $I->seeImagesType();
+    }
+
+        /**
     * TESTRAIL TESTCASE ID: C15651
     *
     * @group test_priority_3
     */
+    /*
     public function noImagesMessage(AcceptanceTester $I)
     {
         $I->wantTo('Verify the No Images message appears on a episode without images. - C15651');
@@ -996,9 +1382,21 @@ class EpisodeEditCest
         $I->amOnPage(ContentPage::$contentUrl . $guid);
         $I->waitForText('Landscape Poster image not found', 30);
         $I->waitForText('Portrait Poster image not found', 30);
-    }
+    }*/
 
     /**
+     * TESTRAIL TESTCASE ID: C15651
+     *
+     * @group test_priority_3
+     */
+    public function noImagesMessage(ContentEpisodeEditSteps $I)
+    {
+        $I->wantTo('Verify the No Images message appears on a episode without images. - C15651');
+        $I->amOnEpisodeEditPageMinimumData();
+        $I->seeNoImagesMessage();
+    }
+
+        /**
      * TESTRAIL TESTCASE ID: C50840, C50841
      *
      * @group test_priority_2
@@ -1034,6 +1432,7 @@ class EpisodeEditCest
         $I->shouldSeeContentWasLinked();
         $I->removeLinkedContent();
         $I->pressSaveChangesButton();
+
     }
 
 }

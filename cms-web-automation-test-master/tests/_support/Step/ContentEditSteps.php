@@ -1,12 +1,15 @@
 <?php
 namespace Step;
 
+use Codeception\Exception\ElementNotFound;
 use Codeception\Util\Fixtures;
 use Page\ContentEditPage;
+use Page\ContentEpisodeEditPage;
 
 class ContentEditSteps extends ContentSteps {
 
     public $temp = [];
+    public $savedDate=['monthYear'=>'','dayOfMonth'=>'','hours'=>'','minutes'=>'','formattedDate'=>''];
 
     public function amOnContentEditPage($guid, $wait = null) {
         $I = $this;
@@ -16,6 +19,7 @@ class ContentEditSteps extends ContentSteps {
 
     public function pressSaveChangesButton() {
         $I = $this;
+        $I->waitElementToBeClickable(ContentEditPage::$save_bar['xpath']);
         $I->clickWithLeftButton(ContentEditPage::$save_bar);
         $I->waitAjaxLoad();
     }
@@ -242,7 +246,9 @@ class ContentEditSteps extends ContentSteps {
         }
 
         // Link content
+        $I->scrollTo(ContentEditPage::$linked_content_button);
         $I->fillField(ContentEditPage::$linked_content_input, $guid);
+        $I->waitElementToBeClickable(ContentEditPage::$linked_content_button['xpath']);
         $I->click(ContentEditPage::$linked_content_button);
         $I->waitAjaxLoad();
 
@@ -293,5 +299,79 @@ class ContentEditSteps extends ContentSteps {
             'dubbed' => $I->grabAttributeFrom(ContentEditPage::$localization_dub, 'checked')
         ];
     }
+
+    public function shouldSeeChannelTitle(){
+        $I=$this;
+        $I->waitAjaxLoad();
+        $selected_channel=$I->grabTextFrom(ContentEditPage::$channel_dropdown_selected_option);
+        $published_channel=$I->grabTextFrom(ContentEditPage::$channel);
+        $I->assertEquals(trim($selected_channel),trim($published_channel));
+    }
+
+    public function setDate( $inputToSet, $monthYear, $dayOfMonth,$hour,$minutes, $formattedDate) {
+        $I=$this;
+        if(strcasecmp($formattedDate,'Select an Air Date')==0){
+            $I->click(ContentEpisodeEditPage::$clear_date_button);
+            return;
+        }
+        $I->amGoingTo('Open calendar');
+        $I->wait(5);
+        $I->scrollTo($inputToSet);
+        $I->click($inputToSet);
+        $I->waitForElementVisible(ContentEditPage::$calendar_main, 30);
+
+        if (self::isFuture($dayOfMonth . ' ' . $monthYear, $I->grabValueFrom($inputToSet))) {
+            $button = ContentEditPage::$calendar_nextBtn;
+        } else {
+            $button = ContentEditPage::$calendar_prevBtn;
+        }
+
+        $I->amGoingTo('Set the date for ' . $dayOfMonth . 'th of ' . $monthYear);
+        $calendar = $I->findElement(ContentEditPage::$calendar_main_xpath);
+        $caption = $I->findElementInElement($calendar, ContentEditPage::$calendar_caption_xpath);
+        $date_reached=false;
+        while(!$date_reached) {
+            try{
+                $I->isDisplayed(['xpath'=>"//div[contains(text(), '" . $monthYear . "')]"]);
+                $date_reached=true;
+            }catch(ElementNotFound $e){
+                $I->scrollTo($button);
+                $I->click($button);
+                $I->wait(3);
+            }
+
+        }
+        $I->click("//div[contains(@class, 'DayPicker-Body')]//div[text()='" . $dayOfMonth . "']");
+        $I->fillField(ContentEpisodeEditPage::$calendar_hours,$hour);
+        $I->fillField(ContentEpisodeEditPage::$calendar_minutes,$minutes);
+        $I->expect('Correct date shows up in field.');
+        $I->wait(5);
+        $I->seeInField($inputToSet, $formattedDate);
+        $I->wait(1);
+
+        $I->amGoingTo('Click OK on the calendar.');
+        $I->click(ContentEditPage::$calendar_confirm);
+    }
+
+    function isFuture($time, $now = 'today') {
+        $now = strtotime($now);
+        $now = $now ? $now : strtotime('today');
+        return strtotime($time) > $now;
+    }
+
+    public function saveDate(){
+        $I=$this;
+        $I->savedDate['formattedDate']=$I->grabValueFrom(ContentEpisodeEditPage::$airDateRow_editable);
+        if(strcasecmp($I->savedDate['formattedDate'],'Select an Air Date')==0){
+            return;
+        }
+        $I->click(ContentEpisodeEditPage::$airDateRow_editable);
+        $I->waitForElementVisible(ContentEpisodeEditPage::$calendar_main, 30);
+        $I->savedDate['monthYear']=$I->grabTextFrom(ContentEpisodeEditPage::$calendar_caption_xpath);
+        $I->savedDate['dayOfMonth']=$I->grabTextFrom(ContentEpisodeEditPage::$selected_date);
+        $I->savedDate['hours']=$I->grabValueFrom(ContentEpisodeEditPage::$calendar_hours);
+        $I->savedDate['minutes']=$I->grabValueFrom(ContentEpisodeEditPage::$calendar_minutes);
+    }
+
 
 }

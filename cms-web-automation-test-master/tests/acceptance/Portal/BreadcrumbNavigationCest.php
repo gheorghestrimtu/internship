@@ -29,7 +29,7 @@ class BreadcrumbNavigationCest {
      *
      * @group test_priority_3
      *
-     * @example {"category": "Movie", "subcategory": "Video", "test_case_id": "C15717"}
+     * @example {"category": "Movie", "subcategory": "Video", "test_case_id": "c"}
      * @example {"category": "Episode", "subcategory": "Video", "test_case_id": "C15653"}
      * @example {"category": "Movie", "subcategory": "ExtraVideo", "test_case_id": "C15791"}
      * @example {"category": "Series", "subcategory": "ExtraVideo", "test_case_id": "C15786"}

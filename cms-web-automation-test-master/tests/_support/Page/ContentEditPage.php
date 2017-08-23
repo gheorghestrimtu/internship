@@ -1,9 +1,11 @@
 <?php
 namespace Page;
 
-abstract class ContentEditPage {
+abstract class ContentEditPage extends AbstractPage {
 
     public static $URL = '/catalog/content/{{guid}}';
+    public static $contentUrl = '/catalog/content/'; //Requires guid to be valid
+
 
     // ATTRIBUTES
     public static $title = ['xpath' => '//label[contains(text()," Title")]/following-sibling::input'];
@@ -11,7 +13,7 @@ abstract class ContentEditPage {
 
     // Related Content
     public static $linked_content_input = ['xpath' => '//label[text()="Linked Content"]/following-sibling::div//input'];
-    public static $linked_content_button = ['xpath' => '//label[text()="Linked Content"]/following-sibling::div//button'];
+    public static $linked_content_button = ['xpath' => '//button[contains(@class,"info")]'];
     public static $linked_content_unlink = ['xpath' => '//label[text()="Linked Content"]/following-sibling::div//a[@class="unlink"]'];
     public static $linked_content_error = ['xpath' => '//label[text()="Linked Content"]/following-sibling::div//div[@class="input-error"]'];
 
@@ -24,11 +26,31 @@ abstract class ContentEditPage {
     public static $linked_card_2_guid = ['xpath' => '//div[contains(@class, "content-card") and position() = 2]/*[@class="guid"]'];
     public static $linked_card_2_title = ['xpath' => '//div[contains(@class, "content-card") and position() = 2]/h2/span'];
     public static $linked_card_2_channel = ['xpath' => '//div[contains(@class, "content-card") and position() = 2]/h1'];
+    //Content pages
+    public static $attributesList = 'div.attributes';
+    public static $sortableTable = 'table.sortable';
+    public static $clickableTable = 'table.clickable';
+    //Calendar
+    public static $calendar_caption_xpath = '//*[@class="DayPicker-Caption"]';
+    public static $calendar_main_xpath = '//div[contains(@class, "DayPicker") and contains(@class, "DayPicker")]';
+    public static $calendar_main = 'div.DayPicker.DayPicker--en';
+    public static $calendar_prevBtn = 'span.DayPicker-NavButton--prev';
+    public static $calendar_nextBtn = 'span.DayPicker-NavButton--next';
+    public static $selected_date='//div[contains(@class,"DayPicker-Day--selected")]';
+    public static $clear_date_button='//div/button[contains(@class,"date-clear")]';
+    public static $calendar_hours='//div[@class="time-input"]/input[1]';
+    public static $calendar_minutes='//div[@class="time-input"]/input[2]';
+    public static $airDateRow = "//label[text()='Air Date']/..";
+    public static $airDateRow_editable = "//label[text()='Air Date']/..//input";
+
+    public static $calendar_confirm = "//*[text()='OK']";
+    public static $calendar_cancel = "//*[text()='Cancel']";
 
     // Visibility
     public static $published_unchecked_text = 'Media is currently hidden from all users.';
     public static $published_checked_text = 'Users who match window settings can view and/or watch content as defined.';
     public static $published_checkbox = ['xpath' => '(//div[@class="form-item"])[descendant::span[text()="Published"]]//label[contains(@class, "checkbox")]'];
+    public static $published_checkbox_checked = "(//div[contains(@class, 'attributes')])[1]//label[contains(@class, 'checked')]";
 
     public static $last_published_format = 'F d, Y g:i A T';
     public static $last_published = ['xpath' => '//div[./h1[text()="Visibility"]]//div[@class="messages"]/small'];
@@ -100,5 +122,9 @@ abstract class ContentEditPage {
             default:
                 return ContentMovieEditPage::getEditGuid();
         }
+    }
+
+    public static function urlByGuid($guid){
+        return str_replace('{{guid}}',$guid,self::$URL);
     }
 }
