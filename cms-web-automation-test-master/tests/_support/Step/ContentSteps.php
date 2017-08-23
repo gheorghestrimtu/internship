@@ -140,10 +140,16 @@ class ContentSteps extends \AcceptanceTester {
 
     public function shouldSeeTableSortedByTitle(){
         $I=$this;
-        $titleList=$I->grabMultiple(ContentPage::$all_titles);
+        $titleList=array_map('strtolower',$I->grabMultiple(ContentPage::$all_titles));
         $sortedTitleList=$titleList;
-        usort($sortedTitleList, 'strcasecmp');
-        $I->assertTrue($sortedTitleList===$titleList,'Should be sorted alphabetically');
+        sort($sortedTitleList);
+        for($i=0;$i<count($titleList);$i++){
+            if($titleList[$i]!=$sortedTitleList[$i]){
+                echo ($i+1).'|';
+            }
+        }
+        print_r($sortedTitleList);
+        $I->assertTrue(array_values($sortedTitleList)===array_values($titleList),'Should be sorted alphabetically');
     }
 
     public function shouldSeeTableReverseSortedByTitle(){
